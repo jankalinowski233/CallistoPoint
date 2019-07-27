@@ -19,11 +19,11 @@ public class Weapon : MonoBehaviour
     [Space(7f)]
     public int m_iMaxAmmo;
     public int m_iMaxAmmoInMagazine;
-    private int m_iAmmoLeft;
+    public int m_iAmmoLeft;
 
-    private void Start()
+    private void Awake()
     {
-        m_iAmmoLeft = m_iMaxAmmo;
+        m_iAmmoLeft = m_iMaxAmmoInMagazine;
     }
 
     public virtual void Shoot()
@@ -45,7 +45,7 @@ public class Weapon : MonoBehaviour
                 if (Physics.Raycast(ray, out rayHit, m_fShootingRange, LayerMask.GetMask("Enemy")))
                 {
                     //if it's an enemy, deal damage
-
+                    print("Dealing damage");
                 }
                 else if (Physics.Raycast(ray, out rayHit, m_fShootingRange, LayerMask.GetMask("Environment")))
                 {

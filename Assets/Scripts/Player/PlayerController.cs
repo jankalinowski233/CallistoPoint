@@ -20,6 +20,13 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool m_bIsWalking = false;
     [HideInInspector] public bool m_bIsAttacking = false;
 
+    [Header("Melee combat")]
+    [Space(7f)]
+    public Transform m_tMeleeAttackPoint;
+    public float m_fMeleeRadius;
+    public float m_fTimeBetweenMeleeAttacks;
+    float m_fRemainingTimeBetweenMeleeAttacks;
+
     private void Awake()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
@@ -166,18 +173,19 @@ public class PlayerController : MonoBehaviour
 
     void MeleeAttack()
     {
-        Collider[] enemies = Physics.OverlapSphere(m_playerStats.m_tMeleeAttackPoint.position, m_playerStats.m_fMeleeRadius, LayerMask.GetMask("Enemy"));
+        //play melee attack animation
+        //play melee attack sound
+        //play melee attack vfx
+
+        Collider[] enemies = Physics.OverlapSphere(m_tMeleeAttackPoint.position, m_fMeleeRadius, LayerMask.GetMask("Enemy"));
         foreach(Collider enemy in enemies)
         {
-            //play melee attack animation
-            //play melee attack sound
-            //play melee attack vfx
             //deal dmg to the enemy
         }
         m_bIsAttacking = false;
     }
 
-    protected bool HasReachedPath()
+    bool HasReachedPath()
     {
         //check if agent reached destination
         if (m_navAgent.pathPending == false)

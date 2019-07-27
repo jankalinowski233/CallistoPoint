@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerStats : Character, IDamageable
+public class PlayerStats : Character
 {
     public static PlayerStats m_instance;
 
@@ -13,45 +13,17 @@ public class PlayerStats : Character, IDamageable
     public uint m_uiSkillPoint;
     public uint m_uiLevel;
 
+    [Header("Melee damage")]
+    [Space(7f)]
+    public float m_fMeleeDamage;
+
     void Awake()
     {
         if(m_instance == null)
         {
             m_instance = this;
         }
-    }
-
-    void Start()
-    {
-        m_fRemainingHealth = m_fMaxHealth;
-    }
-
-    public void Damage(float dmg)
-    {
-        //get dmg
-        m_fRemainingHealth -= dmg;
-
-        //do some stuff to make dmg more appealing
-
-        if (m_fRemainingHealth <= 0)
-        {
-            Kill();
-        }
-    }
-
-    public void Kill()
-    {
-        //kill
-        m_bIsAlive = false;
-
-        if(m_bIsAlive == false)
-        {
-            //disable components
-            //play sound
-            //play vfx
-            //return to main menu
-        }
-    }
+    } 
 
     public void GetXP(float fExperiencePoints)
     {

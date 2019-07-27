@@ -382,7 +382,9 @@ MonoBehaviour:
   m_fTimeBetweenShots: 0.1
   m_fShootingRange: 10
   m_fWeaponDmg: 4
-  m_iMaxAmmo: 0
+  m_iMaxAmmo: 300
+  m_iMaxAmmoInMagazine: 100
+  m_iAmmoLeft: 0
 --- !u!1 &939480848
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,14 +396,14 @@ GameObject:
   - component: {fileID: 939480853}
   - component: {fileID: 939480852}
   - component: {fileID: 939480851}
+  - component: {fileID: 939480856}
   - component: {fileID: 939480850}
   - component: {fileID: 939480854}
   - component: {fileID: 939480855}
   - component: {fileID: 939480849}
-  - component: {fileID: 939480856}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -420,16 +422,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bIsAlive: 1
   m_fMaxHealth: 100
-  m_fMeleeRadius: 0
-  m_fMeleeDmg: 0
-  m_fRangeDmg: 0
-  m_tMeleeAttackPoint: {fileID: 0}
   m_fExperience: 0
   m_fNextLevelExperienceThreshold: 0
   m_fNextLevelExperienceThresholdChange: 0
   m_fOnLevelHealthChange: 0
   m_uiSkillPoint: 0
   m_uiLevel: 0
+  m_fMeleeDamage: 0
 --- !u!65 &939480850
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -544,21 +543,25 @@ MonoBehaviour:
   - {fileID: 1444996409}
   m_bIsWalking: 0
   m_bIsAttacking: 0
---- !u!114 &939480856
-MonoBehaviour:
+  m_tMeleeAttackPoint: {fileID: 0}
+  m_fMeleeRadius: 0
+  m_fTimeBetweenMeleeAttacks: 0
+--- !u!54 &939480856
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 939480848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baad82b6640ff5e4f8576d5a0252076b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TypeOneKeys: []
-  m_TypeTwoKeys: []
-  m_TypeThreeKeys: []
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &1091489631
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,7 +608,66 @@ MonoBehaviour:
   m_fTimeBetweenShots: 0.5
   m_fShootingRange: 10
   m_fWeaponDmg: 6
-  m_iMaxAmmo: 10
+  m_iMaxAmmo: 250
+  m_iMaxAmmoInMagazine: 50
+  m_iAmmoLeft: 0
+--- !u!1 &1093850718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1093850719}
+  - component: {fileID: 1093850721}
+  - component: {fileID: 1093850720}
+  m_Layer: 0
+  m_Name: DetectPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1093850719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093850718}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1645251323}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1093850720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093850718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df56a3d7d5c7644392e5db50339233d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &1093850721
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093850718}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.22
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1444996409
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,10 +711,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ba9f4fbb457af4680084f2672e3268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fTimeBetweenShots: 0.3
+  m_fTimeBetweenShots: 0.25
   m_fShootingRange: 10
   m_fWeaponDmg: 7
-  m_iMaxAmmo: 0
+  m_iMaxAmmo: 200
+  m_iMaxAmmoInMagazine: 72
+  m_iAmmoLeft: 0
 --- !u!1 &1566257340
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,6 +815,140 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   v_offset: {x: 0, y: 6, z: -2.5}
   mt_Player: {fileID: 939480853}
+--- !u!1 &1645251317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1645251323}
+  - component: {fileID: 1645251322}
+  - component: {fileID: 1645251321}
+  - component: {fileID: 1645251320}
+  - component: {fileID: 1645251319}
+  - component: {fileID: 1645251318}
+  m_Layer: 10
+  m_Name: MeleeEnemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1645251318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645251317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d6017f0094dbf48b0ccad2b457a77d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_bIsAlive: 1
+  m_fMaxHealth: 10
+  m_bHasTarget: 0
+  m_fDamage: 0
+  m_tMeleeAttackPoint: {fileID: 0}
+  m_fTimeBetweenMeleeAttacks: 0
+--- !u!195 &1645251319
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645251317}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 2
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!65 &1645251320
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645251317}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1645251321
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645251317}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 7c4b6e1668d2dbd4ba18bcc242430a68, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1645251322
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645251317}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1645251323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645251317}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.0448425, y: 1.05, z: -2.97}
+  m_LocalScale: {x: 0.73754406, y: 0.73754406, z: 0.73754406}
+  m_Children:
+  - {fileID: 1093850719}
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1721694038
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,5 @@
 ﻿public interface IDamageable
 {
-    void Damage(float dmg);
+    void TakeDamage(float dmg);
     void Kill();
 }
