@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController m_instance;
+
     public Camera m_mainCamera;
 
     NavMeshAgent m_navAgent;
@@ -21,6 +23,9 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
+
+        if (m_instance == null) m_instance = this;
+        else Destroy(gameObject);
     }
 
     void Start()
@@ -40,8 +45,7 @@ public class PlayerController : MonoBehaviour
             ProcessMouseInput();
             ProcessKeyboardInput();
 
-            //check if the agent reached the destination if it's moving
-            if (m_navAgent.pathPending)
+            if(m_bIsWalking == true)
             {
                 HasReachedPath();
             }
@@ -87,6 +91,11 @@ public class PlayerController : MonoBehaviour
                 m_bIsAttacking = true;
             }
             MeleeAttack();
+        }
+
+        if(Input.GetKeyDown(KeyCode.R) && m_bIsWalking == false && m_bIsAttacking == false)
+        {
+            Reload();
         }
     }
 
@@ -190,4 +199,9 @@ public class PlayerController : MonoBehaviour
         m_navAgent.SetDestination(destination);
     }
 
+    public void Reload()
+    {
+        //play animation of reloading
+            //make an animation event at some point to reload ammo
+    }
 }

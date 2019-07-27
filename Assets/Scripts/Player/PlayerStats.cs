@@ -24,7 +24,6 @@ public class PlayerStats : Character, IDamageable
     void Start()
     {
         m_fRemainingHealth = m_fMaxHealth;
-        print(m_fRemainingHealth);
     }
 
     public void Damage(float dmg)
