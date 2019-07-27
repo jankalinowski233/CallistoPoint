@@ -14,7 +14,6 @@ public class Character : MonoBehaviour
     [Space(7f)]
     public float m_fMeleeRadius;
     public float m_fMeleeDmg;
-    public float m_fRangeDmg;
 
     public Transform m_tMeleeAttackPoint;
 }

@@ -201,6 +201,10 @@ public class PlayerController : MonoBehaviour
 
     public void Reload()
     {
+        if(m_weapon.m_iMaxAmmo == 0)
+        {
+            return;
+        }
         //play animation of reloading
             //make an animation event at some point to reload ammo
     }

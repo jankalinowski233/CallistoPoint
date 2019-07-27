@@ -17,7 +17,8 @@ public class Weapon : MonoBehaviour
 
     [Header("Reloading")]
     [Space(7f)]
-    [SerializeField] private int m_iMaxAmmo;
+    public int m_iMaxAmmo;
+    public int m_iMaxAmmoInMagazine;
     private int m_iAmmoLeft;
 
     private void Start()
@@ -78,6 +79,15 @@ public class Weapon : MonoBehaviour
 
     public void RefillAmmo()
     {
-        m_iAmmoLeft = m_iMaxAmmo;
+        if(m_iMaxAmmo > m_iMaxAmmoInMagazine)
+        {
+            m_iAmmoLeft = m_iMaxAmmoInMagazine;
+            m_iMaxAmmo -= m_iMaxAmmoInMagazine;
+        }
+        else
+        {
+            m_iAmmoLeft = m_iMaxAmmo;
+            m_iMaxAmmo -= m_iMaxAmmo;
+        }
     }
 }
