@@ -26,7 +26,7 @@ public class Weapon : MonoBehaviour
         m_iAmmoLeft = m_iMaxAmmoInMagazine;
     }
 
-    public virtual void Shoot()
+    public void Shoot()
     {
         if(m_iAmmoLeft > 0)
         {
@@ -79,15 +79,19 @@ public class Weapon : MonoBehaviour
 
     public void RefillAmmo()
     {
-        if(m_iMaxAmmo > m_iMaxAmmoInMagazine)
+        if(m_iMaxAmmo > 0)
         {
-            m_iAmmoLeft = m_iMaxAmmoInMagazine;
-            m_iMaxAmmo -= m_iMaxAmmoInMagazine;
+            if (m_iMaxAmmo >= m_iMaxAmmoInMagazine)
+            {
+                m_iAmmoLeft = m_iMaxAmmoInMagazine;
+                m_iMaxAmmo -= m_iMaxAmmoInMagazine;
+            }
+            else
+            {
+                m_iAmmoLeft = m_iMaxAmmo;
+                m_iMaxAmmo -= m_iMaxAmmo;
+            }
         }
-        else
-        {
-            m_iAmmoLeft = m_iMaxAmmo;
-            m_iMaxAmmo -= m_iMaxAmmo;
-        }
+        
     }
 }

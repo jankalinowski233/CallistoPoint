@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     NavMeshAgent m_navAgent;
     PlayerStats m_playerStats;
+    Animator m_Anim;
     Weapon m_weapon;
 
     [SerializeField] private List<GameObject> ml_WeaponList = new List<GameObject>();
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
+        m_Anim = GetComponent<Animator>();
 
         if (m_instance == null) m_instance = this;
         else Destroy(gameObject);
@@ -71,11 +73,27 @@ public class PlayerController : MonoBehaviour
 
             Rotate();
             Shoot();
+
+            if (m_iCurrentWeapon == 0)
+            {
+                m_Anim.SetBool("ShootingPistol", true);
+            }
+            else if (m_iCurrentWeapon == 1)
+            {
+                m_Anim.SetBool("ShootingSMG", true);
+            }
+            else m_Anim.SetBool("ShootingRifle", true);
         }
 
         //on single RMB click
         if (Input.GetMouseButtonDown(1) && m_bIsAttacking == false)
         {
+            if (m_iCurrentWeapon == 0)
+            {
+                m_Anim.SetBool("PistolRun", true);
+            }
+            else m_Anim.SetBool("RifleRun", true);
+
             Walk();
         }
 
@@ -84,6 +102,16 @@ public class PlayerController : MonoBehaviour
         {
             m_bIsAttacking = false;
             m_weapon.ResetTimeBetweenShots();
+
+            if (m_iCurrentWeapon == 0)
+            {
+                m_Anim.SetBool("ShootingPistol", false);
+            }
+            else if (m_iCurrentWeapon == 1)
+            {
+                m_Anim.SetBool("ShootingSMG", false);
+            }
+            else m_Anim.SetBool("ShootingRifle", false);
         }
 
         ChooseWeapon();
@@ -153,16 +181,26 @@ public class PlayerController : MonoBehaviour
         {
             if(m_iCurrentWeapon < ml_WeaponList.Count - 1)
             {
+                if (m_iCurrentWeapon == 0)
+                {
+                    m_Anim.SetTrigger("ChangeIdle");
+                }
+
                 m_iCurrentWeapon++;
                 ml_WeaponList[m_iCurrentWeapon].SetActive(true);
                 m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
-                ml_WeaponList[m_iCurrentWeapon - 1].SetActive(false);
+                ml_WeaponList[m_iCurrentWeapon - 1].SetActive(false);  
             }
         }
         if(Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             if (m_iCurrentWeapon > 0)
             {
+                if (m_iCurrentWeapon == 1)
+                {
+                    m_Anim.SetTrigger("ChangeIdle");
+                }
+
                 m_iCurrentWeapon--;
                 ml_WeaponList[m_iCurrentWeapon].SetActive(true);
                 m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
@@ -195,6 +233,13 @@ public class PlayerController : MonoBehaviour
                 if (m_navAgent.hasPath == false || m_navAgent.velocity.sqrMagnitude == 0)
                 {
                     m_bIsWalking = false;
+
+                    if (m_iCurrentWeapon == 0)
+                    {
+                        m_Anim.SetBool("PistolRun", false);
+                    }
+                    else m_Anim.SetBool("RifleRun", false);
+
                     return true;
                 }
             }
@@ -209,11 +254,26 @@ public class PlayerController : MonoBehaviour
 
     public void Reload()
     {
-        if(m_weapon.m_iMaxAmmo == 0)
+        if(m_weapon.m_iMaxAmmo == 0 || m_weapon.m_iAmmoLeft == m_weapon.m_iMaxAmmoInMagazine)
         {
             return;
         }
         //play animation of reloading
-            //make an animation event at some point to reload ammo
+        if(m_iCurrentWeapon == 0)
+        {
+            //play pistol animation of reloading
+        }
+        else
+        {
+            //play rifle animation of reloading
+            m_Anim.SetTrigger("RifleReload");
+        }
+        
+        //make an animation event at some point to reload ammo
+    }
+
+    public void RefillAmmo()
+    {
+        m_weapon.RefillAmmo();
     }
 }
