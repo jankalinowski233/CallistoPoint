@@ -29,6 +29,10 @@ public class PlayerController : MonoBehaviour
     public float m_fTimeBetweenMeleeAttacks;
     float m_fRemainingTimeBetweenMeleeAttacks;
 
+    [Header("Interaction")]
+    [Space(7f)]
+    Interactable m_Interactable = null;
+
     private void Awake()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
@@ -163,6 +167,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) && m_bIsWalking == false && m_bIsAttacking == false)
         {
             Reload();
+        }
+
+        if(Input.GetKeyDown(KeyCode.E) && m_Interactable != null)
+        {
+            m_Interactable.Interact();
         }
     }
 
@@ -329,5 +338,21 @@ public class PlayerController : MonoBehaviour
     public void RefillAmmo()
     {
         m_weapon.RefillAmmo();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Interactable"))
+        {
+            m_Interactable = other.gameObject.GetComponent<Interactable>();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("Interactable"))
+        {
+            m_Interactable = null;
+        }
     }
 }

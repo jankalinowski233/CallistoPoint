@@ -2,21 +2,22 @@
 using UnityEngine.AI;
 using System.Collections;
 
-public class DoorController : MonoBehaviour
+public class DoorController : Interactable
 {
-    bool m_bCanBeUsed;
     bool m_bIsOpened;
 
     Animator m_Anim;
     BoxCollider m_DetectArea;
     OffMeshLink[] m_MeshLinks;
 
+    [Header("Ceiling controller")]
+    [Space(7f)]
     public GameObject m_Ceiling;
-    [Range(1, 10)] public int m_iCeilingFadeSpeed;
+    [Range(1, 10)] [Tooltip("The bigger the number, the slower the fade speed")]
+    public int m_iCeilingFadeSpeed;
 
     private void Awake()
     {
-        m_bCanBeUsed = false;
         m_bIsOpened = false;
 
         m_Anim = GetComponentInChildren<Animator>();
@@ -33,22 +34,10 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    IEnumerator CheckForInput()
+    public override void Interact()
     {
-        while(m_bCanBeUsed == true)
-        {
-            if(Input.GetKeyDown(KeyCode.E))
-            {
-                OpenDoor();
-            }
-            
-            if(m_bCanBeUsed == false)
-            {
-                yield break;
-            }
-
-            yield return null;
-        }
+        base.Interact();
+        OpenDoor();
     }
 
     void OpenDoor()
@@ -79,34 +68,9 @@ public class DoorController : MonoBehaviour
             yield return null;
         }
 
+        //deactivate it when it's no longer used
         m_Ceiling.SetActive(false);
         yield break;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.CompareTag("Player"))
-        {
-            if(m_bIsOpened == false)
-            {
-                m_bCanBeUsed = true;
-
-                //enable text "Press [E] to open"
-
-                StartCoroutine(CheckForInput());
-            }    
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.CompareTag("Player"))
-        {
-            if (m_bCanBeUsed == true)
-            {
-                m_bCanBeUsed = false;
-            }
-            else Debug.LogError("Doors are stuck");
-        }
-    }
 }

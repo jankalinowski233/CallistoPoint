@@ -1194,6 +1194,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
+    - target: {fileID: 1239711104012620872, guid: e8041689848b9f64ab41e7c31cde3dcc,
+        type: 3}
+      propertyPath: m_TagString
+      value: Interactable
+      objectReference: {fileID: 0}
     - target: {fileID: 1239711104012620867, guid: e8041689848b9f64ab41e7c31cde3dcc,
         type: 3}
       propertyPath: m_LocalPosition.x
