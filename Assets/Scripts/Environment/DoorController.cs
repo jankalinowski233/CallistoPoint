@@ -12,7 +12,7 @@ public class DoorController : MonoBehaviour
     OffMeshLink[] m_MeshLinks;
 
     public GameObject m_Ceiling;
-    public int m_iCeilingFadeSpeed;
+    [Range(1, 10)] public int m_iCeilingFadeSpeed;
 
     private void Awake()
     {
@@ -67,11 +67,15 @@ public class DoorController : MonoBehaviour
 
     IEnumerator DisableCeiling()
     {
-
-        while (true)
+        Material ceilingMaterial = m_Ceiling.GetComponent<MeshRenderer>().material;
+        Color ceilingColor = ceilingMaterial.GetColor("_BaseColor");
+        
+        while (ceilingColor.a > 0)
         {
             //fade out ceiling
-
+            ceilingColor.a -= Time.deltaTime / m_iCeilingFadeSpeed;
+            ceilingMaterial.SetColor("_BaseColor", ceilingColor);
+            
             yield return null;
         }
 
