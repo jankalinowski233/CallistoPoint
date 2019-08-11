@@ -1496,6 +1496,7 @@ Transform:
   - {fileID: 6866436741377666208}
   - {fileID: 8075533315581082850}
   - {fileID: 4512928391164497342}
+  - {fileID: 5297832288875316154}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1589,6 +1590,7 @@ MonoBehaviour:
   - {fileID: 7787320236144807128}
   m_bIsWalking: 0
   m_bIsAttacking: 0
+  m_bisReloading: 0
   m_tMeleeAttackPoint: {fileID: 0}
   m_fMeleeRadius: 0
   m_fTimeBetweenMeleeAttacks: 0
@@ -1895,6 +1897,36 @@ Transform:
   - {fileID: 6619798962053954718}
   m_Father: {fileID: 1996045898642849122}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6514548651278417172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5297832288875316154}
+  m_Layer: 0
+  m_Name: MeleeAttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5297832288875316154
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6514548651278417172}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.314, z: 0.89}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8640397972388535908}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6701253892620705270
 GameObject:
@@ -2715,15 +2747,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78aed82a0a8d4ba458d38f7f455169d7, type: 3}
---- !u!1 &2267755379539947154 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8972962750373925611, guid: 78aed82a0a8d4ba458d38f7f455169d7,
-    type: 3}
-  m_PrefabInstance: {fileID: 7205462072001051769}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2267755379539947181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8972962750373925588, guid: 78aed82a0a8d4ba458d38f7f455169d7,
+    type: 3}
+  m_PrefabInstance: {fileID: 7205462072001051769}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2267755379539947154 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8972962750373925611, guid: 78aed82a0a8d4ba458d38f7f455169d7,
     type: 3}
   m_PrefabInstance: {fileID: 7205462072001051769}
   m_PrefabAsset: {fileID: 0}

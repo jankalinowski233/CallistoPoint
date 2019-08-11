@@ -18,17 +18,21 @@ public class Weapon : MonoBehaviour
     [Header("Reloading")]
     [Space(7f)]
     public int m_iMaxAmmo;
-    public int m_iMaxAmmoInMagazine;
     public int m_iAmmoLeft;
+    public int m_iMaxAmmoInMagazine;
+    public int m_iAmmoLeftInMagazine;
 
     private void Awake()
     {
-        m_iAmmoLeft = m_iMaxAmmoInMagazine;
+        m_iAmmoLeftInMagazine = m_iMaxAmmoInMagazine;
+        m_iAmmoLeft = m_iMaxAmmo;
+
     }
 
     public void Shoot()
     {
-        if(m_iAmmoLeft > 0)
+
+        if (m_iAmmoLeftInMagazine > 0)
         {
             //basic shooting behaviour goes here
             if (m_fRemainingTimeBetweenShots <= 0)
@@ -53,7 +57,8 @@ public class Weapon : MonoBehaviour
                     print("hitting environment");
                 }
 
-                m_iAmmoLeft--;
+                m_iAmmoLeftInMagazine--;
+
                 //reset timer
                 m_fRemainingTimeBetweenShots = m_fTimeBetweenShots;
             }
@@ -61,13 +66,9 @@ public class Weapon : MonoBehaviour
             {
                 //disable vfx
 
-                //start counting timer
+                //start counting time
                 m_fRemainingTimeBetweenShots -= Time.deltaTime;
             }
-        }
-        else
-        {
-            PlayerController.m_instance.Reload();
         }
         
     }
@@ -79,19 +80,43 @@ public class Weapon : MonoBehaviour
 
     public void RefillAmmo()
     {
-        if(m_iMaxAmmo > 0)
+        if (m_iAmmoLeft > 0)
         {
-            if (m_iMaxAmmo >= m_iMaxAmmoInMagazine)
+
+            if (m_iAmmoLeftInMagazine == 0)
             {
-                m_iAmmoLeft = m_iMaxAmmoInMagazine;
-                m_iMaxAmmo -= m_iMaxAmmoInMagazine;
+                if(m_iAmmoLeft >= m_iMaxAmmoInMagazine)
+                {
+                    m_iAmmoLeftInMagazine = m_iMaxAmmoInMagazine;
+                    m_iAmmoLeft -= m_iMaxAmmoInMagazine;
+                }
+                else
+                {
+                    m_iAmmoLeftInMagazine += m_iAmmoLeft;
+                    m_iAmmoLeft = 0;
+                }
             }
             else
             {
-                m_iAmmoLeft = m_iMaxAmmo;
-                m_iMaxAmmo -= m_iMaxAmmo;
+                int difference = m_iMaxAmmoInMagazine - m_iAmmoLeftInMagazine;
+
+                if(m_iAmmoLeft >= difference)
+                {
+                    m_iAmmoLeftInMagazine += difference;
+                    m_iAmmoLeft -= difference;
+                }
+                else
+                {
+                    m_iAmmoLeftInMagazine += m_iAmmoLeft;
+                    m_iAmmoLeft = 0;
+                }
             }
         }
-        
+
+    }
+
+    public void PickAmmoUp()
+    {
+        //add ammo upon pick up
     }
 }

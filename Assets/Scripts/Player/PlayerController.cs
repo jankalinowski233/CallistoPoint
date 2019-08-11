@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public bool m_bIsWalking = false;
     [HideInInspector] public bool m_bIsAttacking = false;
+    [HideInInspector] public bool m_bisReloading = false;
 
     [Header("Melee combat")]
     [Space(7f)]
@@ -72,21 +73,38 @@ public class PlayerController : MonoBehaviour
             }
 
             Rotate();
-            Shoot();
 
-            if (m_iCurrentWeapon == 0)
+            if(m_weapon.m_iAmmoLeftInMagazine > 0)
             {
-                m_Anim.SetBool("ShootingPistol", true);
+                Shoot();
+
+                if (m_iCurrentWeapon == 0)
+                {
+                    m_Anim.SetBool("ShootingPistol", true);
+                }
+                else if (m_iCurrentWeapon == 1)
+                {
+                    m_Anim.SetBool("ShootingSMG", true);
+                }
+                else m_Anim.SetBool("ShootingRifle", true);
             }
-            else if (m_iCurrentWeapon == 1)
+            else
             {
-                m_Anim.SetBool("ShootingSMG", true);
+                if (m_iCurrentWeapon == 0)
+                {
+                    m_Anim.SetBool("ShootingPistol", false);
+                }
+                else if (m_iCurrentWeapon == 1)
+                {
+                    m_Anim.SetBool("ShootingSMG", false);
+                }
+                else m_Anim.SetBool("ShootingRifle", false);
             }
-            else m_Anim.SetBool("ShootingRifle", true);
+                
         }
 
         //on single RMB click
-        if (Input.GetMouseButtonDown(1) && m_bIsAttacking == false)
+        if (Input.GetMouseButtonDown(1) && m_bIsAttacking == false && HasReachedPath() == true)
         {
             if (m_iCurrentWeapon == 0)
             {
@@ -119,16 +137,30 @@ public class PlayerController : MonoBehaviour
 
     void ProcessKeyboardInput()
     {
-        if(Input.GetKey(KeyCode.F) && m_bIsWalking == false)
+        if (m_fRemainingTimeBetweenMeleeAttacks <= 0)
         {
-            if (m_bIsAttacking == false)
+            if (Input.GetKey(KeyCode.F) && m_bIsWalking == false)
             {
-                m_bIsAttacking = true;
-            }
-            MeleeAttack();
+                if (m_bIsAttacking == false)
+                {
+                    m_bIsAttacking = true;
+                }
+
+                MeleeAttack();
+
+                //reset timer
+                m_fRemainingTimeBetweenMeleeAttacks = m_fTimeBetweenMeleeAttacks;
+            }   
+        }
+        else
+        {
+            //disable vfx
+
+            //start counting time
+            m_fRemainingTimeBetweenMeleeAttacks -= Time.deltaTime;
         }
 
-        if(Input.GetKeyDown(KeyCode.R) && m_bIsWalking == false && m_bIsAttacking == false)
+        if (Input.GetKeyDown(KeyCode.R) && m_bIsWalking == false && m_bIsAttacking == false)
         {
             Reload();
         }
@@ -212,14 +244,34 @@ public class PlayerController : MonoBehaviour
     void MeleeAttack()
     {
         //play melee attack animation
+        m_Anim.SetTrigger("MeleeAttack");
+
         //play melee attack sound
         //play melee attack vfx
+    }
 
+    void DoMeleeDamage()
+    {
+        print("dealing melee damage");
         Collider[] enemies = Physics.OverlapSphere(m_tMeleeAttackPoint.position, m_fMeleeRadius, LayerMask.GetMask("Enemy"));
-        foreach(Collider enemy in enemies)
+        foreach (Collider enemy in enemies)
         {
             //deal dmg to the enemy
+            print("dealing melee damage");
         }
+    }
+
+    void ResetAnimations()
+    {
+        if(m_iCurrentWeapon == 0)
+        {
+            m_Anim.SetTrigger("PistolIdle");
+        }
+        else
+        {
+            m_Anim.SetTrigger("RifleIdle");
+        }
+
         m_bIsAttacking = false;
     }
 
@@ -254,22 +306,24 @@ public class PlayerController : MonoBehaviour
 
     public void Reload()
     {
-        if(m_weapon.m_iMaxAmmo == 0 || m_weapon.m_iAmmoLeft == m_weapon.m_iMaxAmmoInMagazine)
+        if(m_weapon.m_iAmmoLeft == 0 || m_weapon.m_iAmmoLeftInMagazine == m_weapon.m_iMaxAmmoInMagazine)
         {
+            //display warning of no ammo left
+
             return;
         }
+
         //play animation of reloading
         if(m_iCurrentWeapon == 0)
         {
             //play pistol animation of reloading
+            m_Anim.SetTrigger("PistolReload");
         }
         else
         {
             //play rifle animation of reloading
             m_Anim.SetTrigger("RifleReload");
         }
-        
-        //make an animation event at some point to reload ammo
     }
 
     public void RefillAmmo()
