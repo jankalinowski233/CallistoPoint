@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Interactable : MonoBehaviour, IInteractable
 {
     bool m_bCanBeUsed;
+
+    public GameObject m_text;
 
     private void Awake()
     {
@@ -21,7 +21,7 @@ public class Interactable : MonoBehaviour, IInteractable
         if (other.CompareTag("Player"))
         {
             m_bCanBeUsed = true;
-            //enable 'press [E] to interact' text
+            m_text.SetActive(true);
         }
     }
 
@@ -32,6 +32,7 @@ public class Interactable : MonoBehaviour, IInteractable
             if (m_bCanBeUsed == true)
             {
                 m_bCanBeUsed = false;
+                m_text.SetActive(false);
             }
         }
     }

@@ -7,8 +7,11 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected float m_fTimeBetweenShots;
     protected float m_fRemainingTimeBetweenShots;
 
+    [Header("Raycast")]
+    [Space(7f)]
     Ray ray;
     RaycastHit rayHit;
+    public Transform m_rayOrigin;
 
     [Header("Weapon stats")]
     [Space(7f)]
@@ -42,7 +45,7 @@ public class Weapon : MonoBehaviour
                 //play sound
 
                 //cast ray
-                ray.origin = transform.position;
+                ray.origin = m_rayOrigin.transform.position;
                 ray.direction = transform.forward;
 
                 //check if it hit anything
@@ -56,6 +59,7 @@ public class Weapon : MonoBehaviour
                     //if it's environment, just spawn particle effect in the place it hit something
                     print("hitting environment");
                 }
+                else print(Physics.Raycast(ray));
 
                 m_iAmmoLeftInMagazine--;
 

@@ -52,6 +52,9 @@ public class DoorController : Interactable
 
         StartCoroutine(DisableCeiling());
         m_bIsOpened = true;
+
+        PlayerController.m_instance.m_Interactable = null;
+        m_text.SetActive(false);
     }
 
     IEnumerator DisableCeiling()

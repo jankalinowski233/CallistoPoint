@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public bool m_bIsWalking = false;
     [HideInInspector] public bool m_bIsAttacking = false;
-    [HideInInspector] public bool m_bisReloading = false;
+    [HideInInspector] public bool m_bIsReloading = false;
 
     [Header("Melee combat")]
     [Space(7f)]
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Interaction")]
     [Space(7f)]
-    Interactable m_Interactable = null;
+    [HideInInspector] public Interactable m_Interactable = null;
 
     private void Awake()
     {
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     void ProcessMouseInput()
     {
         //on LMB hold
-        if (Input.GetMouseButton(0) && m_bIsWalking == false)
+        if (Input.GetMouseButton(0) && m_bIsWalking == false && m_bIsReloading == false)
         {
             if(m_bIsAttacking == false)
             {
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //on single RMB click
-        if (Input.GetMouseButtonDown(1) && m_bIsAttacking == false && HasReachedPath() == true)
+        if (Input.GetMouseButtonDown(1) && m_bIsAttacking == false && m_bIsReloading == false && HasReachedPath() == true)
         {
             if (m_iCurrentWeapon == 0)
             {
@@ -322,6 +322,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        m_bIsReloading = true;
+
         //play animation of reloading
         if(m_iCurrentWeapon == 0)
         {
@@ -338,6 +340,7 @@ public class PlayerController : MonoBehaviour
     public void RefillAmmo()
     {
         m_weapon.RefillAmmo();
+        m_bIsReloading = false;
     }
 
     private void OnTriggerEnter(Collider other)
