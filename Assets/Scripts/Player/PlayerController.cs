@@ -80,8 +80,6 @@ public class PlayerController : MonoBehaviour
 
             if(m_weapon.m_iAmmoLeftInMagazine > 0)
             {
-                Shoot();
-
                 if (m_iCurrentWeapon == 0)
                 {
                     m_Anim.SetBool("ShootingPistol", true);
@@ -123,7 +121,6 @@ public class PlayerController : MonoBehaviour
         if(Input.GetMouseButtonUp(0))
         {
             m_bIsAttacking = false;
-            m_weapon.ResetTimeBetweenShots();
 
             if (m_iCurrentWeapon == 0)
             {
@@ -315,26 +312,36 @@ public class PlayerController : MonoBehaviour
 
     public void Reload()
     {
-        if(m_weapon.m_iAmmoLeft == 0 || m_weapon.m_iAmmoLeftInMagazine == m_weapon.m_iMaxAmmoInMagazine)
+        if(m_weapon.m_iAmmoLeft == 0)
         {
             //display warning of no ammo left
 
             return;
         }
-
-        m_bIsReloading = true;
-
-        //play animation of reloading
-        if(m_iCurrentWeapon == 0)
+        else if(m_weapon.m_iAmmoLeftInMagazine == m_weapon.m_iMaxAmmoInMagazine)
         {
-            //play pistol animation of reloading
-            m_Anim.SetTrigger("PistolReload");
+            //display warning of full magazine
+
+            return;
         }
-        else
+
+        if(m_bIsReloading == false)
         {
-            //play rifle animation of reloading
-            m_Anim.SetTrigger("RifleReload");
+            m_bIsReloading = true;
+
+            //play animation of reloading
+            if (m_iCurrentWeapon == 0)
+            {
+                //play pistol animation of reloading
+                m_Anim.SetTrigger("PistolReload");
+            }
+            else
+            {
+                //play rifle animation of reloading
+                m_Anim.SetTrigger("RifleReload");
+            }
         }
+        
     }
 
     public void RefillAmmo()

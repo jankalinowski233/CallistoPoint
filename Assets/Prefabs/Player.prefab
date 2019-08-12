@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ba9f4fbb457af4680084f2672e3268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fTimeBetweenShots: 0.25
   m_rayOrigin: {fileID: 6060029740008793793}
   m_fShootingRange: 10
   m_fWeaponDmg: 7
@@ -538,7 +537,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ba9f4fbb457af4680084f2672e3268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fTimeBetweenShots: 0.1
   m_rayOrigin: {fileID: 1294694462059509201}
   m_fShootingRange: 10
   m_fWeaponDmg: 4
@@ -715,7 +713,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ba9f4fbb457af4680084f2672e3268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fTimeBetweenShots: 0.467
   m_rayOrigin: {fileID: 7378032218481029190}
   m_fShootingRange: 10
   m_fWeaponDmg: 6
@@ -1537,6 +1534,7 @@ GameObject:
   - component: {fileID: 4717719359803637552}
   - component: {fileID: 7957611557658626146}
   - component: {fileID: 2940094511355130091}
+  - component: {fileID: 6908400842991266629}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1588,7 +1586,7 @@ Animator:
   m_GameObject: {fileID: 4734274923725302903}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0f1fc5efe41fa03499c15575809a0e4a, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b2db68d5e2f35c9439f50991270aff81, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1653,9 +1651,9 @@ MonoBehaviour:
   m_bIsWalking: 0
   m_bIsAttacking: 0
   m_bIsReloading: 0
-  m_tMeleeAttackPoint: {fileID: 0}
-  m_fMeleeRadius: 0
-  m_fTimeBetweenMeleeAttacks: 0
+  m_tMeleeAttackPoint: {fileID: 5297832288875316154}
+  m_fMeleeRadius: 0.2
+  m_fTimeBetweenMeleeAttacks: 0.5
   m_Interactable: {fileID: 0}
 --- !u!114 &2940094511355130091
 MonoBehaviour:
@@ -1678,6 +1676,18 @@ MonoBehaviour:
   m_uiSkillPoint: 0
   m_uiLevel: 0
   m_fMeleeDamage: 0
+--- !u!114 &6908400842991266629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734274923725302903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799cec97300dcca4f8edbc95935bacc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4821490519745498350
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,7 +2011,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7378032218481029190}
   m_Layer: 0
-  m_Name: RayOrigin
+  m_Name: PistolRayOrigin
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2093,7 +2103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1294694462059509201}
   m_Layer: 0
-  m_Name: 'RayOrigin '
+  m_Name: 'SMGRayOrigin '
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2474,7 +2484,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6060029740008793793}
   m_Layer: 0
-  m_Name: 'RayOrigin '
+  m_Name: 'RifleRayOrigin '
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2725,7 +2735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1294672646082164, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4166463531722480, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2871,7 +2881,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1374600452982646, guid: 57bf5071e0a1c8947b8918a8f96184a6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4054100971495624, guid: 57bf5071e0a1c8947b8918a8f96184a6, type: 3}
       propertyPath: m_LocalPosition.x

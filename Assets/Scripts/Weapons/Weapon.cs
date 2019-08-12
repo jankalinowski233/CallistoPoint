@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] protected float m_fTimeBetweenShots;
-    protected float m_fRemainingTimeBetweenShots;
-
     [Header("Raycast")]
     [Space(7f)]
-    Ray ray;
-    RaycastHit rayHit;
     public Transform m_rayOrigin;
 
     [Header("Weapon stats")]
@@ -34,59 +29,41 @@ public class Weapon : MonoBehaviour
 
     public void Shoot()
     {
-
         if (m_iAmmoLeftInMagazine > 0)
         {
-            //basic shooting behaviour goes here
-            if (m_fRemainingTimeBetweenShots <= 0)
+            //play weapon particle effects
+            //enable lighting
+            //play sound
+
+            //cast ray
+            Ray ray = new Ray(m_rayOrigin.transform.position, m_rayOrigin.transform.forward);
+            RaycastHit rayHit;
+
+            //check if it hit anything
+            if (Physics.Raycast(ray, out rayHit, m_fShootingRange, LayerMask.GetMask("Shootable")))
             {
-                //play weapon particle effects
-                //enable some lighting
-                //play sound
-
-                //cast ray
-                ray.origin = m_rayOrigin.transform.position;
-                ray.direction = transform.forward;
-
-                //check if it hit anything
-                if (Physics.Raycast(ray, out rayHit, m_fShootingRange, LayerMask.GetMask("Enemy")))
+                if (rayHit.collider.CompareTag("Enemy"))
                 {
                     //if it's an enemy, deal damage
                     print("Dealing damage");
                 }
-                else if (Physics.Raycast(ray, out rayHit, m_fShootingRange, LayerMask.GetMask("Environment")))
+                else if (rayHit.collider.CompareTag("Environment"))
                 {
                     //if it's environment, just spawn particle effect in the place it hit something
                     print("hitting environment");
                 }
-                else print(Physics.Raycast(ray));
-
-                m_iAmmoLeftInMagazine--;
-
-                //reset timer
-                m_fRemainingTimeBetweenShots = m_fTimeBetweenShots;
             }
-            else
-            {
-                //disable vfx
 
-                //start counting time
-                m_fRemainingTimeBetweenShots -= Time.deltaTime;
-            }
+            m_iAmmoLeftInMagazine--;
+
+            //disable vfx
         }
-        
     }
-
-    public void ResetTimeBetweenShots()
-    {
-        m_fRemainingTimeBetweenShots = 0f;
-    }
-
+       
     public void RefillAmmo()
     {
         if (m_iAmmoLeft > 0)
         {
-
             if (m_iAmmoLeftInMagazine == 0)
             {
                 if(m_iAmmoLeft >= m_iMaxAmmoInMagazine)
@@ -119,7 +96,7 @@ public class Weapon : MonoBehaviour
 
     }
 
-    public void PickAmmoUp()
+    public void AddAmmo(int amount)
     {
         //add ammo upon pick up
     }
