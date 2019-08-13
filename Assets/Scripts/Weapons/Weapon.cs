@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [Header("Raycast")]
-    [Space(7f)]
-    public Transform m_rayOrigin;
-
     [Header("Weapon stats")]
     [Space(7f)]
     [SerializeField] private float m_fShootingRange;
@@ -47,23 +43,24 @@ public class Weapon : MonoBehaviour
 
             //enable line rendering
             m_lineRenderer.enabled = true;
-            m_lineRenderer.SetPosition(0, m_rayOrigin.transform.position);
+            m_lineRenderer.SetPosition(0, transform.position);
 
             //play sound
 
             //cast ray
-            Ray ray = new Ray(m_rayOrigin.transform.position, m_rayOrigin.transform.forward);
+            Ray ray = new Ray(transform.position, new Vector3(transform.forward.x, 0f, transform.forward.z));
             RaycastHit weaponHit;
-
+            
             //check if it hit anything
             if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Shootable")))
             {
                 m_lineRenderer.SetPosition(1, weaponHit.point);
 
-                if (weaponHit.collider.CompareTag("Enemy"))
+                if (weaponHit.collider.CompareTag("Enemy") || weaponHit.collider.CompareTag("Turret"))
                 {
                     //if it's an enemy, deal damage
-                    print("Dealing damage");
+                    Character character = weaponHit.collider.GetComponent<Character>();
+                    character.TakeDamage(m_fWeaponDmg);
                 }
                 else if (weaponHit.collider.CompareTag("Environment"))
                 {
@@ -75,6 +72,7 @@ public class Weapon : MonoBehaviour
             {
                 m_lineRenderer.SetPosition(1, ray.origin + ray.direction * m_fShootingRange);
             }
+
 
             m_iAmmoLeftInMagazine--;
 

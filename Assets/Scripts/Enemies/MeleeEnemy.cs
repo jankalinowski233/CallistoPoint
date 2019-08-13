@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeEnemy : EnemyController
+public class MeleeEnemy : Enemy
 {
-    [Header("Melee combat")]
-    [Space(7f)]
-    public float m_fTimeBetweenMeleeAttacks;
-    float m_fRemainingTimeBetweenMeleeAttacks;
-
     public override void Attack()
     {
         //play attack animation

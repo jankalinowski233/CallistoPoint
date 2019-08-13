@@ -215,36 +215,39 @@ public class PlayerController : MonoBehaviour
 
     void ChooseWeapon()
     {
-        if(Input.GetAxis("Mouse ScrollWheel") > 0)
+        if(m_bIsWalking == false && m_bIsAttacking == false && m_bIsReloading == false)
         {
-            if(m_iCurrentWeapon < ml_WeaponList.Count - 1)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
-                if (m_iCurrentWeapon == 0)
+                if (m_iCurrentWeapon < ml_WeaponList.Count - 1)
                 {
-                    m_Anim.SetTrigger("ChangeIdle");
-                }
+                    if (m_iCurrentWeapon == 0)
+                    {
+                        m_Anim.SetTrigger("ChangeIdle");
+                    }
 
-                m_iCurrentWeapon++;
-                ml_WeaponList[m_iCurrentWeapon].SetActive(true);
-                m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
-                ml_WeaponList[m_iCurrentWeapon - 1].SetActive(false);  
+                    m_iCurrentWeapon++;
+                    ml_WeaponList[m_iCurrentWeapon].SetActive(true);
+                    m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
+                    ml_WeaponList[m_iCurrentWeapon - 1].SetActive(false);
+                }
             }
-        }
-        if(Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            if (m_iCurrentWeapon > 0)
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                if (m_iCurrentWeapon == 1)
+                if (m_iCurrentWeapon > 0)
                 {
-                    m_Anim.SetTrigger("ChangeIdle");
-                }
+                    if (m_iCurrentWeapon == 1)
+                    {
+                        m_Anim.SetTrigger("ChangeIdle");
+                    }
 
-                m_iCurrentWeapon--;
-                ml_WeaponList[m_iCurrentWeapon].SetActive(true);
-                m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
-                ml_WeaponList[m_iCurrentWeapon + 1].SetActive(false);
+                    m_iCurrentWeapon--;
+                    ml_WeaponList[m_iCurrentWeapon].SetActive(true);
+                    m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
+                    ml_WeaponList[m_iCurrentWeapon + 1].SetActive(false);
+                }
             }
-        }
+        }   
     }
 
     void MeleeAttack()

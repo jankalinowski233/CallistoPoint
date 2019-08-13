@@ -9,17 +9,17 @@ public class Character : MonoBehaviour, IDamageable
     protected float m_fRemainingHealth;
     public float m_fMaxHealth;
 
-    void Start()
+    void OnEnable()
     {
         m_fRemainingHealth = m_fMaxHealth;
     }
 
-    public void TakeDamage(float dmg)
-    {
+    public virtual void TakeDamage(float dmg)
+    {   
         //get dmg
         m_fRemainingHealth -= dmg;
 
-        //do some stuff to make dmg more appealing
+        //do some stuff to make taking dmg looking better
 
         if (m_fRemainingHealth <= 0)
         {
@@ -27,17 +27,24 @@ public class Character : MonoBehaviour, IDamageable
         }
     }
 
-    public void Kill()
+    public virtual void Kill()
     {
         //kill
         m_bIsAlive = false;
+
+        print("dead");
 
         if (m_bIsAlive == false)
         {
             //disable components
             //play sound
             //play vfx
-            //return to main menu
+            //set ragdoll
+        }
+        else
+        {
+            Debug.LogError("Target still alive!");
+            return;
         }
     }
 

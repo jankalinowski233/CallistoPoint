@@ -345,7 +345,6 @@ Transform:
   - {fileID: 4857096927641466}
   - {fileID: 4273089400623780}
   - {fileID: 4434564307684280}
-  - {fileID: 1294694462059509201}
   - {fileID: 409293754117887756}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -362,8 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ba9f4fbb457af4680084f2672e3268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rayOrigin: {fileID: 1294694462059509201}
-  m_fShootingRange: 10
+  m_fShootingRange: 15
   m_fWeaponDmg: 4
   m_iMaxAmmo: 300
   m_iAmmoLeft: 0
@@ -757,36 +755,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &6955584433634046402
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1294694462059509201}
-  m_Layer: 0
-  m_Name: 'SMGRayOrigin '
-  m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1294694462059509201
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6955584433634046402}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.008, y: -0.004, z: 0.49}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4826450088584990}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3839906292191200475
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -837,7 +805,7 @@ PrefabInstance:
     - target: {fileID: 3522955023277593559, guid: eddcfafaa34594c41bf148a8f5064e06,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3522955023277593559, guid: eddcfafaa34594c41bf148a8f5064e06,
         type: 3}

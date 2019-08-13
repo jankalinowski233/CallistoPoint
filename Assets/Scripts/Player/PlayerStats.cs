@@ -44,4 +44,16 @@ public class PlayerStats : Character
             //play sound
         }
     }
+
+    public override void TakeDamage(float dmg)
+    {
+        base.TakeDamage(dmg);
+    }
+
+    public override void Kill()
+    {
+        base.Kill();
+
+        //return to main menu
+    }
 }
