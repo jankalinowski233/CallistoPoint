@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     NavMeshAgent m_navAgent;
     PlayerStats m_playerStats;
+    Rigidbody m_rb;
     Animator m_Anim;
     Weapon m_weapon;
 
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour
     {
         m_navAgent = GetComponent<NavMeshAgent>();
         m_Anim = GetComponent<Animator>();
+        m_rb = GetComponent<Rigidbody>();
 
         if (m_instance == null) m_instance = this;
         else Destroy(gameObject);
@@ -191,13 +193,11 @@ public class PlayerController : MonoBehaviour
 
         if(Physics.Raycast(ray, out rayHit))
         {
-            Vector3 clickPoint = rayHit.point;
             Vector3 characterToMouseVector = rayHit.point - transform.position;
-
             characterToMouseVector.y = 0f;
 
             Quaternion rotation = Quaternion.LookRotation(characterToMouseVector);
-            transform.rotation = rotation;
+            m_rb.MoveRotation(rotation);
         }
     }
 

@@ -20,11 +20,18 @@ public class Weapon : MonoBehaviour
     public int m_iMaxAmmoInMagazine;
     public int m_iAmmoLeftInMagazine;
 
+    [Header("Weapon FX")]
+    [Space(7f)]
+    public ParticleSystem m_gunParticles;
+    public Light m_gunLight;
+    LineRenderer m_lineRenderer;
+
     private void Awake()
     {
         m_iAmmoLeftInMagazine = m_iMaxAmmoInMagazine;
         m_iAmmoLeft = m_iMaxAmmo;
 
+        m_lineRenderer = GetComponent<LineRenderer>();
     }
 
     public void Shoot()
@@ -32,32 +39,55 @@ public class Weapon : MonoBehaviour
         if (m_iAmmoLeftInMagazine > 0)
         {
             //play weapon particle effects
+            m_gunParticles.Stop();
+            m_gunParticles.Play();
+
             //enable lighting
+            m_gunLight.enabled = true;
+
+            //enable line rendering
+            m_lineRenderer.enabled = true;
+            m_lineRenderer.SetPosition(0, m_rayOrigin.transform.position);
+
             //play sound
 
             //cast ray
             Ray ray = new Ray(m_rayOrigin.transform.position, m_rayOrigin.transform.forward);
-            RaycastHit rayHit;
+            RaycastHit weaponHit;
 
             //check if it hit anything
-            if (Physics.Raycast(ray, out rayHit, m_fShootingRange, LayerMask.GetMask("Shootable")))
+            if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Shootable")))
             {
-                if (rayHit.collider.CompareTag("Enemy"))
+                m_lineRenderer.SetPosition(1, weaponHit.point);
+
+                if (weaponHit.collider.CompareTag("Enemy"))
                 {
                     //if it's an enemy, deal damage
                     print("Dealing damage");
                 }
-                else if (rayHit.collider.CompareTag("Environment"))
+                else if (weaponHit.collider.CompareTag("Environment"))
                 {
                     //if it's environment, just spawn particle effect in the place it hit something
                     print("hitting environment");
                 }
             }
+            else
+            {
+                m_lineRenderer.SetPosition(1, ray.origin + ray.direction * m_fShootingRange);
+            }
 
             m_iAmmoLeftInMagazine--;
 
             //disable vfx
+            StartCoroutine(DisableVFX());
         }
+    }
+
+    IEnumerator DisableVFX()
+    {
+        yield return new WaitForSeconds(0.1f);
+        m_gunLight.enabled = false;
+        m_lineRenderer.enabled = false;
     }
        
     public void RefillAmmo()
