@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
 
         if(Physics.Raycast(ray, out rayHit))
         {
-            Vector3 characterToMouseVector = rayHit.point - transform.position;
+            Vector3 characterToMouseVector = (rayHit.point - transform.position) * 10f;
             characterToMouseVector.y = 0f;
 
             Quaternion rotation = Quaternion.LookRotation(characterToMouseVector);
