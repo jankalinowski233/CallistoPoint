@@ -105,6 +105,11 @@ public class Enemy : Character
         m_Anim.SetTrigger("TargetFound");
     }
 
+    public GameObject GetTarget()
+    {
+        return m_gTarget;
+    }
+
     bool HasReachedPath()
     {
         //check if agent reached destination

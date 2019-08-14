@@ -245,7 +245,7 @@ Transform:
   m_GameObject: {fileID: 1000010402951368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5878, y: 1.5878, z: 1.5878}
   m_Children:
   - {fileID: 4000011082351298}
   - {fileID: 4000012663560122}
@@ -284,7 +284,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1000010402951368}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.48
+  m_Radius: 0.2
   m_Speed: 5
   m_Acceleration: 16
   avoidancePriority: 50
@@ -307,7 +307,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.18
+  m_Radius: 0.3
   m_Height: 2.06
   m_Direction: 1
   m_Center: {x: 0, y: 0.88, z: 0}
@@ -323,7 +323,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

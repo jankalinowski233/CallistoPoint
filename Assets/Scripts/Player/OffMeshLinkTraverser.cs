@@ -5,37 +5,53 @@ using System.Collections;
 [RequireComponent(typeof(NavMeshAgent))]
 public class OffMeshLinkTraverser : MonoBehaviour
 {
-    NavMeshAgent m_navAgent;
+    Enemy m_enemy;
+    GameObject m_previousTarget;
 
     private void Start()
     {
-        m_navAgent = GetComponent<NavMeshAgent>();
+        if(gameObject.CompareTag("Enemy"))
+            m_enemy = gameObject.GetComponent<Enemy>();
 
         StartCoroutine(CheckForOffMeshLink());
     }
 
     IEnumerator CheckForOffMeshLink()
     {
-        while(true)
+        NavMeshAgent navAgent = GetComponent<NavMeshAgent>();
+
+        while (true)
         {
-            if(m_navAgent.isOnOffMeshLink == true)
+            if(navAgent.isOnOffMeshLink == true)
             {
-                yield return StartCoroutine(TraverseOffMeshLink());
-                m_navAgent.CompleteOffMeshLink();
+                yield return StartCoroutine(TraverseOffMeshLink(navAgent));
+                navAgent.CompleteOffMeshLink();
+
+                if (m_enemy != null && m_enemy.GetTarget() == null)
+                {
+                    m_enemy.SetTarget(m_previousTarget);
+                }
             }
             yield return null;
         }
     }
 
-    IEnumerator TraverseOffMeshLink()
+    IEnumerator TraverseOffMeshLink(NavMeshAgent agent)
     {
-        OffMeshLinkData data = m_navAgent.currentOffMeshLinkData;
-        Vector3 endLink = data.endPos + Vector3.up * m_navAgent.baseOffset;
+        OffMeshLinkData data = agent.currentOffMeshLinkData;
+        Vector3 endLink = data.endPos + Vector3.up * agent.baseOffset;
 
-        while(m_navAgent.transform.position != endLink)
+        while (agent.transform.position != endLink)
         {
-            m_navAgent.transform.position = Vector3.MoveTowards(m_navAgent.transform.position, endLink, m_navAgent.speed * Time.deltaTime);
+            if(m_enemy != null && m_enemy.GetTarget() != null)
+            {
+                m_previousTarget = m_enemy.GetTarget();
+                m_enemy.SetTarget(null);
+            }
+
+            agent.transform.position = Vector3.MoveTowards(agent.transform.position, endLink, agent.speed * Time.deltaTime);
             transform.LookAt(endLink);
+
             yield return null;
         }
     }
