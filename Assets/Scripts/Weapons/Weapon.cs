@@ -18,6 +18,8 @@ public class Weapon : MonoBehaviour
     [Header("Weapon FX")]
     [Space(7f)]
     public ParticleSystem m_gunParticles;
+    public GameObject m_environmentHitEffect;
+    public GameObject m_damageEffect;
     public Light m_gunLight;
     LineRenderer m_lineRenderer;
 
@@ -60,12 +62,21 @@ public class Weapon : MonoBehaviour
                     //if it's an enemy, deal damage
                     Character character = weaponHit.collider.GetComponent<Character>();
                     character.TakeDamage(m_fWeaponDmg);
+
+                    GameObject damageEffect = Instantiate(m_damageEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal));
+                    Destroy(damageEffect, 1f);
                 }
                 else if (weaponHit.collider.CompareTag("Environment"))
                 {
                     //if it's environment, just spawn particle effect in the place it hit something
                     print("hitting environment");
+
+                    GameObject hitEffect = Instantiate(m_environmentHitEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal)); 
+                    Destroy(hitEffect, 1f);
+
                 }
+
+                
             }
             else
             {

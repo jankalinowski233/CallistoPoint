@@ -8,6 +8,7 @@ public class DoorController : Interactable
 
     Animator m_Anim;
     BoxCollider m_DetectArea;
+    BoxCollider m_DoorCollider;
     OffMeshLink[] m_MeshLinks;
 
     [Header("Ceiling controller")]
@@ -28,6 +29,17 @@ public class DoorController : Interactable
 
     private void Start()
     {
+        //get box collider of a door
+        BoxCollider[] boxColliders = GetComponentsInChildren<BoxCollider>();
+
+        foreach(BoxCollider coll in boxColliders)
+        {
+            if(coll.transform.parent != null)
+            {
+                m_DoorCollider = coll;
+            }
+        }
+
         foreach(OffMeshLink link in m_MeshLinks)
         {
             link.enabled = false;
@@ -43,6 +55,7 @@ public class DoorController : Interactable
     void OpenDoor()
     {
         m_DetectArea.enabled = false;
+        m_DoorCollider.enabled = false;
         m_Anim.SetTrigger("Open");
 
         foreach (OffMeshLink link in m_MeshLinks)

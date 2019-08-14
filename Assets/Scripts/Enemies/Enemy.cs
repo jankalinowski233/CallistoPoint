@@ -41,7 +41,7 @@ public class Enemy : Character
                 }
                 else
                 {
-
+                    Chase();
                 }
 
             }

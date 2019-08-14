@@ -18,7 +18,7 @@ public class OffMeshLinkTraverser : MonoBehaviour
     {
         while(true)
         {
-            if(m_navAgent.isOnOffMeshLink)
+            if(m_navAgent.isOnOffMeshLink == true)
             {
                 yield return StartCoroutine(TraverseOffMeshLink());
                 m_navAgent.CompleteOffMeshLink();

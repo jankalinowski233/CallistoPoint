@@ -2635,6 +2635,18 @@ PrefabInstance:
       propertyPath: m_fShootingRange
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 2857413351365541670, guid: 8d43e76b346f2f8448846e9211629d15,
+        type: 3}
+      propertyPath: m_environmentHitEffect
+      value: 
+      objectReference: {fileID: 6609342485107815365, guid: 3186a35251f9bce43b65b8164e247916,
+        type: 3}
+    - target: {fileID: 2857413351365541670, guid: 8d43e76b346f2f8448846e9211629d15,
+        type: 3}
+      propertyPath: m_damageEffect
+      value: 
+      objectReference: {fileID: 6609342485107815365, guid: c1596377e174b3a4daba7e6a2c89c98b,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d43e76b346f2f8448846e9211629d15, type: 3}
 --- !u!4 &121765697213429282 stripped
@@ -2669,6 +2681,18 @@ PrefabInstance:
       propertyPath: m_fShootingRange
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 1685362193247693721, guid: 119551172e2002344983c075ab97ef79,
+        type: 3}
+      propertyPath: m_environmentHitEffect
+      value: 
+      objectReference: {fileID: 6609342485107815365, guid: 3186a35251f9bce43b65b8164e247916,
+        type: 3}
+    - target: {fileID: 1685362193247693721, guid: 119551172e2002344983c075ab97ef79,
+        type: 3}
+      propertyPath: m_damageEffect
+      value: 
+      objectReference: {fileID: 6609342485107815365, guid: c1596377e174b3a4daba7e6a2c89c98b,
+        type: 3}
     - target: {fileID: 4826450088584990, guid: 119551172e2002344983c075ab97ef79, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.264
@@ -2791,6 +2815,24 @@ PrefabInstance:
       propertyPath: m_fShootingRange
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 7477436595464211855, guid: 57bf5071e0a1c8947b8918a8f96184a6,
+        type: 3}
+      propertyPath: m_environmentHit
+      value: 
+      objectReference: {fileID: 6609342485107815365, guid: 3186a35251f9bce43b65b8164e247916,
+        type: 3}
+    - target: {fileID: 7477436595464211855, guid: 57bf5071e0a1c8947b8918a8f96184a6,
+        type: 3}
+      propertyPath: m_environmentHitEffect
+      value: 
+      objectReference: {fileID: 6609342485107815365, guid: 3186a35251f9bce43b65b8164e247916,
+        type: 3}
+    - target: {fileID: 7477436595464211855, guid: 57bf5071e0a1c8947b8918a8f96184a6,
+        type: 3}
+      propertyPath: m_damageEffect
+      value: 
+      objectReference: {fileID: 6609342485107815365, guid: c1596377e174b3a4daba7e6a2c89c98b,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57bf5071e0a1c8947b8918a8f96184a6, type: 3}
 --- !u!1 &1832097377593704273 stripped
