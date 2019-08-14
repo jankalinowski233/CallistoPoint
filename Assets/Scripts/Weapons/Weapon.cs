@@ -53,7 +53,7 @@ public class Weapon : MonoBehaviour
             RaycastHit weaponHit;
             
             //check if it hit anything
-            if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Shootable")))
+            if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Damageable")))
             {
                 m_lineRenderer.SetPosition(1, weaponHit.point);
 
@@ -87,17 +87,25 @@ public class Weapon : MonoBehaviour
             m_iAmmoLeftInMagazine--;
 
             //disable vfx
-            StartCoroutine(DisableVFX());
+            if (gameObject.activeInHierarchy == true)
+            {
+                StartCoroutine(DisableVFX());
+            }
         }
     }
 
-    IEnumerator DisableVFX()
+    void DisableEffects()
     {
-        yield return new WaitForSeconds(0.05f);
         m_gunLight.enabled = false;
         m_lineRenderer.enabled = false;
     }
-       
+
+    public IEnumerator DisableVFX()
+    {
+        yield return new WaitForSeconds(0.05f);
+        DisableEffects(); 
+    }
+
     public void RefillAmmo()
     {
         if (m_iAmmoLeft > 0)
@@ -137,5 +145,11 @@ public class Weapon : MonoBehaviour
     public void AddAmmo(int amount)
     {
         //add ammo upon pick up
+    }
+
+    private void OnEnable()
+    {
+        //make sure effects are disabled when switching weapon
+        DisableEffects();
     }
 }

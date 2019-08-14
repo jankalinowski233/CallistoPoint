@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Melee combat")]
     [Space(7f)]
+    public GameObject m_meleeWeapon;
     public Transform m_tMeleeAttackPoint;
     public float m_fMeleeRadius;
     public float m_fTimeBetweenMeleeAttacks;
@@ -122,8 +123,6 @@ public class PlayerController : MonoBehaviour
         //on LMB lift
         if(Input.GetMouseButtonUp(0))
         {
-            m_bIsAttacking = false;
-
             if (m_iCurrentWeapon == 0)
             {
                 m_Anim.SetBool("ShootingPistol", false);
@@ -133,6 +132,8 @@ public class PlayerController : MonoBehaviour
                 m_Anim.SetBool("ShootingSMG", false);
             }
             else m_Anim.SetBool("ShootingRifle", false);
+
+            m_bIsAttacking = false;
         }
 
         ChooseWeapon();
@@ -142,12 +143,9 @@ public class PlayerController : MonoBehaviour
     {
         if (m_fRemainingTimeBetweenMeleeAttacks <= 0)
         {
-            if (Input.GetKey(KeyCode.F) && m_bIsWalking == false)
+            if (Input.GetKey(KeyCode.F) && m_bIsWalking == false && m_bIsAttacking == false)
             {
-                if (m_bIsAttacking == false)
-                {
-                    m_bIsAttacking = true;
-                }
+                m_bIsAttacking = true;
 
                 MeleeAttack();
 
@@ -158,6 +156,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             //disable vfx
+            StartCoroutine(DisableMeleeVFX());
 
             //start counting time
             m_fRemainingTimeBetweenMeleeAttacks -= Time.deltaTime;
@@ -255,22 +254,35 @@ public class PlayerController : MonoBehaviour
         //play melee attack animation
         m_Anim.SetTrigger("MeleeAttack");
 
+        //deactivate current gun
+        //StartCoroutine(m_weapon.DisableVFX());
+        m_weapon.gameObject.SetActive(false);
+
+        //activate sword
+        m_meleeWeapon.SetActive(true);
+
         //play melee attack sound
         //play melee attack vfx
     }
 
     void DoMeleeDamage()
     {
-        print("dealing melee damage");
-        Collider[] enemies = Physics.OverlapSphere(m_tMeleeAttackPoint.position, m_fMeleeRadius, LayerMask.GetMask("Enemy"));
+        Collider[] enemies = Physics.OverlapSphere(m_tMeleeAttackPoint.position, m_fMeleeRadius, LayerMask.GetMask("Damageable"));
         foreach (Collider enemy in enemies)
         {
             //deal dmg to the enemy
-            print("dealing melee damage");
+            if(enemy.CompareTag("Enemy"))
+            {
+                print("enemy");
+                Enemy damagedEnemy = enemy.GetComponent<Enemy>();
+                damagedEnemy.TakeDamage(m_playerStats.m_fMeleeDamage);
+
+                //add particle effect of taking damage
+            }
         }
     }
 
-    void ResetAnimations()
+    void FinishMeleeAttack()
     {
         if(m_iCurrentWeapon == 0)
         {
@@ -281,7 +293,18 @@ public class PlayerController : MonoBehaviour
             m_Anim.SetTrigger("RifleIdle");
         }
 
+        //deactivate sword
+        m_meleeWeapon.SetActive(false);
+
+        //reactivate gun
+        m_weapon.gameObject.SetActive(true);
         m_bIsAttacking = false;
+    }
+
+    IEnumerator DisableMeleeVFX()
+    {
+        yield return new WaitForSeconds(0.05f);
+        //disable vfx here
     }
 
     bool HasReachedPath()
@@ -367,5 +390,12 @@ public class PlayerController : MonoBehaviour
         {
             m_Interactable = null;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(m_tMeleeAttackPoint.position, m_fMeleeRadius);
+        
     }
 }
