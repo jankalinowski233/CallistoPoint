@@ -278,6 +278,7 @@ public class PlayerController : MonoBehaviour
                 damagedEnemy.TakeDamage(m_playerStats.m_fMeleeDamage);
 
                 //add particle effect of taking damage
+                damagedEnemy.m_meleeHitEffect.Play();
             }
         }
     }

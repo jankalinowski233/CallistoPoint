@@ -14,6 +14,8 @@ public class Enemy : Character
 
     public float m_fDamage;
 
+    public ParticleSystem m_meleeHitEffect;
+
     private void Awake()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
