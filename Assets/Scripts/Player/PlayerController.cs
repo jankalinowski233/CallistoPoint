@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
 
     NavMeshAgent m_navAgent;
     PlayerStats m_playerStats;
-    Rigidbody m_rb;
     Animator m_Anim;
     Weapon m_weapon;
 
@@ -35,11 +34,15 @@ public class PlayerController : MonoBehaviour
     [Space(7f)]
     [HideInInspector] public Interactable m_Interactable = null;
 
+    [Header("Abilities")]
+    [Space(7f)]
+    OffensiveAbilityTrigger m_offensiveAbility;
+
     private void Awake()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
         m_Anim = GetComponent<Animator>();
-        m_rb = GetComponent<Rigidbody>();
+        m_offensiveAbility = GetComponent<OffensiveAbilityTrigger>();
 
         if (m_instance == null) m_instance = this;
         else Destroy(gameObject);
@@ -85,7 +88,8 @@ public class PlayerController : MonoBehaviour
     {
         MeleeAttack();
         Reload();
-        
+        CastAbilities();
+
         if (Input.GetKeyDown(KeyCode.E) && m_Interactable != null)
         {
             m_Interactable.Interact();
@@ -232,6 +236,14 @@ public class PlayerController : MonoBehaviour
         }   
     }
 
+    public void CastAbilities()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            m_offensiveAbility.m_Ability.Cast();
+        }
+    }
+
     void MeleeAttack()
     {
         if (m_fRemainingTimeBetweenMeleeAttacks <= 0)
@@ -276,7 +288,6 @@ public class PlayerController : MonoBehaviour
             //deal dmg to the enemy
             if(enemy.CompareTag("Enemy"))
             {
-                print("enemy");
                 Enemy damagedEnemy = enemy.GetComponent<Enemy>();
                 damagedEnemy.TakeDamage(m_playerStats.m_fMeleeDamage);
 
