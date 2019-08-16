@@ -72,16 +72,73 @@ public class PlayerController : MonoBehaviour
     void ProcessMouseInput()
     {
         //on LMB hold
+        RotateAndShoot();
+
+        //on single RMB click
+        Walk();
+
+        //on mouse scroll
+        ChooseWeapon();
+    }
+
+    void ProcessKeyboardInput()
+    {
+        MeleeAttack();
+        Reload();
+        
+        if (Input.GetKeyDown(KeyCode.E) && m_Interactable != null)
+        {
+            m_Interactable.Interact();
+        }
+    }
+
+    void Walk()
+    {
+        //on single RMB click
+        if (Input.GetMouseButtonDown(1) && m_bIsAttacking == false && m_bIsReloading == false && HasReachedPath() == true)
+        {
+            if (m_iCurrentWeapon == 0)
+            {
+                m_Anim.SetBool("PistolRun", true);
+            }
+            else m_Anim.SetBool("RifleRun", true);
+
+            //walk
+            m_bIsWalking = true;
+            Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayHit;
+
+            if (Physics.Raycast(ray, out rayHit, LayerMask.GetMask("Ground")))
+            {
+                MoveTo(rayHit.point);
+            }
+        }   
+    }
+
+    void RotateAndShoot()
+    {
         if (Input.GetMouseButton(0) && m_bIsWalking == false && m_bIsReloading == false)
         {
-            if(m_bIsAttacking == false)
+            if (m_bIsAttacking == false)
             {
                 m_bIsAttacking = true;
             }
 
-            Rotate();
+            //rotate
+            Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayHit;
 
-            if(m_weapon.m_iAmmoLeftInMagazine > 0)
+            if (Physics.Raycast(ray, out rayHit))
+            {
+                Vector3 characterToMouseVector = (rayHit.point - transform.position) * 10f;
+                characterToMouseVector.y = 0f;
+
+                Quaternion rotation = Quaternion.LookRotation(characterToMouseVector);
+                transform.rotation = rotation;
+            }
+
+            //shoot
+            if (m_weapon.m_iAmmoLeftInMagazine > 0)
             {
                 if (m_iCurrentWeapon == 0)
                 {
@@ -105,23 +162,11 @@ public class PlayerController : MonoBehaviour
                 }
                 else m_Anim.SetBool("ShootingRifle", false);
             }
-                
-        }
 
-        //on single RMB click
-        if (Input.GetMouseButtonDown(1) && m_bIsAttacking == false && m_bIsReloading == false && HasReachedPath() == true)
-        {
-            if (m_iCurrentWeapon == 0)
-            {
-                m_Anim.SetBool("PistolRun", true);
-            }
-            else m_Anim.SetBool("RifleRun", true);
-
-            Walk();
         }
 
         //on LMB lift
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && m_bIsAttacking == true)
         {
             if (m_iCurrentWeapon == 0)
             {
@@ -136,68 +181,6 @@ public class PlayerController : MonoBehaviour
             m_bIsAttacking = false;
         }
 
-        ChooseWeapon();
-    }
-
-    void ProcessKeyboardInput()
-    {
-        if (m_fRemainingTimeBetweenMeleeAttacks <= 0)
-        {
-            if (Input.GetKey(KeyCode.F) && m_bIsWalking == false && m_bIsAttacking == false)
-            {
-                m_bIsAttacking = true;
-
-                MeleeAttack();
-
-                //reset timer
-                m_fRemainingTimeBetweenMeleeAttacks = m_fTimeBetweenMeleeAttacks;
-            }   
-        }
-        else
-        {
-            //disable vfx
-            StartCoroutine(DisableMeleeVFX());
-
-            //start counting time
-            m_fRemainingTimeBetweenMeleeAttacks -= Time.deltaTime;
-        }
-
-        if (Input.GetKeyDown(KeyCode.R) && m_bIsWalking == false && m_bIsAttacking == false)
-        {
-            Reload();
-        }
-
-        if(Input.GetKeyDown(KeyCode.E) && m_Interactable != null)
-        {
-            m_Interactable.Interact();
-        }
-    }
-
-    void Walk()
-    {
-        m_bIsWalking = true;   
-        Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rayHit;
-
-        if (Physics.Raycast(ray, out rayHit, LayerMask.GetMask("Ground")))
-        {
-            MoveTo(rayHit.point);
-        }
-    }
-
-    void Rotate()
-    {
-        Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rayHit;
-
-        if(Physics.Raycast(ray, out rayHit))
-        {
-            Vector3 characterToMouseVector = (rayHit.point - transform.position) * 10f;
-            characterToMouseVector.y = 0f;
-
-            Quaternion rotation = Quaternion.LookRotation(characterToMouseVector);
-            m_rb.MoveRotation(rotation);
-        }
     }
 
     void Shoot()
@@ -251,18 +234,38 @@ public class PlayerController : MonoBehaviour
 
     void MeleeAttack()
     {
-        //play melee attack animation
-        m_Anim.SetTrigger("MeleeAttack");
+        if (m_fRemainingTimeBetweenMeleeAttacks <= 0)
+        {
+            if (Input.GetKey(KeyCode.F) && m_bIsWalking == false && m_bIsAttacking == false)
+            {
+                m_bIsAttacking = true;
 
-        //deactivate current gun
-        //StartCoroutine(m_weapon.DisableVFX());
-        m_weapon.gameObject.SetActive(false);
+                //play melee attack animation
+                m_Anim.SetTrigger("MeleeAttack");
 
-        //activate sword
-        m_meleeWeapon.SetActive(true);
+                //deactivate current gun
+                //StartCoroutine(m_weapon.DisableVFX());
+                m_weapon.gameObject.SetActive(false);
 
-        //play melee attack sound
-        //play melee attack vfx
+                //activate sword
+                m_meleeWeapon.SetActive(true);
+
+                //play melee attack sound
+                //play melee attack vfx
+
+                //reset timer
+                m_fRemainingTimeBetweenMeleeAttacks = m_fTimeBetweenMeleeAttacks;
+            }
+        }
+        else
+        {
+            //disable vfx
+            StartCoroutine(DisableMeleeVFX());
+
+            //start counting time
+            m_fRemainingTimeBetweenMeleeAttacks -= Time.deltaTime;
+        }
+        
     }
 
     void DoMeleeDamage()
@@ -339,35 +342,38 @@ public class PlayerController : MonoBehaviour
 
     public void Reload()
     {
-        if(m_weapon.m_iAmmoLeft == 0)
+        if (Input.GetKeyDown(KeyCode.R) && m_bIsWalking == false && m_bIsAttacking == false)
         {
-            //display warning of no ammo left
-
-            return;
-        }
-        else if(m_weapon.m_iAmmoLeftInMagazine == m_weapon.m_iMaxAmmoInMagazine)
-        {
-            //display warning of full magazine
-
-            return;
-        }
-
-        if(m_bIsReloading == false)
-        {
-            m_bIsReloading = true;
-
-            //play animation of reloading
-            if (m_iCurrentWeapon == 0)
+            if (m_weapon.m_iAmmoLeft == 0)
             {
-                //play pistol animation of reloading
-                m_Anim.SetTrigger("PistolReload");
+                //display warning of no ammo left
+
+                return;
             }
-            else
+            else if (m_weapon.m_iAmmoLeftInMagazine == m_weapon.m_iMaxAmmoInMagazine)
             {
-                //play rifle animation of reloading
-                m_Anim.SetTrigger("RifleReload");
+                //display warning of full magazine
+
+                return;
             }
-        }
+
+            if (m_bIsReloading == false)
+            {
+                m_bIsReloading = true;
+
+                //play animation of reloading
+                if (m_iCurrentWeapon == 0)
+                {
+                    //play pistol animation of reloading
+                    m_Anim.SetTrigger("PistolReload");
+                }
+                else
+                {
+                    //play rifle animation of reloading
+                    m_Anim.SetTrigger("RifleReload");
+                }
+            }
+        } 
         
     }
 
@@ -395,8 +401,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        //gizmos to visualize melee attack range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(m_tMeleeAttackPoint.position, m_fMeleeRadius);
-        
     }
 }
