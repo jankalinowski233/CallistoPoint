@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19a469e67f705564da88bbae2f8e5db2, type: 3}
   m_Name: Forcefield
   m_EditorClassIdentifier: 
-  m_fCooldown: 0
+  m_fCooldown: 2
   m_Icon: {fileID: 0}
   m_Sound: {fileID: 0}
   m_CastRay: 1

@@ -1456,6 +1456,7 @@ GameObject:
   - component: {fileID: 7957611557658626146}
   - component: {fileID: 2940094511355130091}
   - component: {fileID: 6908400842991266629}
+  - component: {fileID: 625105110}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1490,12 +1491,12 @@ Rigidbody:
   m_GameObject: {fileID: 4734274923725302903}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 10
+  m_Drag: 500
+  m_AngularDrag: 500
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!95 &1829270607534879518
 Animator:
@@ -1610,6 +1611,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799cec97300dcca4f8edbc95935bacc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &625105110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734274923725302903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7203285cc1b207149860bda849f9f990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Ability: {fileID: 11400000, guid: 9c3e3bd7fbcd2f64a9885c3be2f55916, type: 2}
+  m_Icon: {fileID: 0}
+  m_Sound: {fileID: 0}
+  m_fCooldown: 0
+  m_gameObject: {fileID: 0}
+  m_fForce: 0
+  m_fDestroyDelay: 0
 --- !u!1 &4821490519745498350
 GameObject:
   m_ObjectHideFlags: 0

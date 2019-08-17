@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool m_bIsReloading = false;
 
     [Header("Melee combat")]
-    [Space(7f)]
+    [Space(5f)]
     public GameObject m_meleeWeapon;
     public Transform m_tMeleeAttackPoint;
     public float m_fMeleeRadius;
@@ -31,12 +31,17 @@ public class PlayerController : MonoBehaviour
     float m_fRemainingTimeBetweenMeleeAttacks;
 
     [Header("Interaction")]
-    [Space(7f)]
+    [Space(5f)]
     [HideInInspector] public Interactable m_Interactable = null;
 
     [Header("Abilities")]
-    [Space(7f)]
+    [Space(5f)]
     AbilityTrigger[] m_Abilities;
+
+    [Header("Grenades")]
+    [Space(5f)]
+    public GameObject m_grenade;
+    int m_iGrenadesAmount;
 
     private void Awake()
     {
@@ -53,6 +58,9 @@ public class PlayerController : MonoBehaviour
         ml_WeaponList[0].SetActive(true);
         m_iCurrentWeapon = ml_WeaponList.IndexOf(ml_WeaponList[0]);
         m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
+
+        Grenade grenade = m_grenade.GetComponent<Grenade>();
+        m_iGrenadesAmount = grenade.m_grenadeType.m_iAmount;
 
         m_playerStats = PlayerStats.m_instance;
     }
@@ -89,6 +97,7 @@ public class PlayerController : MonoBehaviour
         MeleeAttack();
         Reload();
         CastAbilities();
+        ThrowGrenades();
 
         if (Input.GetKeyDown(KeyCode.E) && m_Interactable != null)
         {
@@ -196,6 +205,16 @@ public class PlayerController : MonoBehaviour
         else
         {
             Debug.LogError("Weapon is unassigned - can't shoot!");
+        }
+    }
+
+    void ThrowGrenades()
+    {
+        if(Input.GetKeyDown(KeyCode.G) && m_bIsWalking == false && m_bIsAttacking == false && m_bIsReloading == false && m_iGrenadesAmount > 0)
+        {
+            //throw grenade
+            Instantiate(m_grenade, transform.position, Quaternion.identity);
+            m_iGrenadesAmount--;
         }
     }
 
