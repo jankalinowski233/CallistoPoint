@@ -15,5 +15,8 @@ MonoBehaviour:
   m_fCooldown: 0
   m_Icon: {fileID: 0}
   m_Sound: {fileID: 0}
-  m_gameObject: {fileID: 0}
+  m_CastRay: 1
+  m_gameObject: {fileID: 4932316687698025541, guid: 569765f07c5939d49b8a6237b0a9e752,
+    type: 3}
   m_fForce: 0
+  m_fDestroyDelay: 2

@@ -36,13 +36,13 @@ public class PlayerController : MonoBehaviour
 
     [Header("Abilities")]
     [Space(7f)]
-    OffensiveAbilityTrigger m_offensiveAbility;
+    AbilityTrigger[] m_Abilities;
 
     private void Awake()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
         m_Anim = GetComponent<Animator>();
-        m_offensiveAbility = GetComponent<OffensiveAbilityTrigger>();
+        m_Abilities = GetComponents<AbilityTrigger>();
 
         if (m_instance == null) m_instance = this;
         else Destroy(gameObject);
@@ -240,7 +240,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            m_offensiveAbility.m_Ability.Cast();
+            m_Abilities[0].m_Ability.Cast();
         }
     }
 
