@@ -62,15 +62,37 @@ public class Grenade : MonoBehaviour
     public void Explode()
     {
         //play particle system, deal damage to enemies. apply effect to enemies etc.
-        print("KA-BOOM");
+        GameObject go = Instantiate(m_particleSystem, transform.position, Quaternion.identity);
+        Destroy(go, 5);
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, m_fExplosionRadius);
+
+        foreach(Collider col in colliders)
+        {
+            if(col.CompareTag("Enemy"))
+            {
+                Enemy enemy = col.GetComponent<Enemy>();
+                enemy.TakeDamage(m_fDamage);
+            }
+            
+        }
+
         Destroy(gameObject);
     }
 
     public void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.CompareTag("Environment") || collision.collider.CompareTag("Enemy"))
+        if (collision.collider.CompareTag("Environment") || collision.collider.CompareTag("Enemy"))
         {
             Explode();
         }
     }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, m_fExplosionRadius);
+    }
+
+
 }

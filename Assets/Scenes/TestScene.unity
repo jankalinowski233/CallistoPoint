@@ -871,7 +871,7 @@ GameObject:
   - component: {fileID: 1184851251}
   m_Layer: 11
   m_Name: Ground (1)
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -947,7 +947,7 @@ Transform:
   m_LocalScale: {x: 2.762, y: 1, z: 3.6262}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1380992877
 GameObject:
@@ -1230,7 +1230,7 @@ GameObject:
   - component: {fileID: 1721694039}
   m_Layer: 11
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -1654,7 +1654,7 @@ PrefabInstance:
     - target: {fileID: 1239711104012620867, guid: e8041689848b9f64ab41e7c31cde3dcc,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1239711104012620867, guid: e8041689848b9f64ab41e7c31cde3dcc,
         type: 3}

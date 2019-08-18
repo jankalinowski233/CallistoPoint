@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Environment
   - Turret
+  - Ground
   layers:
   - Default
   - TransparentFX
