@@ -32,12 +32,14 @@ public class Grenade : MonoBehaviour
 
     public Vector3 SetTargetPos()
     {
-        Ray ray = PlayerController.m_instance.m_mainCamera.ScreenPointToRay(Input.mousePosition);
+        PlayerController player = PlayerController.m_instance;
+        Ray ray = player.m_mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit rayHit;
 
         if(Physics.Raycast(ray, out rayHit))
         {
             targetPos = new Vector3(rayHit.point.x, 0f, rayHit.point.z);
+            player.transform.LookAt(rayHit.point);
             return targetPos;
         }
 
