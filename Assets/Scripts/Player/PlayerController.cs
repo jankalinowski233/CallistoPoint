@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     [Header("Grenades")]
     [Space(5f)]
     public GameObject m_grenade;
+    public Transform m_grenadeSpawnPoint;
     int m_iGrenadesAmount;
 
     private void Awake()
@@ -213,9 +214,14 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.G) && m_bIsWalking == false && m_bIsAttacking == false && m_bIsReloading == false && m_iGrenadesAmount > 0)
         {
             //throw grenade
-            Instantiate(m_grenade, transform.position, Quaternion.identity);
+            Instantiate(m_grenade, m_grenadeSpawnPoint.position, Quaternion.identity);
             m_iGrenadesAmount--;
         }
+    }
+
+    public void SpawnGrenade()
+    {
+        Instantiate(m_grenade, m_grenadeSpawnPoint.position, Quaternion.identity);
     }
 
     void ChooseWeapon()

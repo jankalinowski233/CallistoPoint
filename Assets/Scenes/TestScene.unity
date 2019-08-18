@@ -357,6 +357,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4057935423270147363, guid: fdd3fd7aa13565b4f857d16672d41b5f,
         type: 3}
+    - target: {fileID: 7957611557658626146, guid: b0d0c9dd1992d19499e5380b076daa51,
+        type: 3}
+      propertyPath: m_grenadeSpawnPoint
+      value: 
+      objectReference: {fileID: 1393359667}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0d0c9dd1992d19499e5380b076daa51, type: 3}
 --- !u!1 &375366220
@@ -1101,6 +1106,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380992877}
   m_CullTransparentMesh: 0
+--- !u!4 &1393359667 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1339350836421374039, guid: b0d0c9dd1992d19499e5380b076daa51,
+    type: 3}
+  m_PrefabInstance: {fileID: 320465472}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1566257340
 GameObject:
   m_ObjectHideFlags: 0
