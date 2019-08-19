@@ -23,6 +23,8 @@ public class Grenade : MonoBehaviour
         m_grenadeType.Initialize(this.gameObject);
 
         StartCoroutine(MoveToTarget(SetTargetPos(), m_flightHeight, m_flightDuration));
+
+        Physics.IgnoreCollision(GetComponent<Collider>(), PlayerController.m_instance.GetComponent<Collider>());
     }
 
     public void Create()

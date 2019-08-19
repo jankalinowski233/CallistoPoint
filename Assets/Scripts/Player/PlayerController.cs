@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour
 
         if (m_instance == null) m_instance = this;
         else Destroy(gameObject);
+
+        
     }
 
     void Start()
@@ -62,6 +64,8 @@ public class PlayerController : MonoBehaviour
 
         Grenade grenade = m_grenade.GetComponent<Grenade>();
         m_iGrenadesAmount = grenade.m_grenadeType.m_iAmount;
+
+        UIManager.m_instance.SetGrenadeText(m_iGrenadesAmount);
 
         m_playerStats = PlayerStats.m_instance;
     }
@@ -213,15 +217,16 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.G) && m_bIsWalking == false && m_bIsAttacking == false && m_bIsReloading == false && m_iGrenadesAmount > 0)
         {
-            //throw grenade
-            Instantiate(m_grenade, m_grenadeSpawnPoint.position, Quaternion.identity);
-            m_iGrenadesAmount--;
+            if (m_iGrenadesAmount > 0)
+            {
+                //throw grenade
+                Instantiate(m_grenade, m_grenadeSpawnPoint.position, Quaternion.identity);
+                m_iGrenadesAmount--;
+                UIManager.m_instance.SetGrenadeText(m_iGrenadesAmount);
+            }
+            else
+                UIManager.m_instance.SetMessageText("No grenades left!");
         }
-    }
-
-    public void SpawnGrenade()
-    {
-        Instantiate(m_grenade, m_grenadeSpawnPoint.position, Quaternion.identity);
     }
 
     void ChooseWeapon()

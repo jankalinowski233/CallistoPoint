@@ -55,7 +55,7 @@ public class Weapon : MonoBehaviour
             //cast ray
             Ray ray = new Ray(transform.position, new Vector3(transform.forward.x, 0f, transform.forward.z));
             RaycastHit weaponHit;
-            
+
             //check if it hit anything
             if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Damageable")))
             {
@@ -75,12 +75,12 @@ public class Weapon : MonoBehaviour
                     //if it's environment, just spawn particle effect in the place it hit something
                     print("hitting environment");
 
-                    GameObject hitEffect = Instantiate(m_environmentHitEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal)); 
+                    GameObject hitEffect = Instantiate(m_environmentHitEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal));
                     Destroy(hitEffect, 1f);
 
                 }
 
-                
+
             }
             else
             {
@@ -90,12 +90,17 @@ public class Weapon : MonoBehaviour
 
             m_iAmmoLeftInMagazine--;
 
+            UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
+
             //disable vfx
             if (gameObject.activeInHierarchy == true)
             {
                 StartCoroutine(DisableVFX());
             }
         }
+        else
+            UIManager.m_instance.SetMessageText("No ammo left!");
+
     }
 
     void DisableEffects()
@@ -142,7 +147,12 @@ public class Weapon : MonoBehaviour
                     m_iAmmoLeft = 0;
                 }
             }
+
+            UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
         }
+        else
+            UIManager.m_instance.SetMessageText("You have no more ammo!");
+
 
     }
 
@@ -155,5 +165,6 @@ public class Weapon : MonoBehaviour
     {
         //make sure effects are disabled when switching weapon
         DisableEffects();
+        UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
     }
 }

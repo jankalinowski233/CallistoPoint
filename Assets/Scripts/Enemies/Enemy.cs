@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Enemy : Character
 {
@@ -16,16 +17,26 @@ public class Enemy : Character
 
     public ParticleSystem m_meleeHitEffect;
 
+    Canvas m_enemyCanvas;
+    public Slider m_healthPoints;
+
     private void Awake()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
         m_Anim = GetComponent<Animator>();
+
+        m_enemyCanvas = GetComponentInChildren<Canvas>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         m_playerStats = PlayerStats.m_instance;
+
+        m_healthPoints.minValue = 0;
+        m_healthPoints.maxValue = m_fMaxHealth;
+
+        m_healthPoints.value = m_fRemainingHealth;
     }
 
     // Update is called once per frame
@@ -52,7 +63,9 @@ public class Enemy : Character
                 //patrol
             }
         }
-        
+
+        m_enemyCanvas.transform.LookAt(transform.position - PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.back, 
+                                        PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.up);                                     
     }
 
     public virtual void Attack()
@@ -87,7 +100,11 @@ public class Enemy : Character
     public override void TakeDamage(float dmg)
     {
         base.TakeDamage(dmg);
-        SetTarget(m_playerStats.gameObject);
+
+        if(m_gTarget == null)
+            SetTarget(m_playerStats.gameObject);
+
+        m_healthPoints.value = m_fRemainingHealth;
     }
 
     public override void Kill()

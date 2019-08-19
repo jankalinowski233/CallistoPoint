@@ -3,9 +3,7 @@
 public class Interactable : MonoBehaviour, IInteractable
 {
     bool m_bCanBeUsed;
-
-    public GameObject m_text;
-
+    
     private void Awake()
     {
         m_bCanBeUsed = false;
@@ -21,7 +19,7 @@ public class Interactable : MonoBehaviour, IInteractable
         if (other.CompareTag("Player"))
         {
             m_bCanBeUsed = true;
-            m_text.SetActive(true);
+            UIManager.m_instance.SetMessageText("Press [E] to interact");
         }
     }
 
@@ -32,7 +30,7 @@ public class Interactable : MonoBehaviour, IInteractable
             if (m_bCanBeUsed == true)
             {
                 m_bCanBeUsed = false;
-                m_text.SetActive(false);
+                UIManager.m_instance.SetMessageText("");
             }
         }
     }

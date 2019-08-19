@@ -23,7 +23,17 @@ public class PlayerStats : Character
         {
             m_instance = this;
         }
-    } 
+
+        UIManager.m_instance.m_healthPointSlider.minValue = 0;
+        UIManager.m_instance.m_healthPointSlider.maxValue = m_fMaxHealth;
+
+        
+    }
+
+    private void Start()
+    {
+        UIManager.m_instance.SetHealthValue(m_fRemainingHealth);
+    }
 
     public void GetXP(float fExperiencePoints)
     {
@@ -48,6 +58,8 @@ public class PlayerStats : Character
     public override void TakeDamage(float dmg)
     {
         base.TakeDamage(dmg);
+
+        UIManager.m_instance.SetHealthValue(m_fRemainingHealth);
     }
 
     public override void Kill()

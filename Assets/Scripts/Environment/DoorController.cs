@@ -67,7 +67,7 @@ public class DoorController : Interactable
         m_bIsOpened = true;
 
         PlayerController.m_instance.m_Interactable = null;
-        m_text.SetActive(false);
+        UIManager.m_instance.SetMessageText("");
     }
 
     IEnumerator DisableCeiling()
