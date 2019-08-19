@@ -65,7 +65,11 @@ public class Grenade : MonoBehaviour
     {
         //play particle system, deal damage to enemies. apply effect to enemies etc.
         GameObject go = Instantiate(m_particleSystem, transform.position, Quaternion.identity);
-        Destroy(go, 5);
+
+        AudioSource l_audioSource = go.AddComponent<AudioSource>();
+        l_audioSource.PlayOneShot(m_explosionSound);
+
+        Destroy(go, 2f);
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, m_fExplosionRadius);
 
@@ -92,8 +96,8 @@ public class Grenade : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, m_fExplosionRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, m_grenadeType.m_fExplosionRadius);
     }
 
 

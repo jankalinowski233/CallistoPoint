@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8083435478612037401}
-  - component: {fileID: 8083435478612037400}
   - component: {fileID: 8083435478612037403}
+  - component: {fileID: 8083435478612037400}
+  - component: {fileID: 2587209563043408243}
   m_Layer: 0
   m_Name: Event trigger
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8083435478612037403
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083435478612037402}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.495514, y: 1, z: 9.42131}
+  m_Center: {x: 2.247757, y: 0, z: -0.5287361}
 --- !u!114 &8083435478612037400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,16 +63,22 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!65 &8083435478612037403
-BoxCollider:
+--- !u!114 &2587209563043408243
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8083435478612037402}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 5.495514, y: 1, z: 9.42131}
-  m_Center: {x: 2.247757, y: 0, z: -0.5287361}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9aabf567627a6443a49b6e16c31f24c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_dialogueEvent: {fileID: 0}
+  m_dialogueEventResponse:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  m_shouldRemoveListeners: 0

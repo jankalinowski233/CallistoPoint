@@ -23,12 +23,15 @@ public class Weapon : MonoBehaviour
     public Light m_gunLight;
     LineRenderer m_lineRenderer;
 
+    AudioSource m_audio;
+
     private void Awake()
     {
         m_iAmmoLeftInMagazine = m_iMaxAmmoInMagazine;
         m_iAmmoLeft = m_iMaxAmmo;
 
         m_lineRenderer = GetComponent<LineRenderer>();
+        m_audio = GetComponent<AudioSource>();
     }
 
     public void Shoot()
@@ -47,6 +50,7 @@ public class Weapon : MonoBehaviour
             m_lineRenderer.SetPosition(0, transform.position);
 
             //play sound
+            m_audio.Play();
 
             //cast ray
             Ray ray = new Ray(transform.position, new Vector3(transform.forward.x, 0f, transform.forward.z));

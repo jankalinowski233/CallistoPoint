@@ -1609,8 +1609,9 @@ MonoBehaviour:
   m_fMeleeRadius: 0.5
   m_fTimeBetweenMeleeAttacks: 0.5
   m_Interactable: {fileID: 0}
-  m_grenade: {fileID: 0}
-  m_grenadeSpawnPoint: {fileID: 0}
+  m_grenade: {fileID: 4057935423270147363, guid: fdd3fd7aa13565b4f857d16672d41b5f,
+    type: 3}
+  m_grenadeSpawnPoint: {fileID: 1339350836421374039}
 --- !u!114 &2940094511355130091
 MonoBehaviour:
   m_ObjectHideFlags: 0
