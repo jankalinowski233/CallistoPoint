@@ -110,6 +110,7 @@ public class Enemy : Character
     public override void Kill()
     {
         base.Kill();
+        LevelController.m_instance.RemoveFromList(this.gameObject);
         Destroy(gameObject);
     }
 

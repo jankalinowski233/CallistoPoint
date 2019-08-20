@@ -22,16 +22,14 @@ public class PlayerStats : Character
         if(m_instance == null)
         {
             m_instance = this;
-        }
-
-        UIManager.m_instance.m_healthPointSlider.minValue = 0;
-        UIManager.m_instance.m_healthPointSlider.maxValue = m_fMaxHealth;
-
-        
+        }       
     }
 
     private void Start()
     {
+        UIManager.m_instance.m_healthPointSlider.minValue = 0;
+        UIManager.m_instance.m_healthPointSlider.maxValue = m_fMaxHealth;
+
         UIManager.m_instance.SetHealthValue(m_fRemainingHealth);
     }
 

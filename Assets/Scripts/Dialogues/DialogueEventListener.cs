@@ -12,14 +12,12 @@ public class DialogueEventListener : MonoBehaviour
     {
         if(m_dialogueEvent != null)
             m_dialogueEvent.RegisterListener(this);
-        else Debug.LogError("Dialogue event is unassigned!");
     }
 
     private void OnDisable()
     {
         if (m_dialogueEvent != null)
             m_dialogueEvent.UnregisterListener(this);
-        else Debug.LogError("Dialogue event is unassigned!");
     }
 
     public void OnEventRaised()

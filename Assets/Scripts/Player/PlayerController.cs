@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -137,50 +138,53 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && m_bIsWalking == false && m_bIsReloading == false)
         {
-            if (m_bIsAttacking == false)
+            if (IsMouseOverUI() == false)
             {
-                m_bIsAttacking = true;
-            }
-
-            //rotate
-            Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit rayHit;
-
-            if (Physics.Raycast(ray, out rayHit))
-            {
-                Vector3 characterToMouseVector = (rayHit.point - transform.position) * 10f;
-                characterToMouseVector.y = 0f;
-
-                Quaternion rotation = Quaternion.LookRotation(characterToMouseVector);
-                transform.rotation = rotation;
-            }
-
-            //shoot
-            if (m_weapon.m_iAmmoLeftInMagazine > 0)
-            {
-                if (m_iCurrentWeapon == 0)
+                if (m_bIsAttacking == false)
                 {
-                    m_Anim.SetBool("ShootingPistol", true);
+                    m_bIsAttacking = true;
                 }
-                else if (m_iCurrentWeapon == 1)
-                {
-                    m_Anim.SetBool("ShootingSMG", true);
-                }
-                else m_Anim.SetBool("ShootingRifle", true);
-            }
-            else
-            {
-                if (m_iCurrentWeapon == 0)
-                {
-                    m_Anim.SetBool("ShootingPistol", false);
-                }
-                else if (m_iCurrentWeapon == 1)
-                {
-                    m_Anim.SetBool("ShootingSMG", false);
-                }
-                else m_Anim.SetBool("ShootingRifle", false);
-            }
 
+                //rotate
+                Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit rayHit;
+
+                if (Physics.Raycast(ray, out rayHit))
+                {
+                    Vector3 characterToMouseVector = (rayHit.point - transform.position) * 10f;
+                    characterToMouseVector.y = 0f;
+
+                    Quaternion rotation = Quaternion.LookRotation(characterToMouseVector);
+                    transform.rotation = rotation;
+                }
+
+                //shoot
+                if (m_weapon.m_iAmmoLeftInMagazine > 0)
+                {
+                    if (m_iCurrentWeapon == 0)
+                    {
+                        m_Anim.SetBool("ShootingPistol", true);
+                    }
+                    else if (m_iCurrentWeapon == 1)
+                    {
+                        m_Anim.SetBool("ShootingSMG", true);
+                    }
+                    else m_Anim.SetBool("ShootingRifle", true);
+                }
+                else
+                {
+                    if (m_iCurrentWeapon == 0)
+                    {
+                        m_Anim.SetBool("ShootingPistol", false);
+                    }
+                    else if (m_iCurrentWeapon == 1)
+                    {
+                        m_Anim.SetBool("ShootingSMG", false);
+                    }
+                    else m_Anim.SetBool("ShootingRifle", false);
+                }
+
+            }
         }
 
         //on LMB lift
@@ -199,6 +203,15 @@ public class PlayerController : MonoBehaviour
             m_bIsAttacking = false;
         }
 
+    }
+
+    bool IsMouseOverUI()
+    {
+        PointerEventData currentEventData = new PointerEventData(EventSystem.current);
+        currentEventData.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(currentEventData, raycastResults);
+        return raycastResults.Count > 0;
     }
 
     void Shoot()
