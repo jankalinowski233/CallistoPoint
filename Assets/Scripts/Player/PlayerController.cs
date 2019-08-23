@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     public Transform m_grenadeSpawnPoint;
     [HideInInspector] public static Vector3 m_grenadeTargetPos;
     int m_iGrenadesAmount;
+    public float rotationSpeed = 5f;
 
     private void Awake()
     {
@@ -241,15 +242,18 @@ public class PlayerController : MonoBehaviour
                 {
                     m_grenadeTargetPos = rayHit.point;
                     m_grenadeTargetPos.y = 0f;
-                    transform.LookAt(rayHit.point);
-                    //StartCoroutine(RotateTowards(rayHit.point, 0.125f));
-                }
+                    StartCoroutine(RotateTowards(rayHit.point, rotationSpeed));
 
-                //throw grenade
-                m_Anim.SetTrigger("ThrowGrenade");
-                m_iGrenadesAmount--;
-                m_bIsAttacking = true;
-                UIManager.m_instance.SetGrenadeText(m_iGrenadesAmount);
+                    //throw grenade
+                    m_Anim.SetTrigger("ThrowGrenade");
+
+                    m_iGrenadesAmount--;
+                    m_bIsAttacking = true;
+
+                    m_weapon.gameObject.SetActive(false);
+
+                    UIManager.m_instance.SetGrenadeText(m_iGrenadesAmount);
+                }       
             }
             else
                 UIManager.m_instance.SetMessageText("No grenades left!");
@@ -261,8 +265,19 @@ public class PlayerController : MonoBehaviour
         Instantiate(m_grenade, m_grenadeSpawnPoint.position, Quaternion.identity);
     }
 
-    public IEnumerator RotateTowards(Vector3 target, float smoothness)
+    public IEnumerator RotateTowards(Vector3 target, float speed)
     {
+        Quaternion desiredRotation = Quaternion.LookRotation(target - transform.position);
+        float normalizedTime = 0.0f;
+
+        while (normalizedTime < 1.0f)
+        {
+            //rotate towards target
+            transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, normalizedTime);
+            normalizedTime += Time.deltaTime * speed;
+            yield return null;
+        }
+
         yield break;
     }
 
@@ -367,6 +382,9 @@ public class PlayerController : MonoBehaviour
     {
         m_Anim.SetInteger("IdleValue", m_iCurrentWeapon);
         m_bIsAttacking = false;
+
+        //reactivate gun
+        m_weapon.gameObject.SetActive(true);
     }
 
     void FinishMeleeAttack()
@@ -376,8 +394,7 @@ public class PlayerController : MonoBehaviour
         //deactivate sword
         m_meleeWeapon.SetActive(false);
 
-        //reactivate gun
-        m_weapon.gameObject.SetActive(true);
+
     }
 
     IEnumerator DisableMeleeVFX()
