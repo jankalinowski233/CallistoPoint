@@ -20,9 +20,10 @@ public class Grenade : MonoBehaviour
 
     private void OnEnable()
     {
+        PlayerController player = PlayerController.m_instance;
         m_grenadeType.Initialize(this.gameObject);
 
-        StartCoroutine(MoveToTarget(SetTargetPos(), m_flightHeight, m_flightDuration));
+        StartCoroutine(MoveToTarget(PlayerController.m_grenadeTargetPos, m_flightHeight, m_flightDuration));
 
         Physics.IgnoreCollision(GetComponent<Collider>(), PlayerController.m_instance.GetComponent<Collider>());
     }
@@ -30,22 +31,6 @@ public class Grenade : MonoBehaviour
     public void Create()
     {
         //grabbing references etc. goes here
-    }
-
-    public Vector3 SetTargetPos()
-    {
-        PlayerController player = PlayerController.m_instance;
-        Ray ray = player.m_mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rayHit;
-
-        if(Physics.Raycast(ray, out rayHit))
-        {
-            targetPos = new Vector3(rayHit.point.x, 0f, rayHit.point.z);
-            player.transform.LookAt(rayHit.point);
-            return targetPos;
-        }
-
-        return new Vector3(0, 0, 0);
     }
 
     IEnumerator MoveToTarget(Vector3 targetPos, float flightHeight, float flightDuration)

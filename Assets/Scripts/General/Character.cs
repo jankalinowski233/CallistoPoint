@@ -8,6 +8,7 @@ public class Character : MonoBehaviour, IDamageable
     [Space(7f)]
     protected float m_fRemainingHealth;
     public float m_fMaxHealth;
+    [Range(0, 1)] public float m_fArmor = 1;
 
     void OnEnable()
     {
@@ -17,7 +18,7 @@ public class Character : MonoBehaviour, IDamageable
     public virtual void TakeDamage(float dmg)
     {   
         //get dmg
-        m_fRemainingHealth -= dmg;
+        m_fRemainingHealth -= dmg * m_fArmor;
 
         //do some stuff to make taking dmg looking better
 

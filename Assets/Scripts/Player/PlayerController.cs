@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     [Space(5f)]
     public GameObject m_grenade;
     public Transform m_grenadeSpawnPoint;
+    [HideInInspector] public static Vector3 m_grenadeTargetPos;
     int m_iGrenadesAmount;
 
     private void Awake()
@@ -53,8 +54,6 @@ public class PlayerController : MonoBehaviour
 
         if (m_instance == null) m_instance = this;
         else Destroy(gameObject);
-
-        
     }
 
     void Start()
@@ -113,8 +112,8 @@ public class PlayerController : MonoBehaviour
 
     void Walk()
     {
-        //on single RMB click
-        if (Input.GetMouseButtonDown(1) && m_bIsAttacking == false && m_bIsReloading == false && HasReachedPath() == true)
+        //on RMB click/hold
+        if (Input.GetMouseButton(1) && m_bIsAttacking == false && m_bIsReloading == false)
         {
             if (m_iCurrentWeapon == 0)
             {
@@ -140,9 +139,12 @@ public class PlayerController : MonoBehaviour
         {
             if (IsMouseOverUI() == false)
             {
-                if (m_bIsAttacking == false)
+                if(m_weapon.m_iAmmoLeftInMagazine > 0)
                 {
-                    m_bIsAttacking = true;
+                    if (m_bIsAttacking == false)
+                    {
+                        m_bIsAttacking = true;
+                    }
                 }
 
                 //rotate
@@ -151,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
                 if (Physics.Raycast(ray, out rayHit))
                 {
-                    Vector3 characterToMouseVector = (rayHit.point - transform.position) * 10f;
+                    Vector3 characterToMouseVector = (rayHit.point - transform.position).normalized;
                     characterToMouseVector.y = 0f;
 
                     Quaternion rotation = Quaternion.LookRotation(characterToMouseVector);
@@ -228,18 +230,40 @@ public class PlayerController : MonoBehaviour
 
     void ThrowGrenades()
     {
-        if(Input.GetKeyDown(KeyCode.G) && m_bIsWalking == false && m_bIsAttacking == false && m_bIsReloading == false && m_iGrenadesAmount > 0)
+        if(Input.GetKeyDown(KeyCode.G) && m_bIsWalking == false && m_bIsAttacking == false && m_bIsReloading == false)
         {
             if (m_iGrenadesAmount > 0)
             {
+                Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit rayHit;
+
+                if (Physics.Raycast(ray, out rayHit))
+                {
+                    m_grenadeTargetPos = rayHit.point;
+                    m_grenadeTargetPos.y = 0f;
+                    transform.LookAt(rayHit.point);
+                    //StartCoroutine(RotateTowards(rayHit.point, 0.125f));
+                }
+
                 //throw grenade
-                Instantiate(m_grenade, m_grenadeSpawnPoint.position, Quaternion.identity);
+                m_Anim.SetTrigger("ThrowGrenade");
                 m_iGrenadesAmount--;
+                m_bIsAttacking = true;
                 UIManager.m_instance.SetGrenadeText(m_iGrenadesAmount);
             }
             else
                 UIManager.m_instance.SetMessageText("No grenades left!");
         }
+    }
+
+    public void SpawnGrenade()
+    {
+        Instantiate(m_grenade, m_grenadeSpawnPoint.position, Quaternion.identity);
+    }
+
+    public IEnumerator RotateTowards(Vector3 target, float smoothness)
+    {
+        yield break;
     }
 
     void ChooseWeapon()
@@ -299,7 +323,6 @@ public class PlayerController : MonoBehaviour
                 m_Anim.SetTrigger("MeleeAttack");
 
                 //deactivate current gun
-                //StartCoroutine(m_weapon.DisableVFX());
                 m_weapon.gameObject.SetActive(false);
 
                 //activate sword
@@ -340,23 +363,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ReturnToIdle()
+    {
+        m_Anim.SetInteger("IdleValue", m_iCurrentWeapon);
+        m_bIsAttacking = false;
+    }
+
     void FinishMeleeAttack()
     {
-        if(m_iCurrentWeapon == 0)
-        {
-            m_Anim.SetTrigger("PistolIdle");
-        }
-        else
-        {
-            m_Anim.SetTrigger("RifleIdle");
-        }
+        ReturnToIdle();
 
         //deactivate sword
         m_meleeWeapon.SetActive(false);
 
         //reactivate gun
         m_weapon.gameObject.SetActive(true);
-        m_bIsAttacking = false;
     }
 
     IEnumerator DisableMeleeVFX()

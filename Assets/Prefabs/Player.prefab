@@ -1486,7 +1486,6 @@ GameObject:
   - component: {fileID: 4717719359803637552}
   - component: {fileID: 7957611557658626146}
   - component: {fileID: 2940094511355130091}
-  - component: {fileID: 6908400842991266629}
   - component: {fileID: 625105110}
   m_Layer: 0
   m_Name: Player
@@ -1504,7 +1503,7 @@ Transform:
   m_GameObject: {fileID: 4734274923725302903}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.8710861, y: 0.56, z: -7.4596734}
-  m_LocalScale: {x: 0.9664335, y: 0.9664335, z: 0.9664335}
+  m_LocalScale: {x: 1.3723356, y: 1.3723356, z: 1.3723356}
   m_Children:
   - {fileID: 6156007696400156678}
   - {fileID: 6866436741377666208}
@@ -1573,9 +1572,9 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.11
   m_Speed: 7
-  m_Acceleration: 12
+  m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 360
+  m_AngularSpeed: 5000
   m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
@@ -1607,7 +1606,7 @@ MonoBehaviour:
   m_meleeWeapon: {fileID: 4919268484188348089}
   m_tMeleeAttackPoint: {fileID: 5297832288875316154}
   m_fMeleeRadius: 0.5
-  m_fTimeBetweenMeleeAttacks: 0.5
+  m_fTimeBetweenMeleeAttacks: 1
   m_Interactable: {fileID: 0}
   m_grenade: {fileID: 4057935423270147363, guid: fdd3fd7aa13565b4f857d16672d41b5f,
     type: 3}
@@ -1626,6 +1625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bIsAlive: 1
   m_fMaxHealth: 100
+  m_fArmor: 1
   m_fExperience: 0
   m_fNextLevelExperienceThreshold: 0
   m_fNextLevelExperienceThresholdChange: 0
@@ -1633,18 +1633,6 @@ MonoBehaviour:
   m_uiSkillPoint: 0
   m_uiLevel: 0
   m_fMeleeDamage: 10
---- !u!114 &6908400842991266629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4734274923725302903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 799cec97300dcca4f8edbc95935bacc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &625105110
 MonoBehaviour:
   m_ObjectHideFlags: 0

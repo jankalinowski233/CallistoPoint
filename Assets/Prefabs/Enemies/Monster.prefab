@@ -227,7 +227,6 @@ GameObject:
   - component: {fileID: 3826972863804300981}
   - component: {fileID: 5484978244024626888}
   - component: {fileID: 6733119339236642325}
-  - component: {fileID: 3423028472067588593}
   - component: {fileID: 3096109283673552603}
   m_Layer: 12
   m_Name: Monster
@@ -329,18 +328,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &3423028472067588593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000010402951368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 799cec97300dcca4f8edbc95935bacc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3096109283673552603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bIsAlive: 1
   m_fMaxHealth: 50
+  m_fArmor: 1
   m_Anim: {fileID: 0}
   m_fDamage: 3
   m_meleeHitEffect: {fileID: 8739150527912378559}
@@ -3582,15 +3570,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
---- !u!198 &8739150527912378559 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871,
-    type: 3}
-  m_PrefabInstance: {fileID: 8739150527927782587}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8739150527927657803 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 403952, guid: 6586ff0f14125534cae2f5d8f04b7871,
+    type: 3}
+  m_PrefabInstance: {fileID: 8739150527927782587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8739150527912378559 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19860484, guid: 6586ff0f14125534cae2f5d8f04b7871,
     type: 3}
   m_PrefabInstance: {fileID: 8739150527927782587}
   m_PrefabAsset: {fileID: 0}
