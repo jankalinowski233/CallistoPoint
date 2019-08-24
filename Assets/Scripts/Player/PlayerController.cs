@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public GameObject m_grenade;
     public Transform m_grenadeSpawnPoint;
     [HideInInspector] public static Vector3 m_grenadeTargetPos;
-    int m_iGrenadesAmount;
+    [HideInInspector] public int m_iGrenadesAmount;
     public float rotationSpeed = 5f;
 
     private void Awake()

@@ -159,6 +159,20 @@ public class Weapon : MonoBehaviour
     public void AddAmmo(int amount)
     {
         //add ammo upon pick up
+        if(m_iAmmoLeft < m_iMaxAmmo)
+        {
+            if(m_iAmmoLeft + amount <= m_iMaxAmmo)
+            {
+                m_iAmmoLeft += amount;
+            }
+            else if(m_iAmmoLeft + amount > m_iMaxAmmo)
+            {
+                int difference = m_iMaxAmmo - m_iAmmoLeft;
+                m_iAmmoLeft += difference;
+            }
+
+            UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
+        }
     }
 
     private void OnEnable()

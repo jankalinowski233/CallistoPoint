@@ -8,3 +8,8 @@ public interface IInteractable
 {
     void Interact();
 }
+
+public interface ICollectible
+{
+    void Collect();
+}
