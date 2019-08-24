@@ -8,8 +8,10 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController m_instance;
 
+    [Header("Camera")]
     public Camera m_mainCamera;
 
+    //other components
     NavMeshAgent m_navAgent;
     PlayerStats m_playerStats;
     Animator m_Anim;
