@@ -42,7 +42,7 @@ public class Enemy : Character
     // Update is called once per frame
     void Update()
     {
-        if(m_bIsAlive == true)
+        if (m_bIsAlive == true && m_bIsStunned == false)
         {
             if (m_gTarget != null)
             {
@@ -65,7 +65,9 @@ public class Enemy : Character
         }
 
         m_enemyCanvas.transform.LookAt(transform.position - PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.back, 
-                                        PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.up);                                     
+                                        PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.up);
+
+        EffectTimer();
     }
 
     public virtual void Attack()
@@ -97,11 +99,18 @@ public class Enemy : Character
 
     }
 
+    public override void Stun(float stunDuration)
+    {
+        base.Stun(stunDuration);
+
+        //play particle system, or set active some vortex, play animation etc.
+    }
+
     public override void TakeDamage(float dmg)
     {
         base.TakeDamage(dmg);
 
-        if(m_gTarget == null)
+        if(m_gTarget == null && m_bIsStunned == false)
             SetTarget(m_playerStats.gameObject);
 
         m_healthPoints.value = m_fRemainingHealth;

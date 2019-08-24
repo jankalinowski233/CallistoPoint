@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(m_playerStats.m_bIsAlive == true)
+        if(m_playerStats.m_bIsAlive == true || m_playerStats.m_bIsStunned == false)
         {
             ProcessMouseInput();
             ProcessKeyboardInput();

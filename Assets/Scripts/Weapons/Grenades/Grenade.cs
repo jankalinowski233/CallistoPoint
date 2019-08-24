@@ -51,6 +51,15 @@ public class Grenade : MonoBehaviour
     public void Explode()
     {
         //play particle system, deal damage to enemies. apply effect to enemies etc.
+        ApplyEffect();
+
+        Destroy(gameObject);
+    }
+
+    public virtual void ApplyEffect()
+    {
+        //basic behaviour such as playing particle system or swapping shaders goes here
+
         GameObject go = Instantiate(m_particleSystem, transform.position, Quaternion.identity);
 
         AudioSource l_audioSource = go.AddComponent<AudioSource>();
@@ -58,19 +67,6 @@ public class Grenade : MonoBehaviour
 
         Destroy(go, 2f);
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, m_fExplosionRadius);
-
-        foreach(Collider col in colliders)
-        {
-            if(col.CompareTag("Enemy"))
-            {
-                Enemy enemy = col.GetComponent<Enemy>();
-                enemy.TakeDamage(m_fDamage);
-            }
-            
-        }
-
-        Destroy(gameObject);
     }
 
     public void OnCollisionEnter(Collision collision)
