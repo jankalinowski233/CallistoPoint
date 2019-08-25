@@ -17,7 +17,8 @@ public class StunGrenade : Grenade
             if (col.CompareTag("Enemy"))
             {
                 Enemy enemy = col.GetComponent<Enemy>();
-                enemy.Stun(m_fEffectDuration);
+                enemy.SetTarget(PlayerController.m_instance.gameObject);
+                enemy.Stun(m_fEffectDuration);  
             }
         }
     }

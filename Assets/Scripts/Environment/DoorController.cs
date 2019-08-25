@@ -13,8 +13,8 @@ public class DoorController : Interactable
     [Header("Ceiling controller")]
     [Space(7f)]
     public GameObject m_Ceiling;
-    [Range(1, 10)] [Tooltip("The bigger the number, the slower the fade speed")]
-    public int m_iCeilingFadeSpeed;
+    [Range(0, 1)]
+    public float m_fCeilingFadeSpeed = 1f;
 
     private void Awake()
     {
@@ -38,13 +38,7 @@ public class DoorController : Interactable
         }
     }
 
-    public override void Interact()
-    {
-        base.Interact();
-        OpenDoor();
-    }
-
-    void OpenDoor()
+    public void OpenDoor()
     {
         m_DetectArea.enabled = false;
         m_DoorCollider.enabled = false;
@@ -65,7 +59,7 @@ public class DoorController : Interactable
         while (ceilingColor.a > 0)
         {
             //fade out ceiling
-            ceilingColor.a -= Time.deltaTime / m_iCeilingFadeSpeed;
+            ceilingColor.a -= Time.deltaTime * m_fCeilingFadeSpeed;
             ceilingMaterial.SetColor("_BaseColor", ceilingColor);
             
             yield return null;

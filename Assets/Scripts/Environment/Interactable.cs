@@ -1,24 +1,20 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour, IInteractable
 {
-    bool m_bCanBeUsed;
-    
-    private void Awake()
-    {
-        m_bCanBeUsed = false;
-    }
+    public UnityEvent OnInteract;
 
     public virtual void Interact()
     {
         //base interact behaviour goes here
+        OnInteract.Invoke();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            m_bCanBeUsed = true;
             UIManager.m_instance.SetMessageText("Press [E] to interact");
         }
     }
@@ -27,11 +23,7 @@ public class Interactable : MonoBehaviour, IInteractable
     {
         if (other.CompareTag("Player"))
         {
-            if (m_bCanBeUsed == true)
-            {
-                m_bCanBeUsed = false;
-                UIManager.m_instance.SetMessageText("");
-            }
+            UIManager.m_instance.SetMessageText("");
         }
     }
 }

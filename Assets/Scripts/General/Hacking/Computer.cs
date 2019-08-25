@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class Computer : Interactable, IHackable
 {
-    public float m_fHackingTime;
     float m_fRemainingHackingTime;
 
     bool m_bIsBeingHacked;
@@ -11,24 +10,17 @@ public class Computer : Interactable, IHackable
 
     public UnityEvent m_OnHacked;
 
-    public override void Interact()
+    public void Hack(float time)
     {
-        base.Interact();
-
-        if(m_bIsBeingHacked == false && m_bHasBeenHacked == false)
+        if (m_bIsBeingHacked == false && m_bHasBeenHacked == false)
         {
-            Hack(m_fHackingTime);
+            m_bIsBeingHacked = true;
+            m_fRemainingHackingTime = time;
         }
         else
         {
             DisplayContent();
         }
-    }
-
-    public void Hack(float time)
-    {
-        m_bIsBeingHacked = true;
-        m_fRemainingHackingTime = time;
     }
 
     public void ProcessHacking()
