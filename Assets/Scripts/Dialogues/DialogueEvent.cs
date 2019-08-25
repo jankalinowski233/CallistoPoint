@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Dialogues/DialogueEvent")]
 public class DialogueEvent : ScriptableObject
 {
     private List<DialogueEventListener> m_eventListeners = new List<DialogueEventListener>();

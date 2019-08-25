@@ -17,8 +17,9 @@ public class PlayerController : MonoBehaviour
     Animator m_Anim;
     Weapon m_weapon;
 
+    [Header("Weapons")]
+    [Space(5f)]
     [SerializeField] private List<GameObject> ml_WeaponList = new List<GameObject>();
-
     private int m_iCurrentWeapon;
 
     [HideInInspector] public bool m_bIsWalking = false;
@@ -48,6 +49,10 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public static Vector3 m_grenadeTargetPos;
     [HideInInspector] public int m_iGrenadesAmount;
     public float rotationSpeed = 5f;
+
+    [Header("Inventory")]
+    [Space(5f)]
+    public List<AccessKey> m_accesKeys = new List<AccessKey>();
 
     private void Awake()
     {
@@ -395,8 +400,6 @@ public class PlayerController : MonoBehaviour
 
         //deactivate sword
         m_meleeWeapon.SetActive(false);
-
-
     }
 
     IEnumerator DisableMeleeVFX()

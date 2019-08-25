@@ -106,6 +106,13 @@ public class Enemy : Character
         //play particle system, or set active some vortex, play animation etc.
     }
 
+    public override void Scorch(float scorchDuration, float scorchDamage)
+    {
+        base.Scorch(scorchDuration, scorchDamage);
+
+        //play particle system, or set active some scorch shader, play animation etc.
+    }
+
     public override void TakeDamage(float dmg)
     {
         base.TakeDamage(dmg);

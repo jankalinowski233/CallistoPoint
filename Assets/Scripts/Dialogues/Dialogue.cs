@@ -5,7 +5,7 @@ using UnityEngine.Events;
 /// A class to hold data about the dialogue
 /// </summary>
 [System.Serializable]
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Dialogues/Dialogue")]
 public class Dialogue : ScriptableObject
 {
     public Sentence[] sentences;
