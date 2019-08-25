@@ -15,15 +15,23 @@ public class DialogueManager : MonoBehaviour
     //queue of sentences
     public Queue<Sentence> m_sentencesQueue;
 
+    [Header("Dialogues")]
+    [Space(5f)]
     //dialogue's UI
     public TextMeshProUGUI m_nameText;
     public TextMeshProUGUI m_dialogueText;
     public GameObject m_dialoguePanel;
     public GameObject m_contButton;
-
     //characters' portraits
     public Image m_img;
 
+    [Header("Logs")]
+    [Space(5f)]
+    public GameObject m_logPanel;
+    public GameObject m_logContButton;
+    public TextMeshProUGUI m_logHeaderText;
+    public TextMeshProUGUI m_logText;
+    
     private void Awake()
     {
         MakeSingleton();
@@ -65,23 +73,78 @@ public class DialogueManager : MonoBehaviour
             m_sentencesQueue.Enqueue(sentence);
         }
 
-        ShowPanel();
-        ShowNextLine();
+        ShowDialoguePanel();
+        ShowNextDialogueLine();
+    }
+
+    public void ShowLog(Dialogue log)
+    {
+        m_sentencesQueue.Clear();
+
+        foreach (Sentence sentence in log.sentences)
+        {
+            m_sentencesQueue.Enqueue(sentence);
+        }
+
+        ShowLogPanel();
+        ShowNextLogLine();
     }
 
     /// <summary>
     /// Shows lines of dialogues
     /// </summary>
-    public void ShowNextLine()
+    public void ShowNextDialogueLine()
     {
-        StartCoroutine(DisplayText());
+        StartCoroutine(DisplayDialogue());
+    }
+
+    public void ShowNextLogLine()
+    {
+        StartCoroutine(DisplayLog());
+    }
+
+    public IEnumerator DisplayLog()
+    {
+        m_logContButton.SetActive(false);
+
+        if (m_sentencesQueue.Count == 0)
+        {
+            EndLog();
+            yield break;
+        }
+
+        int size = 0;
+        m_logText.text = "";
+        m_logHeaderText.text = "";
+
+        Sentence sentence = m_sentencesQueue.Dequeue();
+        size = sentence.dialogueSentences.ToCharArray().Length;
+
+        m_logHeaderText.text = sentence.name;
+
+        foreach (char letter in sentence.dialogueSentences.ToCharArray())
+        {
+            size--;
+            m_logText.text += letter;
+
+            if (size == 0)
+            {
+                m_logContButton.SetActive(true);
+            }
+
+            yield return null;
+        }
+
+
+        if (sentence.sentenceEvents != null)
+            sentence.sentenceEvents.Raise();
     }
 
     /// <summary>
     /// Displays text letter by letter
     /// </summary>
     /// <returns></returns>
-    public IEnumerator DisplayText()
+    public IEnumerator DisplayDialogue()
     {
         m_contButton.SetActive(false);
 
@@ -127,21 +190,36 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     void EndDialogue()
     {
-        HidePanel();
+        HideDialoguePanel();
+    }
+
+    void EndLog()
+    {
+        HideLogPanel();
     }
 
     /// <summary>
     /// Shows dialogue panel
     /// </summary>
-    public void ShowPanel()
+    public void ShowDialoguePanel()
     {
         m_dialoguePanel.SetActive(true);
+    }
+
+    public void ShowLogPanel()
+    {
+        m_logPanel.SetActive(true);
+    }
+
+    public void HideLogPanel()
+    {
+        m_logPanel.SetActive(false);
     }
 
     /// <summary>
     /// Hides dialogue panel
     /// </summary>
-    public void HidePanel()
+    public void HideDialoguePanel()
     {
         m_dialoguePanel.SetActive(false);
     }

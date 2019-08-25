@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Item : MonoBehaviour, ICollectible
+public class Item : MonoBehaviour, ICollectable
 {
     public virtual void Collect()
     {

@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AccessKeyHolder : Item
 {
-    public AccessKey accessKey;
+    public AccessKey m_accessKey;
+
     public override void Collect()
     {
         base.Collect();
 
         PlayerController player = PlayerController.m_instance;
-        player.m_accesKeys.Add(accessKey);
+        player.m_accesKeys.Add(m_accessKey);
     }
 }

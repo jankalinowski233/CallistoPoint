@@ -9,7 +9,12 @@ public interface IInteractable
     void Interact();
 }
 
-public interface ICollectible
+public interface ICollectable
 {
     void Collect();
+}
+
+public interface IHackable
+{
+    void Hack(float time);
 }
