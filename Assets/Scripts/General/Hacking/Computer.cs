@@ -8,19 +8,37 @@ public class Computer : Interactable, IHackable
     bool m_bIsBeingHacked;
     bool m_bHasBeenHacked;
 
+    public bool m_bRequireKey = false;
     public UnityEvent m_OnHacked;
 
     public void Hack(float time)
     {
-        if (m_bIsBeingHacked == false && m_bHasBeenHacked == false)
+        if(m_bHasBeenHacked == true)
+        {
+            DisplayContent();
+            return;
+        }
+
+        if (m_bIsBeingHacked == false && m_bRequireKey == false)
         {
             m_bIsBeingHacked = true;
             m_fRemainingHackingTime = time;
         }
-        else
+        else if(m_bRequireKey == true)
         {
-            DisplayContent();
+            if(PlayerController.m_instance.m_accesKeys.Count > 0)
+            {
+                m_bHasBeenHacked = true;
+                DisplayContent();
+            }
+            else
+            {
+                //display warning of no key in possession
+                print("You have no key!");
+            }
         }
+        
+        
     }
 
     public void ProcessHacking()

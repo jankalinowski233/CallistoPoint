@@ -16,7 +16,7 @@ MonoBehaviour:
   m_fDamage: 5
   m_fEffectDuration: 5
   m_fExplosionRadius: 2
-  m_particleSystem: {fileID: 5532737533596590933, guid: 6298c691fdfc10447a00054e3535b023,
+  m_particleSystem: {fileID: 1290715649332758, guid: 132ca549afcf76141a6d6a1e6a65cf11,
     type: 3}
   m_icon: {fileID: 0}
   m_explosionSound: {fileID: 8300000, guid: f01c623f724825e44a923d1ae50256f2, type: 3}

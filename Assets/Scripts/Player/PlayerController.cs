@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     [Space(5f)]
     [SerializeField] private List<GameObject> ml_WeaponList = new List<GameObject>();
     private int m_iCurrentWeapon;
+    [Range(0, 360)] public float m_fPistolAimOffset = 0f;
+    [Range(0, 360)] public float m_fRifleAimOffset = 45f;
 
     [HideInInspector] public bool m_bIsWalking = false;
     [HideInInspector] public bool m_bIsAttacking = false;
@@ -165,6 +167,17 @@ public class PlayerController : MonoBehaviour
                     characterToMouseVector.y = 0f;
 
                     Quaternion rotation = Quaternion.LookRotation(characterToMouseVector);
+
+                    //offset quaternion to make aiming face directly the mouse position
+                    if(m_iCurrentWeapon == 0)
+                    {
+                        rotation *= Quaternion.AngleAxis(m_fPistolAimOffset, Vector3.up);
+                    }
+                    else if (m_iCurrentWeapon > 0)
+                    {
+                        rotation *= Quaternion.AngleAxis(m_fRifleAimOffset, Vector3.up);
+                    }
+
                     transform.rotation = rotation;
                 }
 
@@ -269,7 +282,7 @@ public class PlayerController : MonoBehaviour
 
     public void SpawnGrenade()
     {
-        Instantiate(m_grenade, m_grenadeSpawnPoint.position, Quaternion.identity);
+        Instantiate(m_grenade, m_grenadeSpawnPoint.position, Random.rotation);
     }
 
     public IEnumerator RotateTowards(Vector3 target, float speed)
