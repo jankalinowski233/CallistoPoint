@@ -72,9 +72,12 @@ public class PlayerController : MonoBehaviour
         m_iCurrentWeapon = ml_WeaponList.IndexOf(ml_WeaponList[0]);
         m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
 
-        Grenade grenade = m_grenade.GetComponent<Grenade>();
-        m_iGrenadesAmount = grenade.m_grenadeType.m_iAmount;
-
+        if(m_grenade != null)
+        {
+            Grenade grenade = m_grenade.GetComponent<Grenade>();
+            m_iGrenadesAmount = grenade.m_grenadeType.m_iAmount;
+        }
+        
         UIManager.m_instance.SetGrenadeText(m_iGrenadesAmount);
 
         m_playerStats = PlayerStats.m_instance;
@@ -253,7 +256,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.G) && m_bIsWalking == false && m_bIsAttacking == false && m_bIsReloading == false)
         {
-            if (m_iGrenadesAmount > 0)
+            if (m_iGrenadesAmount > 0 && m_grenade != null)
             {
                 Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit rayHit;
@@ -276,7 +279,10 @@ public class PlayerController : MonoBehaviour
                 }       
             }
             else
+            {
                 UIManager.m_instance.SetMessageText("No grenades left!");
+            }
+                
         }
     }
 

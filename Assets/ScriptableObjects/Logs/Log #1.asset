@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 839d37566c68fce459dad59fa7f46ec7, type: 3}
+  m_Name: 'Log #1'
+  m_EditorClassIdentifier: 
+  sentences:
+  - portrait: {fileID: 0}
+    name: SC-170 FIGHTER
+    dialogueSentences: '... and we have recently been invited to a closed show-off
+      to see what the newest child of United Earth''s Government Space Forces is capable
+      of! And let me tell you - what a show it was. The newest spacecraft is faster
+      and its firepower is far more superior than any other fighter produced so far!'
+    sentenceEvents: {fileID: 0}
+  - portrait: {fileID: 0}
+    name: SC-170 FIGHTER
+    dialogueSentences: It's equipment not only contains three high-fire rate laser
+      cannons, but also 20 long-range explosive missiles capable of penetrating most
+      of today's kinetic shields, making it one of the most dangerous spacecraft in
+      Earth's fleet.
+    sentenceEvents: {fileID: 0}

@@ -7,8 +7,6 @@ public class DoorController : Interactable
     bool m_bIsOpened;
 
     Animator m_Anim;
-    BoxCollider m_DetectArea;
-    BoxCollider m_DoorCollider;
 
     [Header("Ceiling controller")]
     [Space(7f)]
@@ -21,30 +19,13 @@ public class DoorController : Interactable
         m_bIsOpened = false;
 
         m_Anim = GetComponentInChildren<Animator>();
-        m_DetectArea = GetComponent<BoxCollider>();
-    }
-
-    private void Start()
-    {
-        //get box collider of a door
-        BoxCollider[] boxColliders = GetComponentsInChildren<BoxCollider>();
-
-        foreach(BoxCollider coll in boxColliders)
-        {
-            if(coll.transform.parent != null)
-            {
-                m_DoorCollider = coll;
-            }
-        }
     }
 
     public void OpenDoor()
     {
-        m_DetectArea.enabled = false;
-        m_DoorCollider.enabled = false;
         m_Anim.SetTrigger("Open");
 
-        StartCoroutine(DisableCeiling());
+        //StartCoroutine(DisableCeiling());
         m_bIsOpened = true;
 
         PlayerController.m_instance.m_Interactable = null;

@@ -11,7 +11,8 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI m_totalAmmoDisplay;
     public TextMeshProUGUI m_grenadeAmount;
 
-    public Slider m_healthPointSlider;
+    public Image m_HPBar;
+    public Image m_progressBar;
 
     private void Awake()
     {
@@ -32,7 +33,12 @@ public class UIManager : MonoBehaviour
 
     public void SetHealthValue(float value)
     {
-        m_healthPointSlider.value = value;
+        m_HPBar.fillAmount = value;
+    }
+
+    public void SetProgressBarValue(float value)
+    {
+        m_progressBar.fillAmount = value;
     }
 
     public void SetGrenadeText(int amount)

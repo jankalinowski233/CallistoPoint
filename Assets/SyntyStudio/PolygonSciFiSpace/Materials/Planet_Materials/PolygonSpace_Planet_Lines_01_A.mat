@@ -128,13 +128,13 @@ Material:
     - _PlanetSurfaceContrast: -2.92
     - _PlanetSurfaceFloat: 2
     - _PlanetSurfaceTiling: 1
-    - _RimPower: 1.61
+    - _RimPower: 1.5
     - _Scale: -0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Strength: 2.72
-    - _Tiling: 0.97
+    - _Tiling: 0.06
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 1

@@ -18,7 +18,7 @@ public class Enemy : Character
     public ParticleSystem m_meleeHitEffect;
 
     Canvas m_enemyCanvas;
-    public Slider m_healthPoints;
+    public Image m_healthPoints;
 
     private void Awake()
     {
@@ -33,10 +33,7 @@ public class Enemy : Character
     {
         m_playerStats = PlayerStats.m_instance;
 
-        m_healthPoints.minValue = 0;
-        m_healthPoints.maxValue = m_fMaxHealth;
-
-        m_healthPoints.value = m_fRemainingHealth;
+        m_healthPoints.fillAmount = m_fRemainingHealth / m_fMaxHealth;
     }
 
     // Update is called once per frame
@@ -120,7 +117,7 @@ public class Enemy : Character
         if(m_gTarget == null && m_bIsStunned == false)
             SetTarget(m_playerStats.gameObject);
 
-        m_healthPoints.value = m_fRemainingHealth;
+        m_healthPoints.fillAmount = m_fRemainingHealth / m_fMaxHealth;
     }
 
     public override void Kill()

@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 public class Computer : Interactable, IHackable
 {
+    float m_fHackingTime;
     float m_fRemainingHackingTime;
 
     bool m_bIsBeingHacked;
@@ -23,6 +24,9 @@ public class Computer : Interactable, IHackable
         {
             m_bIsBeingHacked = true;
             m_fRemainingHackingTime = time;
+            m_fHackingTime = time;
+
+            UIManager.m_instance.m_progressBar.gameObject.SetActive(true);
         }
         else if(m_bRequireKey == true)
         {
@@ -34,7 +38,7 @@ public class Computer : Interactable, IHackable
             else
             {
                 //display warning of no key in possession
-                print("You have no key!");
+                UIManager.m_instance.SetMessageText("You have no key!");
             }
         }
         
@@ -54,8 +58,9 @@ public class Computer : Interactable, IHackable
             else
             {
                 m_fRemainingHackingTime -= Time.deltaTime;
-                
+
                 //set UI values etc.
+                UIManager.m_instance.SetProgressBarValue(m_fRemainingHackingTime / m_fHackingTime);
             }
 
             InterruptHacking();
@@ -69,6 +74,8 @@ public class Computer : Interactable, IHackable
             m_bIsBeingHacked = false;
 
             //reset UI etc
+            UIManager.m_instance.SetProgressBarValue(1);
+            UIManager.m_instance.m_progressBar.gameObject.SetActive(false);
         }
     }
     

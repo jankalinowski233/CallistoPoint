@@ -27,8 +27,7 @@ public class PlayerStats : Character
 
     private void Start()
     {
-        UIManager.m_instance.m_healthPointSlider.minValue = 0;
-        UIManager.m_instance.m_healthPointSlider.maxValue = m_fMaxHealth;
+        UIManager.m_instance.m_HPBar.fillAmount = m_fRemainingHealth / m_fMaxHealth;
 
         UIManager.m_instance.SetHealthValue(m_fRemainingHealth);
     }
@@ -57,7 +56,7 @@ public class PlayerStats : Character
     {
         base.TakeDamage(dmg);
 
-        UIManager.m_instance.SetHealthValue(m_fRemainingHealth);
+        UIManager.m_instance.SetHealthValue(m_fRemainingHealth / m_fMaxHealth);
     }
 
     public override void Kill()

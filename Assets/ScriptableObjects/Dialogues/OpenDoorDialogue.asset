@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 839d37566c68fce459dad59fa7f46ec7, type: 3}
+  m_Name: OpenDoorDialogue
+  m_EditorClassIdentifier: 
+  sentences:
+  - portrait: {fileID: 21300000, guid: 2c47ad6ac08a191439280ed5ee1917ef, type: 3}
+    name: The Voice
+    dialogueSentences: It's worth exploring the station. Some computers are easy to
+      hack and you can gain access to valuable information. To access some of them
+      you may need an access key though.
+    sentenceEvents: {fileID: 0}
+  - portrait: {fileID: 21300000, guid: 33ab783cc5e96d5418224486ec25a1ca, type: 3}
+    name: Soldier 2137
+    dialogueSentences: Where can I find them, Sarge?
+    sentenceEvents: {fileID: 0}
+  - portrait: {fileID: 21300000, guid: 2c47ad6ac08a191439280ed5ee1917ef, type: 3}
+    name: The Voice
+    dialogueSentences: You have to look for it. That's what you're being trained for.
+      Carry on, soldier. Good luck!
+    sentenceEvents: {fileID: 0}
