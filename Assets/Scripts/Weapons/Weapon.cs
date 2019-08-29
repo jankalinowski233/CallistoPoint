@@ -7,6 +7,8 @@ public class Weapon : MonoBehaviour
     [Space(7f)]
     [SerializeField] private float m_fShootingRange;
     [SerializeField] private float m_fWeaponDmg;
+    public float m_fTimeBetweenShots;
+    float m_fRemainingTimeBetweenShots;
 
     [Header("Reloading")]
     [Space(7f)]
@@ -36,70 +38,79 @@ public class Weapon : MonoBehaviour
 
     public void Shoot()
     {
-        if (m_iAmmoLeftInMagazine > 0)
+        if (m_fRemainingTimeBetweenShots <= 0)
         {
-            //play weapon particle effects
-            m_gunParticles.Stop();
-            m_gunParticles.Play();
-
-            //enable lighting
-            m_gunLight.enabled = true;
-
-            //enable line rendering
-            m_lineRenderer.enabled = true;
-            m_lineRenderer.SetPosition(0, transform.position);
-
-            //play sound
-            m_audio.Play();
-
-            //cast ray
-            Ray ray = new Ray(transform.position, new Vector3(transform.forward.x, 0f, transform.forward.z));
-            RaycastHit weaponHit;
-
-            //check if it hit anything
-            if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Damageable")))
+            if(m_iAmmoLeftInMagazine > 0)
             {
-                m_lineRenderer.SetPosition(1, weaponHit.point);
+                //play weapon particle effects
+                m_gunParticles.Stop();
+                m_gunParticles.Play();
 
-                if (weaponHit.collider.CompareTag("Enemy") || weaponHit.collider.CompareTag("Turret"))
+                //enable lighting
+                m_gunLight.enabled = true;
+
+                //enable line rendering
+                m_lineRenderer.enabled = true;
+                m_lineRenderer.SetPosition(0, transform.position);
+
+                //play sound
+                m_audio.Play();
+
+                //cast ray
+                Ray ray = new Ray(transform.position, new Vector3(transform.forward.x, 0f, transform.forward.z));
+                RaycastHit weaponHit;
+
+                //check if it hit anything
+                if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Damageable")))
                 {
-                    //if it's an enemy, deal damage
-                    Character character = weaponHit.collider.GetComponent<Character>();
-                    character.TakeDamage(m_fWeaponDmg);
+                    m_lineRenderer.SetPosition(1, weaponHit.point);
 
-                    GameObject damageEffect = Instantiate(m_damageEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal));
-                    Destroy(damageEffect, 1f);
+                    if (weaponHit.collider.CompareTag("Enemy") || weaponHit.collider.CompareTag("Turret"))
+                    {
+                        //if it's an enemy, deal damage
+                        Character character = weaponHit.collider.GetComponent<Character>();
+                        character.TakeDamage(m_fWeaponDmg);
+
+                        GameObject damageEffect = Instantiate(m_damageEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal));
+                        Destroy(damageEffect, 1f);
+                    }
+                    else if (weaponHit.collider.CompareTag("Environment"))
+                    {
+                        //if it's environment, just spawn particle effect in the place it hit something
+                        print("hitting environment");
+
+                        GameObject hitEffect = Instantiate(m_environmentHitEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal));
+                        Destroy(hitEffect, 1f);
+
+                    }
+
                 }
-                else if (weaponHit.collider.CompareTag("Environment"))
+                else
                 {
-                    //if it's environment, just spawn particle effect in the place it hit something
-                    print("hitting environment");
-
-                    GameObject hitEffect = Instantiate(m_environmentHitEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal));
-                    Destroy(hitEffect, 1f);
-
+                    m_lineRenderer.SetPosition(1, ray.origin + ray.direction * m_fShootingRange);
                 }
 
+                m_iAmmoLeftInMagazine--;
 
+                UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
+
+                m_fRemainingTimeBetweenShots = m_fTimeBetweenShots;
+
+                //disable vfx
+                if (gameObject.activeInHierarchy == true)
+                {
+                    StartCoroutine(DisableVFX());
+                }
             }
             else
-            {
-                m_lineRenderer.SetPosition(1, ray.origin + ray.direction * m_fShootingRange);
-            }
-
-
-            m_iAmmoLeftInMagazine--;
-
-            UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
-
-            //disable vfx
-            if (gameObject.activeInHierarchy == true)
-            {
-                StartCoroutine(DisableVFX());
-            }
+                UIManager.m_instance.SetMessageText("No ammo left!");
         }
         else
-            UIManager.m_instance.SetMessageText("No ammo left!");
+        {
+            
+            m_fRemainingTimeBetweenShots -= Time.deltaTime;
+        }
+            
 
     }
 
@@ -113,6 +124,11 @@ public class Weapon : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
         DisableEffects(); 
+    }
+
+    public void ResetTimeBetweenShots()
+    {
+        m_fRemainingTimeBetweenShots = 0f;
     }
 
     public void RefillAmmo()

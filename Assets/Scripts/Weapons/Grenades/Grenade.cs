@@ -18,6 +18,8 @@ public class Grenade : MonoBehaviour
     public float m_flightHeight;
     public float m_flightDuration;
 
+    bool exploded = false;
+
     private void OnEnable()
     {
         PlayerController player = PlayerController.m_instance;
@@ -53,6 +55,7 @@ public class Grenade : MonoBehaviour
         //play particle system, deal damage to enemies. apply effect to enemies etc.
         ApplyEffect();
 
+        exploded = true;
         Destroy(gameObject);
     }
 
@@ -73,7 +76,11 @@ public class Grenade : MonoBehaviour
     {
         if (collision.collider.CompareTag("Environment") || collision.collider.CompareTag("Enemy"))
         {
-            Explode();
+            if(exploded == false)
+            {
+                Explode();
+            }
+            
         }
     }
 

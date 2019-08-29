@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     [Space(5f)]
     [SerializeField] private List<GameObject> ml_WeaponList = new List<GameObject>();
     private int m_iCurrentWeapon;
-    [Range(0, 360)] public float m_fPistolAimOffset = 0f;
     [Range(0, 360)] public float m_fRifleAimOffset = 45f;
 
     [HideInInspector] public bool m_bIsWalking = false;
@@ -35,6 +34,13 @@ public class PlayerController : MonoBehaviour
     public float m_fMeleeRadius;
     public float m_fTimeBetweenMeleeAttacks;
     float m_fRemainingTimeBetweenMeleeAttacks;
+
+    [Header("Movement WASD")]
+    [Space(5f)]
+    public float m_fMovementSpeed;
+    Rigidbody m_rb;
+    Vector3 m_vMovement;
+    Vector3 m_vLookedAtPoint;
 
     [Header("Interaction")]
     [Space(5f)]
@@ -58,6 +64,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        m_rb = GetComponent<Rigidbody>();
         m_navAgent = GetComponent<NavMeshAgent>();
         m_Anim = GetComponent<Animator>();
         m_Abilities = GetComponents<AbilityTrigger>();
@@ -90,11 +97,6 @@ public class PlayerController : MonoBehaviour
         {
             ProcessMouseInput();
             ProcessKeyboardInput();
-
-            if(m_bIsWalking == true)
-            {
-                HasReachedPath();
-            }
         }
     }
 
@@ -103,15 +105,13 @@ public class PlayerController : MonoBehaviour
         //on LMB hold
         RotateAndShoot();
 
-        //on single RMB click
-        Walk();
-
         //on mouse scroll
         ChooseWeapon();
     }
 
     void ProcessKeyboardInput()
     {
+        WalkWASD();
         MeleeAttack();
         Reload();
         CastAbilities();
@@ -123,112 +123,138 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Walk()
+    void WalkWASD()
     {
-        //on RMB click/hold
-        if (Input.GetMouseButton(1) && m_bIsAttacking == false && m_bIsReloading == false)
+        if(m_bIsReloading == false)
         {
-            if (m_iCurrentWeapon == 0)
-            {
-                m_Anim.SetBool("PistolRun", true);
-            }
-            else m_Anim.SetBool("RifleRun", true);
+            float xAxis = Input.GetAxisRaw("Horizontal");
+            float yAxis = Input.GetAxisRaw("Vertical");
 
-            //walk
+            m_vMovement.Set(xAxis, 0f, yAxis);
+
+            m_vMovement = m_vMovement.normalized * m_fMovementSpeed * Time.deltaTime;
+            BlendAnimations();
+
+            m_rb.MovePosition(transform.position + m_vMovement);
+        }
+    }
+
+    //blends animations by calculating dot products between player's rotation and player's movement direction
+    void BlendAnimations()
+    {
+        float zAxisMagnitude = 0;
+        float xAxisMagnitude = 0;
+
+        if (m_vMovement.magnitude > 0)
+        {
             m_bIsWalking = true;
-            Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit rayHit;
 
-            if (Physics.Raycast(ray, out rayHit, LayerMask.GetMask("Ground")))
-            {
-                MoveTo(rayHit.point);
-            }
-        }   
+            //normalize vector between mouse position and player's position
+            Vector3 normalizedLookingAt = m_vLookedAtPoint - transform.position;
+            normalizedLookingAt.Normalize();
+
+            //calculate dot product between mouse position and player's movement direction on Z axis and clamp its value
+            //to match blend tree variables
+            zAxisMagnitude = Mathf.Clamp(Vector3.Dot(m_vMovement, normalizedLookingAt), -1, 1);
+
+            //calculate dot product between mouse position and player's movement direction on X axis and clamp its value
+            //to match blend tree variables
+            Vector3 perpendicularLookingAt = new Vector3(normalizedLookingAt.z, 0, -normalizedLookingAt.x);
+            xAxisMagnitude = Mathf.Clamp(Vector3.Dot(m_vMovement, perpendicularLookingAt), -1, 1);
+
+            //set animator to run
+            m_Anim.SetBool("RifleRun", m_bIsWalking);
+
+        }
+        else
+        {
+            //set animator back to idle
+            m_bIsWalking = false;
+            m_Anim.SetBool("RifleRun", m_bIsWalking);
+        }
+
+        //feed animator the parameters
+        m_Anim.SetFloat("VelX", xAxisMagnitude);
+        m_Anim.SetFloat("VelY", zAxisMagnitude);
     }
 
     void RotateAndShoot()
     {
-        if (Input.GetMouseButton(0) && m_bIsWalking == false && m_bIsReloading == false)
+        if (IsMouseOverUI() == false)
         {
-            if (IsMouseOverUI() == false)
+            //rotate
+            Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayHit;
+            Quaternion rotation;
+
+            if (Physics.Raycast(ray, out rayHit))
             {
-                if(m_weapon.m_iAmmoLeftInMagazine > 0)
+                Vector3 characterToMouseVector = (rayHit.point - transform.position);
+                characterToMouseVector.y = 0f;
+
+                m_vLookedAtPoint = rayHit.point;
+
+                rotation = Quaternion.LookRotation(characterToMouseVector);
+                rotation *= Quaternion.AngleAxis(m_fRifleAimOffset, Vector3.up);
+                transform.rotation = rotation;
+
+                if (Input.GetMouseButton(0))
                 {
-                    if (m_bIsAttacking == false)
+                    if (m_weapon.m_iAmmoLeftInMagazine > 0)
                     {
-                        m_bIsAttacking = true;
+                        if (m_bIsAttacking == false)
+                        {
+                            m_bIsAttacking = true;
+                        }
+
+                        //shoot
+                        if (m_weapon.m_iAmmoLeftInMagazine > 0)
+                        {
+                            if(m_bIsWalking == false)
+                            {
+                                if (m_iCurrentWeapon == 0)
+                                {
+                                    m_Anim.SetBool("ShootingSMG", true);
+                                }
+                                else m_Anim.SetBool("ShootingRifle", true);
+                            }
+                           
+                            m_weapon.Shoot();
+                            //TODO add sniper rifle
+                        }
+                        else
+                        {
+                            if(m_bIsWalking == false)
+                            {
+                                if (m_iCurrentWeapon == 0)
+                                {
+                                    m_Anim.SetBool("ShootingSMG", false);
+                                }
+                                else m_Anim.SetBool("ShootingRifle", false);
+
+                                //TODO add sniper rifle
+                            }
+
+                            //TODO set UI no ammo or sth
+                        }
+
                     }
                 }
 
-                //rotate
-                Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit rayHit;
-
-                if (Physics.Raycast(ray, out rayHit))
-                {
-                    Vector3 characterToMouseVector = (rayHit.point - transform.position).normalized;
-                    characterToMouseVector.y = 0f;
-
-                    Quaternion rotation = Quaternion.LookRotation(characterToMouseVector);
-
-                    //offset quaternion to make aiming face directly the mouse position
-                    if(m_iCurrentWeapon == 0)
-                    {
-                        rotation *= Quaternion.AngleAxis(m_fPistolAimOffset, Vector3.up);
-                    }
-                    else if (m_iCurrentWeapon > 0)
-                    {
-                        rotation *= Quaternion.AngleAxis(m_fRifleAimOffset, Vector3.up);
-                    }
-
-                    transform.rotation = rotation;
-                }
-
-                //shoot
-                if (m_weapon.m_iAmmoLeftInMagazine > 0)
+                //on LMB lift
+                if (Input.GetMouseButtonUp(0))
                 {
                     if (m_iCurrentWeapon == 0)
-                    {
-                        m_Anim.SetBool("ShootingPistol", true);
-                    }
-                    else if (m_iCurrentWeapon == 1)
-                    {
-                        m_Anim.SetBool("ShootingSMG", true);
-                    }
-                    else m_Anim.SetBool("ShootingRifle", true);
-                }
-                else
-                {
-                    if (m_iCurrentWeapon == 0)
-                    {
-                        m_Anim.SetBool("ShootingPistol", false);
-                    }
-                    else if (m_iCurrentWeapon == 1)
                     {
                         m_Anim.SetBool("ShootingSMG", false);
                     }
                     else m_Anim.SetBool("ShootingRifle", false);
+
+                    m_weapon.ResetTimeBetweenShots();
+                    m_bIsAttacking = false;
                 }
-
             }
         }
-
-        //on LMB lift
-        if (Input.GetMouseButtonUp(0) && m_bIsAttacking == true)
-        {
-            if (m_iCurrentWeapon == 0)
-            {
-                m_Anim.SetBool("ShootingPistol", false);
-            }
-            else if (m_iCurrentWeapon == 1)
-            {
-                m_Anim.SetBool("ShootingSMG", false);
-            }
-            else m_Anim.SetBool("ShootingRifle", false);
-
-            m_bIsAttacking = false;
-        }
-
     }
 
     bool IsMouseOverUI()
@@ -309,7 +335,7 @@ public class PlayerController : MonoBehaviour
 
     void ChooseWeapon()
     {
-        if(m_bIsWalking == false && m_bIsAttacking == false && m_bIsReloading == false)
+        if(m_bIsAttacking == false && m_bIsReloading == false)
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
@@ -427,30 +453,6 @@ public class PlayerController : MonoBehaviour
         //disable vfx here
     }
 
-    bool HasReachedPath()
-    {
-        //check if agent reached destination
-        if (m_navAgent.pathPending == false)
-        {
-            if (m_navAgent.remainingDistance <= m_navAgent.stoppingDistance)
-            {
-                if (m_navAgent.hasPath == false || m_navAgent.velocity.sqrMagnitude == 0)
-                {
-                    m_bIsWalking = false;
-
-                    if (m_iCurrentWeapon == 0)
-                    {
-                        m_Anim.SetBool("PistolRun", false);
-                    }
-                    else m_Anim.SetBool("RifleRun", false);
-
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public void MoveTo(Vector3 destination)
     {
         m_navAgent.SetDestination(destination);
@@ -476,18 +478,8 @@ public class PlayerController : MonoBehaviour
             if (m_bIsReloading == false)
             {
                 m_bIsReloading = true;
-
-                //play animation of reloading
-                if (m_iCurrentWeapon == 0)
-                {
-                    //play pistol animation of reloading
-                    m_Anim.SetTrigger("PistolReload");
-                }
-                else
-                {
-                    //play rifle animation of reloading
-                    m_Anim.SetTrigger("RifleReload");
-                }
+                //play rifle animation of reloading
+                m_Anim.SetTrigger("RifleReload");
             }
         } 
         
