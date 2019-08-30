@@ -7,7 +7,7 @@ public class AmmoCrate : Item
 
     public override void Collect()
     {
-        if(m_weapon.m_iAmmoLeft < m_weapon.m_iMaxAmmo)
+        if (m_weapon.m_iAmmoLeft < m_weapon.m_iMaxAmmo)
         {
             m_weapon.AddAmmo(m_iAmount);
             base.Collect();

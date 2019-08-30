@@ -15,7 +15,7 @@ public class GrenadeStash : Item
         //get player component
         PlayerController player = PlayerController.m_instance;
 
-        //TODO swap grenades
+        //swap grenades
         player.m_grenade = m_grenade;
 
         //update player script and UI

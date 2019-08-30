@@ -107,7 +107,6 @@ public class Weapon : MonoBehaviour
         }
         else
         {
-            
             m_fRemainingTimeBetweenShots -= Time.deltaTime;
         }
             
@@ -187,7 +186,8 @@ public class Weapon : MonoBehaviour
                 m_iAmmoLeft += difference;
             }
 
-            UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
+            if(gameObject.activeInHierarchy == true)
+                UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
         }
     }
 

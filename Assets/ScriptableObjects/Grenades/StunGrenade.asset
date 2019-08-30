@@ -19,4 +19,4 @@ MonoBehaviour:
   m_particleSystem: {fileID: 1997773235792374, guid: 4a1605d2b513ca442bb32233fdad7d71,
     type: 3}
   m_icon: {fileID: 0}
-  m_explosionSound: {fileID: 8300000, guid: f01c623f724825e44a923d1ae50256f2, type: 3}
+  m_explosionSound: {fileID: 8300000, guid: a9b59117bfecc2940a2ee9ac800c030c, type: 3}

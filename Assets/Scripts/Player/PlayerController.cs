@@ -212,27 +212,42 @@ public class PlayerController : MonoBehaviour
                         {
                             if(m_bIsWalking == false)
                             {
-                                if (m_iCurrentWeapon == 0)
+                                switch(m_iCurrentWeapon)
                                 {
-                                    m_Anim.SetBool("ShootingSMG", true);
+                                    case 0:
+                                        m_Anim.SetBool("ShootingSMG", true);
+                                        break;
+                                    case 1:
+                                        m_Anim.SetBool("ShootingRifle", true);
+                                        break;
+                                    case 2:
+                                        m_Anim.SetBool("ShootingSniper", true);
+                                        break;
+                                    default:
+                                        break;
                                 }
-                                else m_Anim.SetBool("ShootingRifle", true);
                             }
-                           
-                            m_weapon.Shoot();
-                            //TODO add sniper rifle
+
+                            Shoot();
                         }
                         else
                         {
                             if(m_bIsWalking == false)
                             {
-                                if (m_iCurrentWeapon == 0)
+                                switch (m_iCurrentWeapon)
                                 {
-                                    m_Anim.SetBool("ShootingSMG", false);
+                                    case 0:
+                                        m_Anim.SetBool("ShootingSMG", false);
+                                        break;
+                                    case 1:
+                                        m_Anim.SetBool("ShootingRifle", false);
+                                        break;
+                                    case 2:
+                                        m_Anim.SetBool("ShootingSniper", false);
+                                        break;
+                                    default:
+                                        break;
                                 }
-                                else m_Anim.SetBool("ShootingRifle", false);
-
-                                //TODO add sniper rifle
                             }
 
                             //TODO set UI no ammo or sth
@@ -244,11 +259,20 @@ public class PlayerController : MonoBehaviour
                 //on LMB lift
                 if (Input.GetMouseButtonUp(0))
                 {
-                    if (m_iCurrentWeapon == 0)
+                    switch (m_iCurrentWeapon)
                     {
-                        m_Anim.SetBool("ShootingSMG", false);
+                        case 0:
+                            m_Anim.SetBool("ShootingSMG", false);
+                            break;
+                        case 1:
+                            m_Anim.SetBool("ShootingRifle", false);
+                            break;
+                        case 2:
+                            m_Anim.SetBool("ShootingSniper", false);
+                            break;
+                        default:
+                            break;
                     }
-                    else m_Anim.SetBool("ShootingRifle", false);
 
                     m_weapon.ResetTimeBetweenShots();
                     m_bIsAttacking = false;
@@ -268,13 +292,9 @@ public class PlayerController : MonoBehaviour
 
     void Shoot()
     {      
-        if(m_weapon != null)
+        if(m_weapon != null && m_bIsReloading == false)
         {
             m_weapon.Shoot();
-        }
-        else
-        {
-            Debug.LogError("Weapon is unassigned - can't shoot!");
         }
     }
 
