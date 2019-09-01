@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4153516731418170}
   - component: {fileID: 33613547472782902}
   - component: {fileID: 23987606965236438}
-  - component: {fileID: 1616053567}
+  - component: {fileID: 1506839763}
   m_Layer: 12
   m_Name: SM_Ship_Stealth_05
   m_TagString: Environment
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1186373092488540}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 0.50981, y: 0.50981, z: 0.50981}
+  m_LocalScale: {x: 0.72628564, y: 0.72628564, z: 0.72628564}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -78,7 +78,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &1616053567
+--- !u!64 &1506839763
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,6 +89,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 4099c75e8abf6074688843779da40e8d, type: 3}

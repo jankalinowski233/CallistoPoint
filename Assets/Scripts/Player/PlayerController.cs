@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         m_iCurrentWeapon = ml_WeaponList.IndexOf(ml_WeaponList[0]);
         m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
 
-        if(m_grenade != null)
+        if (m_grenade != null)
         {
             Grenade grenade = m_grenade.GetComponent<Grenade>();
             m_iGrenadesAmount = grenade.m_grenadeType.m_iAmount;
@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour
 
             m_vMovement = m_vMovement.normalized * m_fMovementSpeed * Time.deltaTime;
             BlendAnimations();
-
+           
             m_rb.MovePosition(transform.position + m_vMovement);
         }
     }
@@ -205,75 +205,20 @@ public class PlayerController : MonoBehaviour
                         if (m_bIsAttacking == false)
                         {
                             m_bIsAttacking = true;
-                        }
-
-                        //shoot
-                        if (m_weapon.m_iAmmoLeftInMagazine > 0)
-                        {
-                            if(m_bIsWalking == false)
-                            {
-                                switch(m_iCurrentWeapon)
-                                {
-                                    case 0:
-                                        m_Anim.SetBool("ShootingSMG", true);
-                                        break;
-                                    case 1:
-                                        m_Anim.SetBool("ShootingRifle", true);
-                                        break;
-                                    case 2:
-                                        m_Anim.SetBool("ShootingSniper", true);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-
-                            Shoot();
-                        }
-                        else
-                        {
-                            if(m_bIsWalking == false)
-                            {
-                                switch (m_iCurrentWeapon)
-                                {
-                                    case 0:
-                                        m_Anim.SetBool("ShootingSMG", false);
-                                        break;
-                                    case 1:
-                                        m_Anim.SetBool("ShootingRifle", false);
-                                        break;
-                                    case 2:
-                                        m_Anim.SetBool("ShootingSniper", false);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-
-                            //TODO set UI no ammo or sth
-                        }
-
+                        }  
+                        
+                        Shoot();
+                            
+                    }
+                    else
+                    {
+                        //TODO set UI no ammo or sth
                     }
                 }
 
                 //on LMB lift
                 if (Input.GetMouseButtonUp(0))
                 {
-                    switch (m_iCurrentWeapon)
-                    {
-                        case 0:
-                            m_Anim.SetBool("ShootingSMG", false);
-                            break;
-                        case 1:
-                            m_Anim.SetBool("ShootingRifle", false);
-                            break;
-                        case 2:
-                            m_Anim.SetBool("ShootingSniper", false);
-                            break;
-                        default:
-                            break;
-                    }
-
                     m_weapon.ResetTimeBetweenShots();
                     m_bIsAttacking = false;
                 }

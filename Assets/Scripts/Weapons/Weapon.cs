@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -19,21 +20,33 @@ public class Weapon : MonoBehaviour
 
     [Header("Weapon FX")]
     [Space(7f)]
+    public ParticleSystem m_shotParticles;
     public ParticleSystem m_gunParticles;
-    public GameObject m_environmentHitEffect;
-    public GameObject m_damageEffect;
+    public ParticleSystem m_hitParticles;
     public Light m_gunLight;
-    LineRenderer m_lineRenderer;
 
+    List<ParticleCollisionEvent> m_particleCollisionEvents;
+    LineRenderer m_lineRenderer;
     AudioSource m_audio;
 
     private void Awake()
     {
+        m_particleCollisionEvents = new List<ParticleCollisionEvent>();
+
+        m_shotParticles.transform.position = m_gunParticles.transform.position;
+ 
         m_iAmmoLeftInMagazine = m_iMaxAmmoInMagazine;
         m_iAmmoLeft = m_iMaxAmmo;
-
-        m_lineRenderer = GetComponent<LineRenderer>();
+        
         m_audio = GetComponent<AudioSource>();
+        m_lineRenderer = GetComponent<LineRenderer>();
+    }
+
+    private void Update()
+    {
+        m_lineRenderer.SetPosition(0, m_gunParticles.transform.position);
+        m_lineRenderer.SetPosition(1, m_gunParticles.transform.position + transform.forward * m_fShootingRange);
+
     }
 
     public void Shoot()
@@ -50,11 +63,10 @@ public class Weapon : MonoBehaviour
                 m_gunLight.enabled = true;
 
                 //enable line rendering
-                m_lineRenderer.enabled = true;
-                m_lineRenderer.SetPosition(0, transform.position);
 
                 //play sound
                 m_audio.Play();
+                m_shotParticles.Emit(1);
 
                 //cast ray
                 Ray ray = new Ray(transform.position, new Vector3(transform.forward.x, 0f, transform.forward.z));
@@ -63,33 +75,16 @@ public class Weapon : MonoBehaviour
                 //check if it hit anything
                 if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Damageable")))
                 {
-                    m_lineRenderer.SetPosition(1, weaponHit.point);
 
                     if (weaponHit.collider.CompareTag("Enemy") || weaponHit.collider.CompareTag("Turret"))
                     {
                         //if it's an enemy, deal damage
                         Character character = weaponHit.collider.GetComponent<Character>();
                         character.TakeDamage(m_fWeaponDmg);
-
-                        GameObject damageEffect = Instantiate(m_damageEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal));
-                        Destroy(damageEffect, 1f);
-                    }
-                    else if (weaponHit.collider.CompareTag("Environment"))
-                    {
-                        //if it's environment, just spawn particle effect in the place it hit something
-                        print("hitting environment");
-
-                        GameObject hitEffect = Instantiate(m_environmentHitEffect, weaponHit.point, Quaternion.LookRotation(weaponHit.normal));
-                        Destroy(hitEffect, 1f);
-
                     }
 
                 }
-                else
-                {
-                    m_lineRenderer.SetPosition(1, ray.origin + ray.direction * m_fShootingRange);
-                }
-
+                
                 m_iAmmoLeftInMagazine--;
 
                 UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
@@ -116,7 +111,6 @@ public class Weapon : MonoBehaviour
     void DisableEffects()
     {
         m_gunLight.enabled = false;
-        m_lineRenderer.enabled = false;
     }
 
     public IEnumerator DisableVFX()
