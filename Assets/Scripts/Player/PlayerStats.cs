@@ -27,7 +27,7 @@ public class PlayerStats : Character
 
     private void Start()
     {
-        UIManager.m_instance.m_HPBar.fillAmount = m_fRemainingHealth / m_fMaxHealth;
+        UIManager.m_instance.m_hpBar.fillAmount = m_fRemainingHealth / m_fMaxHealth;
 
         UIManager.m_instance.SetHealthValue(m_fRemainingHealth);
     }

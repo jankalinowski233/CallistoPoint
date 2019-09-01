@@ -3097,7 +3097,7 @@ MonoBehaviour:
   m_bIsAlive: 1
   m_bIsStunned: 0
   m_bIsScorching: 0
-  m_fMaxHealth: 50
+  m_fMaxHealth: 100
   m_fArmor: 1
   m_Anim: {fileID: 0}
   m_fDamage: 3

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -11,12 +10,12 @@ public class Weapon : MonoBehaviour
     public float m_fTimeBetweenShots;
     float m_fRemainingTimeBetweenShots;
 
-    [Header("Reloading")]
+    [Header("Weapon overheating")]
     [Space(7f)]
-    public int m_iMaxAmmo;
-    public int m_iAmmoLeft;
-    public int m_iMaxAmmoInMagazine;
-    public int m_iAmmoLeftInMagazine;
+    public float m_fMaxWeaponTemperature;
+    float m_fCurrentWeaponTemperature;
+    [Range(5, 20)] public float m_fWeaponCooldownSpeed;
+    bool m_bWeaponCooldown = false;
 
     [Header("Weapon FX")]
     [Space(7f)]
@@ -25,18 +24,14 @@ public class Weapon : MonoBehaviour
     public ParticleSystem m_hitParticles;
     public Light m_gunLight;
 
-    List<ParticleCollisionEvent> m_particleCollisionEvents;
     LineRenderer m_lineRenderer;
     AudioSource m_audio;
 
     private void Awake()
     {
-        m_particleCollisionEvents = new List<ParticleCollisionEvent>();
-
         m_shotParticles.transform.position = m_gunParticles.transform.position;
  
-        m_iAmmoLeftInMagazine = m_iMaxAmmoInMagazine;
-        m_iAmmoLeft = m_iMaxAmmo;
+        m_fCurrentWeaponTemperature = 0;
         
         m_audio = GetComponent<AudioSource>();
         m_lineRenderer = GetComponent<LineRenderer>();
@@ -44,79 +39,94 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
+        RenderLine();
+        ProcessKeyboardInput();
+
+        if(m_bWeaponCooldown == true)
+        {
+            WeaponCooldown();
+        }
+    }
+
+    void RenderLine()
+    {
         m_lineRenderer.SetPosition(0, m_gunParticles.transform.position);
         m_lineRenderer.SetPosition(1, m_gunParticles.transform.position + transform.forward * m_fShootingRange);
+    }
 
+    void ProcessKeyboardInput()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            m_bWeaponCooldown = true;
+        }
     }
 
     public void Shoot()
     {
         if (m_fRemainingTimeBetweenShots <= 0)
         {
-            if(m_iAmmoLeftInMagazine > 0)
+            if (m_fCurrentWeaponTemperature < m_fMaxWeaponTemperature)
             {
-                //play weapon particle effects
-                m_gunParticles.Stop();
-                m_gunParticles.Play();
-
-                //enable lighting
-                m_gunLight.enabled = true;
-
-                //enable line rendering
-
-                //play sound
-                m_audio.Play();
-                m_shotParticles.Emit(1);
-
-                //cast ray
-                Ray ray = new Ray(transform.position, new Vector3(transform.forward.x, 0f, transform.forward.z));
-                RaycastHit weaponHit;
-
-                //check if it hit anything
-                if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Damageable")))
+                if (m_bWeaponCooldown == false)
                 {
+                    //play weapon particle effects
+                    m_gunParticles.Stop();
+                    m_gunParticles.Play();
 
-                    if (weaponHit.collider.CompareTag("Enemy") || weaponHit.collider.CompareTag("Turret"))
+                    //enable lighting
+                    m_gunLight.enabled = true;
+
+                    //play sound
+                    m_audio.Play();
+                    m_shotParticles.Emit(1);
+
+                    //cast ray
+                    Ray ray = new Ray(transform.position, new Vector3(transform.forward.x, 0f, transform.forward.z));
+                    RaycastHit weaponHit;
+
+                    //check if it hit anything
+                    if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Damageable")))
                     {
-                        //if it's an enemy, deal damage
-                        Character character = weaponHit.collider.GetComponent<Character>();
-                        character.TakeDamage(m_fWeaponDmg);
+
+                        if (weaponHit.collider.CompareTag("Enemy") || weaponHit.collider.CompareTag("Turret"))
+                        {
+                            //if it's an enemy, deal damage
+                            Character character = weaponHit.collider.GetComponent<Character>();
+                            character.TakeDamage(m_fWeaponDmg);
+                        }
+
                     }
 
+                    m_fCurrentWeaponTemperature++;
+
+                    UIManager.m_instance.SetWeaponHeat(m_fCurrentWeaponTemperature, m_fMaxWeaponTemperature);
+
+                    m_fRemainingTimeBetweenShots = m_fTimeBetweenShots;
+
+                    //disable vfx
+                    if (gameObject.activeInHierarchy == true)
+                    {
+                        StartCoroutine(DisableVFX());
+                    }
                 }
-                
-                m_iAmmoLeftInMagazine--;
-
-                UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
-
-                m_fRemainingTimeBetweenShots = m_fTimeBetweenShots;
-
-                //disable vfx
-                if (gameObject.activeInHierarchy == true)
+                else
                 {
-                    StartCoroutine(DisableVFX());
+                    //TODO weapon is too hot, set UI (flashing or sth)
                 }
-            }
-            else
-                UIManager.m_instance.SetMessageText("No ammo left!");
+            }            
         }
         else
         {
             m_fRemainingTimeBetweenShots -= Time.deltaTime;
-        }
-            
+        }           
 
-    }
-
-    void DisableEffects()
-    {
-        m_gunLight.enabled = false;
     }
 
     public IEnumerator DisableVFX()
     {
         yield return new WaitForSeconds(0.05f);
-        DisableEffects(); 
+        m_gunLight.enabled = false;
     }
 
     public void ResetTimeBetweenShots()
@@ -124,71 +134,33 @@ public class Weapon : MonoBehaviour
         m_fRemainingTimeBetweenShots = 0f;
     }
 
-    public void RefillAmmo()
+    public void WeaponCooldown()
     {
-        if (m_iAmmoLeft > 0)
+        //cooldown
+        if (m_fCurrentWeaponTemperature > 0)
         {
-            if (m_iAmmoLeftInMagazine == 0)
-            {
-                if(m_iAmmoLeft >= m_iMaxAmmoInMagazine)
-                {
-                    m_iAmmoLeftInMagazine = m_iMaxAmmoInMagazine;
-                    m_iAmmoLeft -= m_iMaxAmmoInMagazine;
-                }
-                else
-                {
-                    m_iAmmoLeftInMagazine += m_iAmmoLeft;
-                    m_iAmmoLeft = 0;
-                }
-            }
-            else
-            {
-                int difference = m_iMaxAmmoInMagazine - m_iAmmoLeftInMagazine;
+            m_fCurrentWeaponTemperature -= Time.deltaTime * m_fWeaponCooldownSpeed;
+            UIManager.m_instance.SetWeaponHeat(m_fCurrentWeaponTemperature, m_fMaxWeaponTemperature)
+            //if(m_fRemainingTimeBetweenWeaponCooldown <= 0)
+            //{
+            //    m_fCurrentWeaponTemperature--;
+            ;
 
-                if(m_iAmmoLeft >= difference)
-                {
-                    m_iAmmoLeftInMagazine += difference;
-                    m_iAmmoLeft -= difference;
-                }
-                else
-                {
-                    m_iAmmoLeftInMagazine += m_iAmmoLeft;
-                    m_iAmmoLeft = 0;
-                }
-            }
-
-            UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
+            //    m_fRemainingTimeBetweenWeaponCooldown = m_fTimeBetweenWeaponCooldown;
+            //}
+            //else
+            //{
+            //    m_fRemainingTimeBetweenWeaponCooldown -= Time.deltaTime;
+            //}
         }
         else
-            UIManager.m_instance.SetMessageText("You have no more ammo!");
-
-
-    }
-
-    public void AddAmmo(int amount)
-    {
-        //add ammo upon pick up
-        if(m_iAmmoLeft < m_iMaxAmmo)
-        {
-            if(m_iAmmoLeft + amount <= m_iMaxAmmo)
-            {
-                m_iAmmoLeft += amount;
-            }
-            else if(m_iAmmoLeft + amount > m_iMaxAmmo)
-            {
-                int difference = m_iMaxAmmo - m_iAmmoLeft;
-                m_iAmmoLeft += difference;
-            }
-
-            if(gameObject.activeInHierarchy == true)
-                UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
-        }
+            m_bWeaponCooldown = false;
     }
 
     private void OnEnable()
     {
         //make sure effects are disabled when switching weapon
-        DisableEffects();
-        UIManager.m_instance.SetAmmoText(m_iAmmoLeftInMagazine, m_iAmmoLeft);
+        m_gunLight.enabled = false;
+        UIManager.m_instance.SetWeaponHeat(m_fCurrentWeaponTemperature, m_fMaxWeaponTemperature);
     }
 }

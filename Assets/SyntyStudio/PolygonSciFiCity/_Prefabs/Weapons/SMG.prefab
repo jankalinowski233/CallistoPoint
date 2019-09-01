@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4114727542453162
 Transform:
   m_ObjectHideFlags: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fShootingRange: 30
-  m_fWeaponDmg: 4
+  m_fWeaponDmg: 10
   m_fTimeBetweenShots: 0.1
   m_iMaxAmmo: 950
   m_iAmmoLeft: 0
@@ -694,13 +694,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2297016448765844985}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.001, y: 0.072, z: 0.293}
+  m_LocalRotation: {x: 0.5331191, y: -0.01723204, z: 0.84542304, w: 0.02733135}
+  m_LocalPosition: {x: -0.091, y: 0.053, z: 0.272}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4114727542453162}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 3.341, y: 64.424, z: 178.402}
 --- !u!1 &7008788248243978826
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,13 +724,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7008788248243978826}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.001, y: 0.019, z: -0.165}
+  m_LocalRotation: {x: -0.15185574, y: -0.20442772, z: -0.57665485, w: 0.77628505}
+  m_LocalPosition: {x: -0.018, y: -0.008, z: -0.199}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4114727542453162}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -28.134, y: -9.283, z: -70.882}
 --- !u!1001 &612482016236080870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1094,13 +1094,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 198944468147258806, guid: 2c0c6b8c780ef4c49bad541f8512530d,
         type: 3}
-      propertyPath: VelocityModule.z.scalar
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 198944468147258806, guid: 2c0c6b8c780ef4c49bad541f8512530d,
-        type: 3}
       propertyPath: VelocityModule.z.minScalar
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 198944468147258806, guid: 2c0c6b8c780ef4c49bad541f8512530d,
         type: 3}

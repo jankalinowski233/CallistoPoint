@@ -33,7 +33,7 @@ public class IKHandler : MonoBehaviour
 
     private void OnAnimatorIK(int layerIndex)
     {
-        if(m_player.m_bIsMeleeAttacking == false)
+        if(m_player.m_bIsMeleeAttacking == false && PlayerStats.m_instance.m_bIsAlive == true)
         {
             if(m_player.m_bIsThrowingGrenade == false)
             {
@@ -90,6 +90,18 @@ public class IKHandler : MonoBehaviour
                             m_anim.SetIKRotation(AvatarIKGoal.RightHand, m_rightHandSniperTransform.rotation);
                         }
                         break;
+                }
+            }
+
+            else
+            {
+                //grenade throw IK
+                if (m_grenadeThrowLeftHandTransform != null)
+                {
+                    m_anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+                    m_anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
+                    m_anim.SetIKPosition(AvatarIKGoal.LeftHand, m_grenadeThrowLeftHandTransform.position);
+                    m_anim.SetIKRotation(AvatarIKGoal.LeftHand, m_grenadeThrowLeftHandTransform.rotation);
                 }
             }
             

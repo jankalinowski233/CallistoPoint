@@ -102,20 +102,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        //dealing with physics goes here
+        if (m_playerStats.m_bIsAlive == true || m_playerStats.m_bIsStunned == false)
+        {
+            WalkWASD();
+        }
+    }
+
     void ProcessMouseInput()
     {
         //on LMB hold
         RotateAndShoot();
 
         //on mouse scroll
-        ChooseWeapon();
+        SwitchWeapon();
     }
 
     void ProcessKeyboardInput()
     {
-        WalkWASD();
         MeleeAttack();
-        Reload();
         CastAbilities();
         ThrowGrenades();
 
@@ -201,20 +208,11 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = rotation;
 
                 if (Input.GetMouseButton(0))
-                {
-                    if (m_weapon.m_iAmmoLeftInMagazine > 0)
+                {                
+                    if (m_weapon != null && m_bIsReloading == false)
                     {
-                        if (m_bIsAttacking == false)
-                        {
-                            m_bIsAttacking = true;
-                        }  
-                        
-                        Shoot();
-                            
-                    }
-                    else
-                    {
-                        //TODO set UI no ammo or sth
+                        m_bIsAttacking = true;
+                        m_weapon.Shoot();
                     }
                 }
 
@@ -235,14 +233,6 @@ public class PlayerController : MonoBehaviour
         List<RaycastResult> raycastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(currentEventData, raycastResults);
         return raycastResults.Count > 0;
-    }
-
-    void Shoot()
-    {      
-        if(m_weapon != null && m_bIsReloading == false)
-        {
-            m_weapon.Shoot();
-        }
     }
 
     void ThrowGrenades()
@@ -302,7 +292,7 @@ public class PlayerController : MonoBehaviour
         yield break;
     }
 
-    void ChooseWeapon()
+    void SwitchWeapon()
     {
         if(m_bIsAttacking == false && m_bIsReloading == false)
         {
@@ -429,36 +419,9 @@ public class PlayerController : MonoBehaviour
         m_navAgent.SetDestination(destination);
     }
 
-    public void Reload()
-    {
-        if (Input.GetKeyDown(KeyCode.R) && m_bIsWalking == false && m_bIsAttacking == false)
-        {
-            if (m_weapon.m_iAmmoLeft == 0)
-            {
-                //display warning of no ammo left
-
-                return;
-            }
-            else if (m_weapon.m_iAmmoLeftInMagazine == m_weapon.m_iMaxAmmoInMagazine)
-            {
-                //display warning of full magazine
-
-                return;
-            }
-
-            if (m_bIsReloading == false)
-            {
-                m_bIsReloading = true;
-                //play rifle animation of reloading
-                m_Anim.SetTrigger("RifleReload");
-            }
-        } 
-        
-    }
-
     public void RefillAmmo()
     {
-        m_weapon.RefillAmmo();
+        m_weapon.WeaponCooldown();
         m_bIsReloading = false;
     }
 
