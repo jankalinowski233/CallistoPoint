@@ -20,12 +20,14 @@ public class PlayerController : MonoBehaviour
     [Header("Weapons")]
     [Space(5f)]
     [SerializeField] private List<GameObject> ml_WeaponList = new List<GameObject>();
-    private int m_iCurrentWeapon;
+    [HideInInspector] public int m_iCurrentWeapon;
     [Range(0, 360)] public float m_fRifleAimOffset = 45f;
 
     [HideInInspector] public bool m_bIsWalking = false;
     [HideInInspector] public bool m_bIsAttacking = false;
     [HideInInspector] public bool m_bIsReloading = false;
+    [HideInInspector] public bool m_bIsMeleeAttacking = false;
+    [HideInInspector] public bool m_bIsThrowingGrenade = false;
 
     [Header("Melee combat")]
     [Space(5f)]
@@ -155,12 +157,12 @@ public class PlayerController : MonoBehaviour
 
             //calculate dot product between mouse position and player's movement direction on Z axis and clamp its value
             //to match blend tree variables
-            zAxisMagnitude = Mathf.Clamp(Vector3.Dot(m_vMovement, normalizedLookingAt), -1, 1);
+            zAxisMagnitude = Mathf.Clamp(Vector3.Dot(m_vMovement, normalizedLookingAt), -1, 1) * 6;
 
             //calculate dot product between mouse position and player's movement direction on X axis and clamp its value
             //to match blend tree variables
             Vector3 perpendicularLookingAt = new Vector3(normalizedLookingAt.z, 0, -normalizedLookingAt.x);
-            xAxisMagnitude = Mathf.Clamp(Vector3.Dot(m_vMovement, perpendicularLookingAt), -1, 1);
+            xAxisMagnitude = Mathf.Clamp(Vector3.Dot(m_vMovement, perpendicularLookingAt), -1, 1) * 6;
 
             //set animator to run
             m_Anim.SetBool("RifleRun", m_bIsWalking);
@@ -249,6 +251,8 @@ public class PlayerController : MonoBehaviour
         {
             if (m_iGrenadesAmount > 0 && m_grenade != null)
             {
+                m_bIsThrowingGrenade = true;
+
                 Ray ray = m_mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit rayHit;
 
@@ -350,6 +354,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKey(KeyCode.F) && m_bIsWalking == false && m_bIsAttacking == false)
             {
                 m_bIsAttacking = true;
+                m_bIsMeleeAttacking = true;
 
                 //play melee attack animation
                 m_Anim.SetTrigger("MeleeAttack");
@@ -397,7 +402,8 @@ public class PlayerController : MonoBehaviour
 
     public void ReturnToIdle()
     {
-        m_Anim.SetInteger("IdleValue", m_iCurrentWeapon);
+        m_bIsMeleeAttacking = false;
+        m_bIsThrowingGrenade = false;
         m_bIsAttacking = false;
 
         //reactivate gun
