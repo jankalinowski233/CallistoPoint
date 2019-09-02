@@ -300,11 +300,6 @@ public class PlayerController : MonoBehaviour
             {
                 if (m_iCurrentWeapon < ml_WeaponList.Count - 1)
                 {
-                    if (m_iCurrentWeapon == 0)
-                    {
-                        m_Anim.SetTrigger("ChangeIdle");
-                    }
-
                     m_iCurrentWeapon++;
                     ml_WeaponList[m_iCurrentWeapon].SetActive(true);
                     m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();
@@ -315,11 +310,6 @@ public class PlayerController : MonoBehaviour
             {
                 if (m_iCurrentWeapon > 0)
                 {
-                    if (m_iCurrentWeapon == 1)
-                    {
-                        m_Anim.SetTrigger("ChangeIdle");
-                    }
-
                     m_iCurrentWeapon--;
                     ml_WeaponList[m_iCurrentWeapon].SetActive(true);
                     m_weapon = ml_WeaponList[m_iCurrentWeapon].GetComponent<Weapon>();

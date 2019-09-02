@@ -14,29 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sentences:
   - portrait: {fileID: 0}
-    name: Engineer Hack
-    dialogueSentences: God I am so tired. How long do we have to work on it?
+    name: 'ARC-170 Starfighter development log #1'
+    dialogueSentences: 'Engineer Hack: God I am so tired. How long do we have to work
+      on it?
+
+
+      General Watson: As long as we want you to. What''s the progress?
+
+
+      Engineer Hack:I just want a god-damn coffee...
+
+
+      General Watson: What did you say, son?'
     sentenceEvents: {fileID: 0}
   - portrait: {fileID: 0}
-    name: General Watson
-    dialogueSentences: As long as we want you to. What's the progress?
-    sentenceEvents: {fileID: 0}
-  - portrait: {fileID: 0}
-    name: Engineer Hack
-    dialogueSentences: "I just want a god-damn coffee...\t"
-    sentenceEvents: {fileID: 0}
-  - portrait: {fileID: 0}
-    name: General Watson
-    dialogueSentences: What did you say, son?
-    sentenceEvents: {fileID: 0}
-  - portrait: {fileID: 0}
-    name: Engineer Hack
-    dialogueSentences: Nothing, general. By reducing the pilot's cockpit space by
-      7% and hence reducing the total mass of the spacecraft by 2%, we were able to
-      load additional two long-range rockets without significant decrease in speed.
-      Our pilots will not have much space at all, but we do as you ordered, Sir.
-    sentenceEvents: {fileID: 0}
-  - portrait: {fileID: 0}
-    name: General Watson
-    dialogueSentences: Very well. Keep me up to date.
+    name: 'ARC-170 Starfighter development log #1'
+    dialogueSentences: "Engineer Hack: Nothing, general. By reducing the pilot's cockpit
+      space by 7% and hence reducing the total mass of the spacecraft by 2%, we were
+      able to load additional two long-range rockets without significant decrease
+      in speed. Our pilots will not have much space at all, but we do as you ordered,
+      Sir\n\t\nGeneral Watson: Very well. Keep me up to date."
     sentenceEvents: {fileID: 0}

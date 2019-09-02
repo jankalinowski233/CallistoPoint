@@ -10,7 +10,8 @@ public class Item : MonoBehaviour, ICollectable
     {
         //basic behaviour, such as play sounds, particle system etc. goes here
         OnCollection.Invoke();
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        Destroy(gameObject, 2f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -26,10 +27,14 @@ public class Item : MonoBehaviour, ICollectable
 
         while (normalizedTime < 1.0f)
         {
-            float yAxisOffset = flightHeight * (normalizedTime - normalizedTime * normalizedTime);
-            transform.position = Vector3.Lerp(startPos, targetPos, normalizedTime) + yAxisOffset * Vector3.up;
-            normalizedTime += Time.deltaTime / flightDuration;
-            yield return null;
+            if (gameObject != null)
+            {
+                float yAxisOffset = flightHeight * (normalizedTime - normalizedTime * normalizedTime);
+                transform.position = Vector3.Lerp(startPos, targetPos, normalizedTime) + yAxisOffset * Vector3.up;
+                normalizedTime += Time.deltaTime / flightDuration;
+                yield return null;
+            }
+            else break;
         }
     }
 

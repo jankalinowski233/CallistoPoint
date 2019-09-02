@@ -14,16 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sentences:
   - portrait: {fileID: 0}
-    name: SC-170 FIGHTER
-    dialogueSentences: '... and we have recently been invited to a closed show-off
-      to see what the newest child of United Earth''s Government Space Forces is capable
-      of! And let me tell you - what a show it was. The newest spacecraft is faster
-      and its firepower is far more superior than any other fighter produced so far!'
+    name: 'Dev log #2887'
+    dialogueSentences: 'Name: Atkinson, Andrew
+
+      Position: Senior flight overseer
+
+
+      July 11th, 2149. Personal log number 2887. United Earth''s Army Research Institute
+      have come recently up with a great innovation to our weapons. According to them,
+      we will be able to finally stop relying on ammunition. Not sure what the new
+      system is based on, but it has something to do with friction. As far as I understood,
+      by shooting weapon heats up and shoots... lasers? I think that''s the most accurate,
+      human-understandable word for ''beams of thermal energy''.'
     sentenceEvents: {fileID: 0}
   - portrait: {fileID: 0}
-    name: SC-170 FIGHTER
-    dialogueSentences: It's equipment not only contains three high-fire rate laser
-      cannons, but also 20 long-range explosive missiles capable of penetrating most
-      of today's kinetic shields, making it one of the most dangerous spacecraft in
-      Earth's fleet.
+    name: 'Dev log #2887'
+    dialogueSentences: Anyway, it sounds like the weapon will be overheating, so our
+      soldiers can't sadly fire infinitely. On the other hand, those lasers are more
+      than capable of penetrating most of armor types known to mankind. Pretty cool.
+      It's still experimental, but I have heard rumors special forces are going to
+      use it sooner than the rest of the Army. Those guys are crazy, but I don't think
+      anyone understands them. Atkinson out.
     sentenceEvents: {fileID: 0}
