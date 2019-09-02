@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour
     [Space(7f)]
     public float m_fMaxWeaponTemperature;
     float m_fCurrentWeaponTemperature;
-    [Range(5, 20)] public float m_fWeaponCooldownSpeed;
+    [Range(1, 20)] public float m_fWeaponCooldownSpeed;
     bool m_bWeaponCooldown = false;
 
     [Header("Weapon FX")]
@@ -56,7 +56,7 @@ public class Weapon : MonoBehaviour
 
     void ProcessKeyboardInput()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && m_bWeaponCooldown == false)
         {
             m_bWeaponCooldown = true;
         }
@@ -114,7 +114,11 @@ public class Weapon : MonoBehaviour
                 {
                     //TODO weapon is too hot, set UI (flashing or sth)
                 }
-            }            
+            }
+            else
+            {
+                m_bWeaponCooldown = true;
+            }
         }
         else
         {
@@ -143,7 +147,13 @@ public class Weapon : MonoBehaviour
             UIManager.m_instance.SetWeaponHeat(m_fCurrentWeaponTemperature, m_fMaxWeaponTemperature);
         }
         else
+        {
+            if (m_fCurrentWeaponTemperature < 0)
+                m_fCurrentWeaponTemperature = 0f;
+
             m_bWeaponCooldown = false;
+        }
+            
     }
 
     private void OnEnable()
