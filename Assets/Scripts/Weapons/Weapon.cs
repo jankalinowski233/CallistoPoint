@@ -140,18 +140,7 @@ public class Weapon : MonoBehaviour
         if (m_fCurrentWeaponTemperature > 0)
         {
             m_fCurrentWeaponTemperature -= Time.deltaTime * m_fWeaponCooldownSpeed;
-            UIManager.m_instance.SetWeaponHeat(m_fCurrentWeaponTemperature, m_fMaxWeaponTemperature)
-            //if(m_fRemainingTimeBetweenWeaponCooldown <= 0)
-            //{
-            //    m_fCurrentWeaponTemperature--;
-            ;
-
-            //    m_fRemainingTimeBetweenWeaponCooldown = m_fTimeBetweenWeaponCooldown;
-            //}
-            //else
-            //{
-            //    m_fRemainingTimeBetweenWeaponCooldown -= Time.deltaTime;
-            //}
+            UIManager.m_instance.SetWeaponHeat(m_fCurrentWeaponTemperature, m_fMaxWeaponTemperature);
         }
         else
             m_bWeaponCooldown = false;

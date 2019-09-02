@@ -184,7 +184,7 @@ Transform:
   m_GameObject: {fileID: 6721543252139860457}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -25.572506, y: 0.575, z: -52.682587}
-  m_LocalScale: {x: 3.1458, y: 3.1458, z: 3.1458}
+  m_LocalScale: {x: 6, y: 6, z: 6}
   m_Children:
   - {fileID: 6724125021207222175}
   - {fileID: 6724115420096412535}
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c967b9a6a0a59a546ae9559df8dda7ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_speed: 5
+  m_speed: 10
   m_direction: {x: 0, y: 1, z: 0}
 --- !u!65 &6068552157942772693
 BoxCollider:

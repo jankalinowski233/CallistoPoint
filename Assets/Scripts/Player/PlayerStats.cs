@@ -59,6 +59,19 @@ public class PlayerStats : Character
         UIManager.m_instance.SetHealthValue(m_fRemainingHealth / m_fMaxHealth);
     }
 
+    public void Heal(float healthPoints)
+    {
+        if(m_fRemainingHealth < m_fMaxHealth)
+        {
+            m_fRemainingHealth += healthPoints;
+
+            if (m_fRemainingHealth > m_fMaxHealth)
+                m_fRemainingHealth = m_fMaxHealth;
+
+            UIManager.m_instance.SetHealthValue(m_fRemainingHealth / m_fMaxHealth);
+        }
+    }
+
     public override void Kill()
     {
         base.Kill();

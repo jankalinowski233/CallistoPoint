@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(BoxCollider))]
 public class Interactable : MonoBehaviour, IInteractable
 {
     public UnityEvent OnInteract;
@@ -9,6 +10,7 @@ public class Interactable : MonoBehaviour, IInteractable
     {
         //base interact behaviour goes here
         OnInteract.Invoke();
+        UIManager.m_instance.SetMessageText("");
     }
 
     private void OnTriggerEnter(Collider other)

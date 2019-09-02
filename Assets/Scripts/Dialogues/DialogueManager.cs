@@ -31,9 +31,12 @@ public class DialogueManager : MonoBehaviour
     public GameObject m_logContButton;
     public TextMeshProUGUI m_logHeaderText;
     public TextMeshProUGUI m_logText;
-    
+
+    bool m_bDialogueStarted;
+
     private void Awake()
     {
+        m_bDialogueStarted = false;
         MakeSingleton();
     }
 
@@ -66,28 +69,43 @@ public class DialogueManager : MonoBehaviour
     /// <param name="d"> dialogue to start </param>
     public void StartDialogue(Dialogue d)
     {
-        m_sentencesQueue.Clear();
-
-        foreach(Sentence sentence in d.sentences)
+        if(m_bDialogueStarted == false)
         {
-            m_sentencesQueue.Enqueue(sentence);
-        }
+            m_sentencesQueue.Clear();
 
-        ShowDialoguePanel();
-        ShowNextDialogueLine();
+            foreach (Sentence sentence in d.sentences)
+            {
+                m_sentencesQueue.Enqueue(sentence);
+            }
+
+            ShowDialoguePanel();
+            ShowNextDialogueLine();
+
+            Time.timeScale = 0f;
+
+            m_bDialogueStarted = true;
+        }
     }
 
     public void ShowLog(Dialogue log)
     {
-        m_sentencesQueue.Clear();
-
-        foreach (Sentence sentence in log.sentences)
+        if(m_bDialogueStarted == false)
         {
-            m_sentencesQueue.Enqueue(sentence);
+            m_sentencesQueue.Clear();
+
+            foreach (Sentence sentence in log.sentences)
+            {
+                m_sentencesQueue.Enqueue(sentence);
+            }
+
+            ShowLogPanel();
+            ShowNextLogLine();
+
+            Time.timeScale = 0f;
+
+            m_bDialogueStarted = true;
         }
 
-        ShowLogPanel();
-        ShowNextLogLine();
     }
 
     /// <summary>
@@ -191,11 +209,15 @@ public class DialogueManager : MonoBehaviour
     void EndDialogue()
     {
         HideDialoguePanel();
+        Time.timeScale = 1f;
+        m_bDialogueStarted = false;
     }
 
     void EndLog()
     {
         HideLogPanel();
+        Time.timeScale = 1f;
+        m_bDialogueStarted = false;
     }
 
     /// <summary>

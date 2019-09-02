@@ -39,7 +39,7 @@ public class Enemy : Character
     // Update is called once per frame
     void Update()
     {
-        if (m_bIsAlive == true && m_bIsStunned == false)
+        if (m_bIsAlive == true || m_bIsStunned == false)
         {
             if (m_gTarget != null)
             {
