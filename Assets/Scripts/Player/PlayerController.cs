@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(m_playerStats.m_bIsAlive == true || m_playerStats.m_bIsStunned == false)
+        if(m_playerStats.m_bIsAlive == true && m_playerStats.m_bIsStunned == false)
         {
             ProcessMouseInput();
             ProcessKeyboardInput();
@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         //dealing with physics goes here
-        if (m_playerStats.m_bIsAlive == true || m_playerStats.m_bIsStunned == false)
+        if (m_playerStats.m_bIsAlive == true && m_playerStats.m_bIsStunned == false)
         {
             WalkWASD();
         }

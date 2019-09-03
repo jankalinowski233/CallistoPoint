@@ -2,7 +2,7 @@
 
 public class Character : MonoBehaviour, IDamageable
 {
-    [HideInInspector] public bool m_bIsAlive = true;
+    [HideInInspector] public bool m_bIsAlive;
     [HideInInspector] public bool m_bIsStunned = false;
     [HideInInspector] public bool m_bIsScorching = false;
 
@@ -18,6 +18,7 @@ public class Character : MonoBehaviour, IDamageable
 
     void OnEnable()
     {
+        m_bIsAlive = true;
         m_fRemainingHealth = m_fMaxHealth;
     }
 
