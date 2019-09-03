@@ -9,18 +9,22 @@ public class Computer : Interactable, IHackable
     bool m_bIsBeingHacked;
     bool m_bHasBeenHacked;
 
-    public bool m_bRequireKey = false;
+    public enum ComputerMode { RequireKey, DoesNotRequireKey };
+    public ComputerMode m_currentMode = ComputerMode.DoesNotRequireKey;
+
     public UnityEvent m_OnHacked;
 
     public void Hack(float time)
     {
+        ComputerMode computerMode = m_currentMode;
+
         if(m_bHasBeenHacked == true)
         {
             DisplayContent();
             return;
         }
 
-        if (m_bIsBeingHacked == false && m_bRequireKey == false)
+        if (m_bIsBeingHacked == false && computerMode == ComputerMode.DoesNotRequireKey)
         {
             m_bIsBeingHacked = true;
             m_fRemainingHackingTime = time;
@@ -28,7 +32,7 @@ public class Computer : Interactable, IHackable
 
             UIManager.m_instance.m_progressBar.gameObject.SetActive(true);
         }
-        else if(m_bRequireKey == true)
+        else if(computerMode == ComputerMode.RequireKey)
         {
             if(PlayerController.m_instance.m_accesKeys.Count > 0)
             {

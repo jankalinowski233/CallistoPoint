@@ -2,13 +2,11 @@
 using UnityEngine.AI;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : Character
 {
     NavMeshAgent m_navAgent;
     [HideInInspector] public Animator m_Anim;
-
-    bool m_bCanAttack;
-    bool m_bIsWalking;
 
     GameObject m_gTarget;
     PlayerStats m_playerStats;
@@ -32,6 +30,7 @@ public class Enemy : Character
     void Start()
     {
         m_playerStats = PlayerStats.m_instance;
+        m_gTarget = m_playerStats.gameObject;
 
         m_healthPoints.fillAmount = m_fRemainingHealth / m_fMaxHealth;
     }
@@ -39,25 +38,11 @@ public class Enemy : Character
     // Update is called once per frame
     void Update()
     {
-        if (m_bIsAlive == true || m_bIsStunned == false)
+        if (m_bIsAlive == true)
         {
-            if (m_gTarget != null)
+            if(m_gTarget != null)
             {
-                WalkToTarget();
-
-                if (HasReachedPath() == true)
-                {
-                    Attack();
-                }
-                else
-                {
-                    Chase();
-                }
-
-            }
-            else
-            {
-                //patrol
+                m_Anim.SetFloat("Distance", Vector3.Distance(transform.position, m_gTarget.transform.position));
             }
         }
 
@@ -65,16 +50,6 @@ public class Enemy : Character
                                         PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.up);
 
         EffectTimer();
-    }
-
-    public virtual void Attack()
-    {
-        m_Anim.SetBool("Attack", true);
-    }
-
-    public virtual void Chase()
-    {
-        m_Anim.SetBool("Attack", false);
     }
 
     public void DealDamage()
@@ -96,6 +71,11 @@ public class Enemy : Character
 
     }
 
+    public virtual void Attack()
+    {
+        //basic attack behaviour goes here
+    }
+
     public override void Stun(float stunDuration)
     {
         base.Stun(stunDuration);
@@ -114,7 +94,7 @@ public class Enemy : Character
     {
         base.TakeDamage(dmg);
 
-        if(m_gTarget == null && m_bIsStunned == false)
+        if(m_bIsStunned == false)
             SetTarget(m_playerStats.gameObject);
 
         m_healthPoints.fillAmount = m_fRemainingHealth / m_fMaxHealth;
@@ -125,11 +105,6 @@ public class Enemy : Character
         base.Kill();
         LevelController.m_instance.RemoveFromList(this.gameObject);
         Destroy(gameObject);
-    }
-
-    void WalkToTarget()
-    {
-        m_navAgent.SetDestination(m_gTarget.transform.position);
     }
 
     public void SetTarget(GameObject target)
@@ -143,7 +118,8 @@ public class Enemy : Character
         return m_gTarget;
     }
 
-    bool HasReachedPath()
+    //useless for now, but might be useful - left just in case
+    public bool HasReachedPath()
     {
         //check if agent reached destination
         if (m_navAgent.pathPending == false)
@@ -152,11 +128,11 @@ public class Enemy : Character
             {
                 if (m_navAgent.hasPath == false || m_navAgent.velocity.sqrMagnitude == 0)
                 {
-                    m_bCanAttack = true;
                     return true;
                 }
             }
         }
+
         return false;
     }
 }

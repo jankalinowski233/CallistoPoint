@@ -6,7 +6,6 @@ public class MeleeEnemy : Enemy
 {
     public override void Attack()
     {
-        //play attack animation
         //play attack sound
         //play attack vfx
 
