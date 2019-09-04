@@ -9,14 +9,14 @@ public class Enemy : Character
     [HideInInspector] public Animator m_Anim;
 
     GameObject m_gTarget;
-    PlayerStats m_playerStats;
-    SkinnedMeshRenderer m_meshRenderer;
+    protected PlayerStats m_playerStats;
+    protected SkinnedMeshRenderer m_meshRenderer;
 
     public float m_fDamage;
 
     public ParticleSystem m_meleeHitEffect;
 
-    Canvas m_enemyCanvas;
+    protected Canvas m_enemyCanvas;
     public Image m_healthPoints;
 
     private void Awake()
@@ -29,7 +29,7 @@ public class Enemy : Character
     }
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         m_playerStats = PlayerStats.m_instance;
         m_gTarget = m_playerStats.gameObject;
