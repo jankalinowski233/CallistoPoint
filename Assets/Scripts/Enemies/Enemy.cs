@@ -10,6 +10,7 @@ public class Enemy : Character
 
     GameObject m_gTarget;
     PlayerStats m_playerStats;
+    SkinnedMeshRenderer m_meshRenderer;
 
     public float m_fDamage;
 
@@ -24,6 +25,7 @@ public class Enemy : Character
         m_Anim = GetComponent<Animator>();
 
         m_enemyCanvas = GetComponentInChildren<Canvas>();
+        m_meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     // Start is called before the first frame update
@@ -46,8 +48,11 @@ public class Enemy : Character
             }
         }
 
-        m_enemyCanvas.transform.LookAt(transform.position - PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.back, 
-                                        PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.up);
+        if(m_meshRenderer.isVisible == true)
+        {
+            m_enemyCanvas.transform.LookAt(transform.position - PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.back,
+                                PlayerController.m_instance.m_mainCamera.transform.rotation * Vector3.up);
+        }
 
         EffectTimer();
     }

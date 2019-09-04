@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+//useless now, may be useful later
 public class SetTarget : MonoBehaviour
 {
     Enemy m_Enemy;
