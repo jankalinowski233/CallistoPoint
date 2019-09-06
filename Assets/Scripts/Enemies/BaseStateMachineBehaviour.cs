@@ -8,8 +8,8 @@ public class BaseStateMachineBehaviour : StateMachineBehaviour
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        m_Enemy = animator.gameObject.GetComponent<Enemy>();
-        m_navAgent = animator.gameObject.GetComponent<NavMeshAgent>();
+        m_Enemy = animator.GetComponent<Enemy>();
+        m_navAgent = animator.GetComponent<NavMeshAgent>();
     }
 
 }
