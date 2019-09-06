@@ -10,7 +10,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: Distance
-    m_EventTreshold: 3
+    m_EventTreshold: 10
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4704686607902133508}
   m_Solo: 0
@@ -94,7 +94,7 @@ AnimatorState:
   m_Transitions:
   - {fileID: -1757661021815335604}
   m_StateMachineBehaviours:
-  - {fileID: 271302635851907544}
+  - {fileID: 1420002178432705476}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -103,7 +103,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d57a451dd6c98394c8189d0e05375940, type: 2}
+  m_Motion: {fileID: 7400000, guid: ce23eecbc749574468c331431eef48c3, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -119,7 +119,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: Distance
-    m_EventTreshold: 10
+    m_EventTreshold: 12
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7613734140932536557}
   m_Solo: 0
@@ -156,7 +156,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: Distance
-    m_EventTreshold: 3
+    m_EventTreshold: 15
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7613734140932536557}
   m_Solo: 0
@@ -205,7 +205,7 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!114 &271302635851907544
+--- !u!114 &1420002178432705476
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -214,9 +214,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b46c20c0aed19b244a4284b903556d4a, type: 3}
+  m_Script: {fileID: 11500000, guid: fe0aa6fdf5f8510458260c3c4d74901a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fAimOffset: 2.5
 --- !u!1107 &4350840712292010556
 AnimatorStateMachine:
   serializedVersion: 5

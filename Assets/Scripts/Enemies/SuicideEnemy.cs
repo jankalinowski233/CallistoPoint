@@ -6,24 +6,27 @@ public class SuicideEnemy : Enemy
     [Space(5f)]
     public float m_fExplosionDistance;
     public GameObject m_explosionRangeIndicator;
+    float m_fExplosionFlashSpeed;
 
     public ParticleSystem m_explosionVFX;
 
     Material m_flashMaterial;
 
+    public override void Start()
+    {
+        base.Start();
 
+        m_flashMaterial = m_explosionRangeIndicator.GetComponent<MeshRenderer>().material;
+        m_fExplosionFlashSpeed = m_flashMaterial.GetFloat("Vector1_956BD140");
+    }
 
     public void LoadExplosion()
     {
         //increase sound volume
 
         //play explosion loading vfx
-        if(m_flashMaterial == null)
-            m_flashMaterial = m_explosionRangeIndicator.GetComponent<MeshRenderer>().material;
-
-        float currentFlashFrequency = m_flashMaterial.GetFloat("Vector1_956BD140");
-        currentFlashFrequency += Time.deltaTime;
-        m_flashMaterial.SetFloat("Vector1_956BD140", currentFlashFrequency);
+        m_fExplosionFlashSpeed += Time.deltaTime;
+        m_flashMaterial.SetFloat("Vector1_956BD140", m_fExplosionFlashSpeed);
 
         //show explosion range
         if (m_explosionRangeIndicator.activeInHierarchy == false)

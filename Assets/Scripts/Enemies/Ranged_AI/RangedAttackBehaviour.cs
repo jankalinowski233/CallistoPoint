@@ -1,35 +1,29 @@
 ﻿using UnityEngine;
 
-public class ChaseBehaviour : BaseStateMachineBehaviour
-{ 
-    GameObject m_Target;
+public class RangedAttackBehaviour : BaseStateMachineBehaviour
+{
+    Quaternion rotation;
+    public float fAimOffset;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
-        m_Target = m_Enemy.GetTarget();
-    }
+    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //    
+    //}
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (m_Enemy.m_bIsAlive == true && m_Enemy.m_bIsStunned == false)
-        {
-            WalkToTarget(m_Target.transform.position);
-        }
+        rotation = Quaternion.LookRotation(m_Enemy.GetTarget().transform.position - m_Enemy.transform.position);
+        rotation *= Quaternion.AngleAxis(fAimOffset, Vector3.up);
+        m_Enemy.transform.rotation = rotation;
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
-
+    //    
     //}
-
-    void WalkToTarget(Vector3 target)
-    {
-        m_navAgent.SetDestination(target);
-    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

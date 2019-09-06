@@ -29,7 +29,7 @@ public class Enemy : Character
     }
 
     // Start is called before the first frame update
-    public void Start()
+    public virtual void Start()
     {
         m_playerStats = PlayerStats.m_instance;
         m_gTarget = m_playerStats.gameObject;
@@ -45,6 +45,8 @@ public class Enemy : Character
             if(m_gTarget != null)
             {
                 m_Anim.SetFloat("Distance", Vector3.Distance(transform.position, m_gTarget.transform.position));
+                
+                
             }
         }
 
