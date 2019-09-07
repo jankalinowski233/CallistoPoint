@@ -1,7 +1,7 @@
 ﻿public interface IDamageable
 {
     void TakeDamage(float dmg);
-    void Kill();
+    void Die();
 }
 
 public interface IInteractable

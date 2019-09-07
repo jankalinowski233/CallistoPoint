@@ -72,9 +72,9 @@ public class PlayerStats : Character
         }
     }
 
-    public override void Kill()
+    public override void Die()
     {
-        base.Kill();
+        base.Die();
 
         //return to main menu
     }

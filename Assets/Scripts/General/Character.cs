@@ -31,7 +31,7 @@ public class Character : MonoBehaviour, IDamageable
 
         if (m_fRemainingHealth <= 0)
         {
-            Kill();
+            Die();
         }
     }
 
@@ -80,7 +80,7 @@ public class Character : MonoBehaviour, IDamageable
         }
     }
 
-    public virtual void Kill()
+    public virtual void Die()
     {
         //kill
         m_bIsAlive = false;
