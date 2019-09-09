@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-//useless now, may be useful later
 public class SetTarget : MonoBehaviour
 {
     Turret m_turret;
@@ -14,7 +13,10 @@ public class SetTarget : MonoBehaviour
     {
         if(other.CompareTag("Enemy"))
         {
-            m_turret.AddEnemy(other.GetComponent<Enemy>());
+            Enemy e = other.GetComponent<Enemy>();
+
+            m_turret.AddEnemy(e);
+            e.m_EnemyDeathEvent += m_turret.RemoveEnemy;
         }
     }
 
@@ -26,6 +28,8 @@ public class SetTarget : MonoBehaviour
 
             if (m_turret.GetCurrentTarget() == e)
                 m_turret.SetCurrentTarget(null);
+
+            e.m_EnemyDeathEvent -= m_turret.RemoveEnemy;
 
             m_turret.RemoveEnemy(e);
         }

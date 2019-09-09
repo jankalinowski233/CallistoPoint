@@ -5,6 +5,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : Character
 {
+    public delegate void Death(Enemy e);
+    public Death m_EnemyDeathEvent;
+
     NavMeshAgent m_navAgent;
     [HideInInspector] public Animator m_Anim;
 
@@ -19,7 +22,6 @@ public class Enemy : Character
     protected Canvas m_enemyCanvas;
     public Image m_healthPoints;
 
-    Turret[] m_turrets;
     private void Awake()
     {
         m_navAgent = GetComponent<NavMeshAgent>();
@@ -35,8 +37,6 @@ public class Enemy : Character
         m_playerStats = PlayerStats.m_instance;
         m_gTarget = m_playerStats.gameObject;
 
-        m_turrets = FindObjectsOfType<Turret>();
-
         m_healthPoints.fillAmount = m_fRemainingHealth / m_fMaxHealth;
     }
 
@@ -47,9 +47,7 @@ public class Enemy : Character
         {
             if(m_gTarget != null)
             {
-                m_Anim.SetFloat("Distance", Vector3.Distance(transform.position, m_gTarget.transform.position));
-                
-                
+                m_Anim.SetFloat("Distance", Vector3.Distance(transform.position, m_gTarget.transform.position));            
             }
         }
 
@@ -113,18 +111,9 @@ public class Enemy : Character
     public override void Die()
     {
         base.Die();
-        LevelController.m_instance.RemoveFromList(this.gameObject);
 
-        foreach(Turret t in m_turrets)
-        {
-            if(t.m_enemies.Count > 0)
-            {
-                if (t.m_enemies.Contains(this))
-                {
-                    t.RemoveEnemy(this);
-                }
-            }
-        }
+        if (m_EnemyDeathEvent != null)
+            m_EnemyDeathEvent(this);
 
         Destroy(gameObject);
     }

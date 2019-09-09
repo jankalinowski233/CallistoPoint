@@ -8,12 +8,14 @@ public class Turret : Interactable
     public TurretMode m_TurretMode;
 
     public List<Enemy> m_enemies = new List<Enemy>();
-    Enemy m_currentTarget = null;
+    protected Enemy m_currentTarget = null;
 
     public float m_fTurretDamage;
     public float m_fTimeBetweenDamage;
     public float m_fRotationSpeed;
     float m_fRemainingTimeBetweenDamage;
+
+    public ParticleSystem m_hitEffect;
 
     private void Update()
     {
@@ -57,7 +59,6 @@ public class Turret : Interactable
                 {
                     previousClosestDistance = distance;
                     m_currentTarget = m_enemies[i];
-                    print(m_enemies[i].gameObject.name);
                 }
             }
         }
@@ -74,11 +75,20 @@ public class Turret : Interactable
         //measure time between attacks
         if(m_fRemainingTimeBetweenDamage <= 0)
         {
-            //play vfx
             //play sound
 
             //deal damage
             DealDamage(m_currentTarget);
+
+            //TODO hit effects 
+
+            //Vector3 distanceToTarget = transform.position - m_currentTarget.transform.position;
+
+            //m_hitEffect.transform.position = m_currentTarget.transform.position;
+            //m_hitEffect.transform.rotation = Quaternion.LookRotation(distanceToTarget);
+
+            //m_hitEffect.Stop();
+            //m_hitEffect.Play();
 
             m_fRemainingTimeBetweenDamage = m_fTimeBetweenDamage;
         }
@@ -86,6 +96,8 @@ public class Turret : Interactable
         {
             m_fRemainingTimeBetweenDamage -= Time.deltaTime;
         }
+
+
     }
 
     public void SetCurrentTarget(Enemy e)

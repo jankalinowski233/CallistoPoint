@@ -6,7 +6,7 @@ public class LevelController : MonoBehaviour
 {
     public static LevelController m_instance;
 
-    List<GameObject> m_enemies;
+    List<Enemy> m_enemies;
 
     public UnityEvent OnEnemiesClear;
 
@@ -19,24 +19,25 @@ public class LevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_enemies = new List<GameObject>();
+        m_enemies = new List<Enemy>();
 
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
 
         for (int i = 0; i < enemies.Length; i++)
         {
             AddToList(enemies[i]);
+            enemies[i].m_EnemyDeathEvent += RemoveFromList;
         }
     }
 
-    public void AddToList(GameObject go)
+    public void AddToList(Enemy e)
     {
-        m_enemies.Add(go);
+        m_enemies.Add(e);
     }
 
-    public void RemoveFromList(GameObject go)
+    public void RemoveFromList(Enemy e)
     {
-        m_enemies.Remove(go);
+        m_enemies.Remove(e);
 
         if (m_enemies.Count == 0)
         {
