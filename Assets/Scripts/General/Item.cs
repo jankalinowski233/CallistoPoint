@@ -6,10 +6,15 @@ public class Item : MonoBehaviour, ICollectable
 {
     public UnityEvent OnCollection;
 
+    public AudioClip m_collectionSFX;
+
     public virtual void Collect()
     {
         //basic behaviour, such as play sounds, particle system etc. goes here
         OnCollection.Invoke();
+
+        AudioManager.m_instance.PlayClip(m_collectionSFX);
+
         gameObject.SetActive(false);
         Destroy(gameObject, 2f);
     }

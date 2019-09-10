@@ -222,6 +222,8 @@ public class PlayerController : MonoBehaviour
                     m_weapon.ResetTimeBetweenShots();
                     m_bIsAttacking = false;
                 }
+
+                print(rayHit.collider.name);
             }
         }
     }

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Turret_LaserBeam
+  m_Shader: {fileID: -6465566751694194690, guid: 0135cd912adb54844804aa2fe02d6ad6,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - Vector1_32B802AD: 20
+    - Vector1_A6A24C03: 2
+    - Vector1_BA5BB8CF: 1
+    - Vector1_C5F0C8CA: 20
+    - Vector1_F1B4A782: 0.3
+    m_Colors:
+    - Color_F5A1414E: {r: 45.929413, g: 45.929413, b: 45.929413, a: 0}
+    - Vector2_22242C58: {r: -2, g: 0, b: 0, a: 0}
+    - Vector2_658BAEA7: {r: -1, g: 0, b: 0, a: 0}

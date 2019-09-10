@@ -22,8 +22,11 @@ public class Enemy : Character
     protected Canvas m_enemyCanvas;
     public Image m_healthPoints;
 
+    protected AudioSource m_audioSource;
+
     private void Awake()
     {
+        m_audioSource = GetComponent<AudioSource>();
         m_navAgent = GetComponent<NavMeshAgent>();
         m_Anim = GetComponent<Animator>();
 

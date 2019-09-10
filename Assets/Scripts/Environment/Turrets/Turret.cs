@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Turret : Interactable
@@ -13,7 +12,8 @@ public class Turret : Interactable
     public float m_fTurretDamage;
     public float m_fTimeBetweenDamage;
     public float m_fRotationSpeed;
-    float m_fRemainingTimeBetweenDamage;
+    public float m_fHitEffectYOffset;
+    protected float m_fRemainingTimeBetweenDamage;
 
     public ParticleSystem m_hitEffect;
 
@@ -21,28 +21,37 @@ public class Turret : Interactable
     {
         if(m_TurretMode == TurretMode.Friendly)
         {
-            if (m_currentTarget == null)
+            if(m_enemies.Count > 0)
             {
-                SetCurrentTarget();
+                if (m_currentTarget == null)
+                {
+                    SetCurrentTarget();
+                }
+                else
+                {
+                    AttackCurrentTarget();
+                }
             }
             else
             {
-                AttackCurrentTarget();
+                Idle();
             }
         }
     }
 
+    public virtual void Idle()
+    {
+        if (m_hitEffect.gameObject.activeInHierarchy != false)
+            m_hitEffect.gameObject.SetActive(false);
+
+        if (m_fRemainingTimeBetweenDamage > 0)
+            m_fRemainingTimeBetweenDamage = 0f;
+
+        transform.rotation *= Quaternion.AngleAxis(Time.deltaTime * m_fRotationSpeed, Vector3.up);
+    }
+
     void SetCurrentTarget()
     {
-        if(m_enemies.Count == 0)
-        {
-            if (m_fRemainingTimeBetweenDamage > 0)
-                m_fRemainingTimeBetweenDamage = 0f;
-
-            transform.rotation *= Quaternion.AngleAxis(Time.deltaTime * m_fRotationSpeed, Vector3.up);
-            return;
-        }
-
         if (m_enemies.Count == 1)
         {
             m_currentTarget = m_enemies[0];
@@ -82,13 +91,18 @@ public class Turret : Interactable
 
             //TODO hit effects 
 
-            //Vector3 distanceToTarget = transform.position - m_currentTarget.transform.position;
+            Vector3 distanceToTarget = transform.position - m_currentTarget.transform.position;
 
-            //m_hitEffect.transform.position = m_currentTarget.transform.position;
-            //m_hitEffect.transform.rotation = Quaternion.LookRotation(distanceToTarget);
+            m_hitEffect.transform.position = new Vector3(m_currentTarget.transform.position.x + distanceToTarget.normalized.x * 0.5f,
+                m_currentTarget.transform.position.y + m_fHitEffectYOffset, 
+                m_currentTarget.transform.position.z + distanceToTarget.normalized.z * 0.5f);
 
-            //m_hitEffect.Stop();
-            //m_hitEffect.Play();
+            m_hitEffect.transform.rotation = Quaternion.LookRotation(distanceToTarget);
+
+            if (m_hitEffect.gameObject.activeInHierarchy != true)
+                m_hitEffect.gameObject.SetActive(true);
+
+            m_hitEffect.Play();
 
             m_fRemainingTimeBetweenDamage = m_fTimeBetweenDamage;
         }

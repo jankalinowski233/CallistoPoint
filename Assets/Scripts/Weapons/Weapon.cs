@@ -30,7 +30,7 @@ public class Weapon : MonoBehaviour
     private void Awake()
     {
         m_shotParticles.transform.position = m_gunParticles.transform.position;
- 
+
         m_fCurrentWeaponTemperature = 0;
         
         m_audio = GetComponent<AudioSource>();
@@ -73,13 +73,13 @@ public class Weapon : MonoBehaviour
                     //play weapon particle effects
                     m_gunParticles.Stop();
                     m_gunParticles.Play();
+                    m_shotParticles.Emit(1);
 
                     //enable lighting
                     m_gunLight.enabled = true;
 
                     //play sound
                     m_audio.Play();
-                    m_shotParticles.Emit(1);
 
                     //cast ray
                     Ray ray = new Ray(transform.position, new Vector3(transform.forward.x, 0f, transform.forward.z));
@@ -88,14 +88,12 @@ public class Weapon : MonoBehaviour
                     //check if it hit anything
                     if (Physics.Raycast(ray, out weaponHit, m_fShootingRange, LayerMask.GetMask("Damageable")))
                     {
-
-                        if (weaponHit.collider.CompareTag("Enemy") || weaponHit.collider.CompareTag("Turret"))
+                        if (weaponHit.collider.CompareTag("Enemy"))
                         {
                             //if it's an enemy, deal damage
                             Character character = weaponHit.collider.GetComponent<Character>();
                             character.TakeDamage(m_fWeaponDmg);
                         }
-
                     }
 
                     m_fCurrentWeaponTemperature++;

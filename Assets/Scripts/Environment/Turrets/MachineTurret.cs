@@ -6,17 +6,18 @@ public class MachineTurret : Turret
 {
     public ParticleSystem[] m_shotEffects;
 
-
     public override void AttackCurrentTarget()
     {
         base.AttackCurrentTarget();
 
-        //TODO make particle systems
+        if (m_fRemainingTimeBetweenDamage <= 0)
+        {
+            foreach (ParticleSystem ps in m_shotEffects)
+            {
+                ps.Stop();
+                ps.Play();
+            }
+        }
 
-        //foreach(ParticleSystem ps in m_shotEffects)
-        //{
-        //    ps.Stop();
-        //    ps.Play();
-        //}
     }
 }

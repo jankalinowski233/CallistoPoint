@@ -124,4 +124,5 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  m_collectionSFX: {fileID: 8300000, guid: bbfc432cabf701d49be6a9c26719af61, type: 3}
   m_fHealthAmount: 20
