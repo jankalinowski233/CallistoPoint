@@ -64,8 +64,12 @@ public class PlayerController : MonoBehaviour
     [Space(5f)]
     public List<AccessKey> m_accesKeys = new List<AccessKey>();
 
+    int m_iRayLayerMask;
+
     private void Awake()
     {
+        m_iRayLayerMask = 1 << LayerMask.NameToLayer("RayPlane");
+
         m_rb = GetComponent<Rigidbody>();
         m_navAgent = GetComponent<NavMeshAgent>();
         m_Anim = GetComponent<Animator>();
@@ -196,7 +200,7 @@ public class PlayerController : MonoBehaviour
             RaycastHit rayHit;
             Quaternion rotation;
 
-            if (Physics.Raycast(ray, out rayHit))
+            if (Physics.Raycast(ray, out rayHit, 1000f, m_iRayLayerMask))
             {
                 Vector3 characterToMouseVector = (rayHit.point - transform.position);
                 characterToMouseVector.y = 0f;
@@ -222,8 +226,6 @@ public class PlayerController : MonoBehaviour
                     m_weapon.ResetTimeBetweenShots();
                     m_bIsAttacking = false;
                 }
-
-                print(rayHit.collider.name);
             }
         }
     }

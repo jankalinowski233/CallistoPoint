@@ -85,8 +85,6 @@ public class Character : MonoBehaviour, IDamageable
         //kill
         m_bIsAlive = false;
 
-        print("dead");
-
         if (m_bIsAlive == false)
         {
             //disable components
